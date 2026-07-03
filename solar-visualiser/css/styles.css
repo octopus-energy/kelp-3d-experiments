@@ -137,6 +137,152 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .btn:hover { background: rgba(245, 185, 66, 0.12); }
+  .btn.active { background: var(--accent); color: #14161a; }
+
+  .scaffold-item .name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .scaffold-item .cost {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .scaffold-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+  }
+  .lift-stepper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .lift-stepper button {
+    width: 18px; height: 18px;
+    padding: 0;
+    border-radius: 3px;
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .lift-stepper button:hover { color: var(--accent); border-color: var(--accent); }
+  .scaffold-del {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0 2px;
+  }
+  .scaffold-del:hover { color: var(--warn); }
+  .scaffold-empty {
+    font-size: 10px;
+    color: var(--text-dim);
+    opacity: 0.7;
+    padding: 6px 0;
+  }
+  .rate-row { margin-top: 8px; }
+  .rate-row input[type="number"] {
+    width: 64px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--panel-border);
+    color: var(--text);
+    border-radius: 4px;
+    padding: 3px 6px;
+    font: inherit;
+    font-size: 11px;
+    text-align: right;
+  }
+
+  .draw-banner {
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    align-items: center;
+    gap: 14px;
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 14px;
+    z-index: 20;
+    font-size: 11px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .draw-banner.visible { display: flex; }
+  .draw-banner-title {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  #draw-banner-length {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text);
+    min-width: 52px;
+    font-variant-numeric: tabular-nums;
+  }
+  .view-toggle {
+    display: flex;
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .view-toggle button {
+    padding: 3px 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    font: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .view-toggle button.active { background: var(--accent); color: #14161a; }
+
+  .draw-banner-keys { color: var(--text-dim); }
+  .draw-banner-keys kbd {
+    padding: 1px 4px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+
   .tooltip {
     position: fixed;
     pointer-events: none;

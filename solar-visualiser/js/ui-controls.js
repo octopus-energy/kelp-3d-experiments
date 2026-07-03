@@ -3,7 +3,7 @@
 // =====================================================================
 window.SolarViz = window.SolarViz || {};
 
-window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid, roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine }) {
+window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid, roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine, scaffoldRoot }) {
   const $ = id => document.getElementById(id);
 
   $('t-terrain').addEventListener('change', e => terrainMesh.visible = e.target.checked);
@@ -14,6 +14,7 @@ window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid
   $('t-panels').addEventListener('change', e => panelGroup.visible = e.target.checked);
   $('t-obstructions').addEventListener('change', e => obstructionGroup.visible = e.target.checked);
   $('t-rejected').addEventListener('change', e => rejectedGroup.visible = e.target.checked);
+  $('t-scaffold').addEventListener('change', e => scaffoldRoot.visible = e.target.checked);
   $('t-wireframe').addEventListener('change', e => {
     matSolid.wireframe = e.target.checked;
     if (e.target.checked) {
@@ -34,6 +35,7 @@ window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid
     obstructionGroup.scale.y = exag;
     rejectedGroup.scale.y = exag;
     markerLine.scale.y = exag;
+    scaffoldRoot.scale.y = exag;
   });
 
   $('img-opacity').addEventListener('input', e => {

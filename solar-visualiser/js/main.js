@@ -86,13 +86,24 @@
     markerLine.computeLineDistances();
     scene.add(markerLine);
 
+    // Active-camera holder: scaffolding's plan mode swaps in an
+    // orthographic camera; render loop and raycasts follow it.
+    const view = { camera };
+
     window.SolarViz.setupHoverTooltip({
-      camera, hoverables, tooltipEl: document.getElementById('tooltip'),
+      view, hoverables, tooltipEl: document.getElementById('tooltip'),
+    });
+
+    setStatus('Scaffolding tools');
+    const scaffolding = window.SolarViz.setupScaffolding({
+      scene, camera, view, renderer, controls, terrainMesh, coords,
+      siteData: SITE_DATA, hoverables, cameraAnimator,
     });
 
     window.SolarViz.setupUIControls({
       terrainMesh, matTextured, matSolid,
       roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,
+      scaffoldRoot: scaffolding.root,
     });
 
     // Render loop
@@ -102,10 +113,13 @@
       const dt = clock.getDelta();
       cameraAnimator.update(dt);
       controls.update();
-      const angle = Math.atan2(camera.position.x - controls.target.x, camera.position.z - controls.target.z);
+      // In plan (ortho) mode north is always up
+      const angle = view.camera === camera
+        ? Math.atan2(camera.position.x - controls.target.x, camera.position.z - controls.target.z)
+        : 0;
       const cr = document.getElementById('compass-rose');
       if (cr) cr.setAttribute('transform', `rotate(${(angle * 180/Math.PI).toFixed(1)})`);
-      renderer.render(scene, camera);
+      renderer.render(scene, view.camera);
     }
 
     window.addEventListener('resize', () => {
@@ -117,7 +131,7 @@
     setStatus('Ready');
     setTimeout(() => document.getElementById('loader').classList.add('hidden'), 300);
     // Expose handles for inspection / external integrations
-    window.__SOLAR_VIZ__ = { scene, camera, controls, renderer, panelGroup, roofGroup };
+    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, panelGroup, roofGroup, coords, scaffolding };
     animate();
 
   } catch (e) {

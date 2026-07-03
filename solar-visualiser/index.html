@@ -62,6 +62,11 @@
     <span class="toggle-label">Rejected faces</span>
   </label>
   <label class="toggle-row">
+    <input type="checkbox" id="t-scaffold" checked>
+    <div class="swatch" style="background: #b9c2cb"></div>
+    <span class="toggle-label">Scaffolding</span>
+  </label>
+  <label class="toggle-row">
     <input type="checkbox" id="t-wireframe">
     <span class="toggle-label">Wireframe terrain</span>
   </label>
@@ -84,8 +89,30 @@
     <input type="range" id="panel-lift" min="0" max="40" step="1" value="12">
   </div>
 
+  <h2>Scaffolding</h2>
+  <button class="btn" id="scaffold-draw-btn">+ Draw scaffold run</button>
+  <div id="scaffold-list"></div>
+  <div class="stat-row rate-row">
+    <span class="stat-label">Rate (£/m²)</span>
+    <input type="number" id="scaffold-rate" value="26" min="1" step="1">
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Total scaffold cost</span>
+    <span class="stat-value big" id="scaffold-total">£0</span>
+  </div>
+
   <h2>Solar Arrays</h2>
   <div id="array-list"></div>
+</div>
+
+<div class="draw-banner" id="draw-banner">
+  <span class="draw-banner-title">Scaffold draw mode</span>
+  <div class="view-toggle">
+    <button id="draw-view-plan" class="active">Plan</button>
+    <button id="draw-view-3d">3D</button>
+  </div>
+  <span id="draw-banner-length">0.0 m</span>
+  <span class="draw-banner-keys"><kbd>click</kbd> add vertex · <kbd>↵</kbd> finish · <kbd>⌫</kbd> undo · <kbd>v</kbd> plan/3d · <kbd>esc</kbd> cancel</span>
 </div>
 
 <div class="legend">
@@ -134,6 +161,7 @@
 <script src="js/panels.js"></script>
 <script src="js/roof-faces.js"></script>
 <script src="js/obstructions.js"></script>
+<script src="js/scaffolding.js"></script>
 <script src="js/interactions.js"></script>
 <script src="js/ui-controls.js"></script>
 <script src="js/main.js"></script>

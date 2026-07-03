@@ -4,14 +4,14 @@
 // =====================================================================
 window.SolarViz = window.SolarViz || {};
 
-window.SolarViz.setupHoverTooltip = function ({ camera, hoverables, tooltipEl }) {
+window.SolarViz.setupHoverTooltip = function ({ view, hoverables, tooltipEl }) {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
   function onMouseMove(e) {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
+    raycaster.setFromCamera(mouse, view.camera);
     const candidates = hoverables.filter(m => {
       let p = m;
       while (p) { if (!p.visible) return false; p = p.parent; }
@@ -29,6 +29,13 @@ window.SolarViz.setupHoverTooltip = function ({ camera, hoverables, tooltipEl })
           <div class="tt-row"><span>Shading factor</span><span>${(d.shadingFactor*100).toFixed(0)}%</span></div>
           <div class="tt-row"><span>Orientation</span><span>${d.orientation}</span></div>
           <div class="tt-row"><span>Scaffolding</span><span>${d.scaffold}</span></div>`;
+      } else if (d.type === 'scaffold') {
+        html = `
+          <div class="tt-title">${d.name}</div>
+          <div class="tt-row"><span>Length</span><span>${d.length} m</span></div>
+          <div class="tt-row"><span>Height</span><span>${d.height}</span></div>
+          <div class="tt-row"><span>Chargeable area</span><span>${d.area} m²</span></div>
+          <div class="tt-row"><span>Cost</span><span>${d.cost}</span></div>`;
       } else if (d.type === 'roof') {
         html = `
           <div class="tt-title">${d.description}</div>

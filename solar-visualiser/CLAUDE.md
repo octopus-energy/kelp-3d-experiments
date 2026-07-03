@@ -24,6 +24,7 @@ Load order is dependency order — see `<script>` tags in `index.html`. Don't re
 - `js/panels.js` — solar panel meshes.
 - `js/roof-faces.js` — roof face meshes + array list sidebar.
 - `js/obstructions.js` — obstruction meshes.
+- `js/scaffolding.js` — scaffold designer: draw vertices on the ground (top-down), auto-generates tube/board scaffold to the eaves, costs it at length × billed height (whole 2m lifts) × £/m² rate.
 - `js/interactions.js` — hover tooltips + camera fly-to animation.
 - `js/ui-controls.js` — sidebar toggle/slider bindings.
 - `js/main.js` — entry point, wires everything together, render loop.
