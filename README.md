@@ -1,1 +1,20 @@
 # kelp-3d-experiments
+
+A collection of standalone 3D visualisation experiments.
+
+## Projects
+
+### [solar-visualiser](solar-visualiser/)
+
+A browser-based 3D viewer for solar panel site surveys, built with [three.js](https://threejs.org/). Point it at a property and it renders the terrain, roof, and a proposed panel layout so you can sanity-check a survey without visiting the site.
+
+**Running it:** it's a static site with no build step — just open `solar-visualiser/index.html` in a browser (`file://` works fine), or serve the folder with any static file server.
+
+**What you see:**
+- A 3D scene of the property: terrain from a digital surface model, draped with the actual aerial photo, plus the roof faces, solar panels, and any obstructions (chimneys, vents, etc.)
+- A sidebar with site summary stats — suitability outcome, confidence, storeys, ridge height, panel count, estimated annual output — and a legend colour-coding roof faces by orientation (N/S/E/W)
+- Toggles to show/hide each layer (terrain, aerial image, roofs, panels, obstructions, rejected roof faces, wireframe terrain), plus sliders for vertical exaggeration, image/roof opacity, and panel mounting height
+- A **scaffolding designer**: draw a scaffold run around the building in plan or 3D view, and it auto-generates the scaffold geometry and estimates cost from length × height × a configurable £/m² rate
+- Mouse controls: drag to rotate, shift+drag to pan, scroll to zoom, plus a compass for orientation and hover tooltips on roof faces/panels
+
+The site data (property geometry, heightmap, aerial photo) is currently bundled as hardcoded JS in `data/site-data.js` — this is the eventual swap point for a real backend/API. See [solar-visualiser/CLAUDE.md](solar-visualiser/CLAUDE.md) for the module layout if you're diving into the code.
