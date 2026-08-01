@@ -112,6 +112,15 @@
       console.error('Building model init failed:', e);
     }
 
+    try {
+      window.SolarViz.setupGallery({
+        container: document.getElementById('bm-gallery'),
+        imageData: window.IMAGE_DATA,
+      });
+    } catch (e) {
+      console.error('Photo gallery init failed:', e);
+    }
+
     window.SolarViz.setupUIControls({
       terrainMesh, matTextured, matSolid,
       roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,

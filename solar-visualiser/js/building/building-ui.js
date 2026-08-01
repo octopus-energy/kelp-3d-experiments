@@ -15,6 +15,8 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   const F = window.SolarViz.buildingFloors;
   const R = window.SolarViz.buildingRooms;
   const O = window.SolarViz.buildingOpenings;
+  const FP = window.SolarViz.buildingFloorplan;
+  const IMG = window.IMAGE_DATA || null;
   const $ = (id) => document.getElementById(id);
 
   // ------------------------------------------------------------------
@@ -192,11 +194,20 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     disposeGroup(levelsRoot);
     const floorMeshes = F.buildFloorMeshes(levels, mats);
     levelGroups = floorMeshes.levelGroups.map((g, i) => {
-      const lg = { group: g, roomsGroup: new THREE.Group(), extGroup: new THREE.Group() };
+      const lg = {
+        group: g, roomsGroup: new THREE.Group(),
+        extGroup: new THREE.Group(), fpGroup: new THREE.Group(),
+      };
       // thick exterior walls, shown only while this floor is being edited
       lg.extGroup.add(R.buildExteriorWalls({ level: levels[i], solid, mats }));
       lg.extGroup.visible = false;
-      g.add(lg.roomsGroup, lg.extGroup);
+      // floorplan underlay for floors with an applied import
+      const fs = state.floors[i];
+      const pf = planFloorFor(i);
+      if (fs && fs.floorplan && pf) {
+        lg.fpGroup.add(buildUnderlayQuad(pf, fs.floorplan.transform, levels[i].slabTopY + 0.03));
+      }
+      g.add(lg.roomsGroup, lg.extGroup, lg.fpGroup);
       return lg;
     });
     levelsRoot.add(floorMeshes.root);
@@ -303,6 +314,10 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       // rooms (tints/labels/dividers): only on the floor being worked on
       // or in see-through views — labels would poke through a closed shell
       lg.roomsGroup.visible = sel === i || (sel === null && ghost);
+      // floorplan underlay: only on the isolated floor, hidden while a
+      // fresh import preview (which draws its own quad) is showing
+      lg.fpGroup.visible = sel === i && !!(state.floors[i] && state.floors[i].floorplan) &&
+        $('bm-fp-underlay').checked && !(fpPreview && fpPreview.levelIdx === i);
       // slab-top outlines sit on the wall plane and z-fight a closed shell
       lg.group.children.forEach((c) => {
         if (c.userData && c.userData.isOutline) c.visible = sel === i || ghost;
@@ -488,6 +503,166 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   });
 
   // ------------------------------------------------------------------
+  // Floorplan import: fit the plan floor from IMAGE_DATA onto the
+  // selected floor, preview the underlay + derived walls, let the user
+  // nudge (rotate / mirror / shift), then Apply — which stores ordinary
+  // dividers + names/types, so the result is editable like hand-drawn
+  // rooms. IMAGE_DATA is suggestion-only: nothing lands in state until
+  // Apply.
+  // ------------------------------------------------------------------
+  const fpBtn = $('bm-fp-import');
+  const underlayMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.5,
+    side: THREE.DoubleSide, depthWrite: false,
+  });
+  if (IMG && IMG.floorplan) {
+    new THREE.TextureLoader().load(IMG.basePath + IMG.floorplan.file, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      underlayMat.map = tex;
+      underlayMat.needsUpdate = true;
+    });
+  }
+
+  function planFloorFor(idx) {
+    if (!IMG || !IMG.floorplan || !FP) return null;
+    return IMG.floorplan.floors.find((f) => f.level === idx) || null;
+  }
+
+  // Textured quad covering the plan floor's bbox (plus margin so wall
+  // linework isn't clipped), with corners run through the transform so
+  // rotation/mirror come out right.
+  function buildUnderlayQuad(pf, T, y) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    pf.outline.forEach(([px, py]) => {
+      x0 = Math.min(x0, px); x1 = Math.max(x1, px);
+      y0 = Math.min(y0, py); y1 = Math.max(y1, py);
+    });
+    const M = 14;
+    x0 -= M; y0 -= M; x1 += M; y1 += M;
+    const [W, H] = IMG.floorplan.imageSize;
+    const pos = [], uv = [];
+    [[x0, y0], [x1, y0], [x1, y1], [x0, y1]].forEach(([px, py]) => {
+      const [wx, wz] = FP.applyToPoint(T, [px, py]);
+      pos.push(wx, y, wz);
+      uv.push(px / W, 1 - py / H);
+    });
+    const geom = new THREE.BufferGeometry();
+    geom.setIndex([0, 2, 1, 0, 3, 2]);
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    geom.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    return new THREE.Mesh(geom, underlayMat);
+  }
+
+  let fpPreview = null;   // { levelIdx, planFloor, transform, mapped, group }
+  const fpLineOk = new THREE.LineBasicMaterial({ color: 0x4dabf7 });
+  const fpLineBad = new THREE.LineBasicMaterial({ color: 0xff6b6b });
+
+  function fpRefreshPreview() {
+    const p = fpPreview;
+    if (!p) return;
+    disposeGroup(p.group);
+    const lv = levels[p.levelIdx];
+    p.mapped = FP.mapPlan({
+      planFloor: p.planFloor, transform: p.transform,
+      worldOutline: lv.outline, deriveRooms: R.deriveRooms,
+    });
+    p.group.add(buildUnderlayQuad(p.planFloor, p.transform, lv.slabTopY + 0.03));
+    const mkLine = (path, mat) => new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(
+        path.map(([x, z]) => new THREE.Vector3(x, lv.slabTopY + 0.12, z))), mat);
+    p.mapped.dividers.forEach((d) => p.group.add(mkLine(d, fpLineOk)));
+    p.mapped.failed.forEach((d) => p.group.add(mkLine(d, fpLineBad)));
+    $('bm-fp-apply').textContent = `Apply ${p.mapped.dividers.length + 1} rooms`;
+    $('bm-fp-score').textContent =
+      'fit ' + Math.round((p.transform.score || 0) * 100) + '%' +
+      (p.mapped.failed.length ? ` · ${p.mapped.failed.length} wall(s) failed` : '');
+  }
+
+  function fpStartPreview() {
+    if (selectedFloorIdx === null || !solid) return;
+    const planFloor = planFloorFor(selectedFloorIdx);
+    if (!planFloor) return;
+    fpCancelPreview();
+    const lv = levels[selectedFloorIdx];
+    const scale = FP.planScale(planFloor.rooms);
+    if (!scale) { flash('Floorplan has no printed dimensions to scale from'); return; }
+    const transform = FP.fitTransform({
+      planOutline: planFloor.outline, scale,
+      worldOutline: lv.outline, axisAngle: solid.axisAngle,
+    });
+    fpPreview = {
+      levelIdx: selectedFloorIdx, planFloor, transform,
+      mapped: null, group: new THREE.Group(),
+    };
+    buildingRoot.add(fpPreview.group);
+    $('bm-fp-preview').style.display = '';
+    fpBtn.style.display = 'none';
+    fpRefreshPreview();
+    updateVisibility();
+  }
+
+  function fpCancelPreview() {
+    if (!fpPreview) return;
+    disposeGroup(fpPreview.group);
+    buildingRoot.remove(fpPreview.group);
+    fpPreview = null;
+    $('bm-fp-preview').style.display = 'none';
+    fpBtn.style.display = '';
+    updateVisibility();
+  }
+
+  function fpApply() {
+    const p = fpPreview;
+    if (!p || !p.mapped) return;
+    const fs = floorState(p.levelIdx);
+    if (fs.dividers.length &&
+        !confirm('Replace the existing walls on this floor with the floorplan layout?')) return;
+    fs.dividers = p.mapped.dividers;
+    fs.roomNames = p.mapped.roomNames;
+    fs.roomTypes = p.mapped.roomTypes;
+    fs.floorplan = { transform: p.transform };
+    const failed = p.mapped.failed.length;
+    fpCancelPreview();
+    rebuildFloors();       // also rebuilds the persistent underlay quad
+    $('bm-fp-underlay-row').style.display = '';
+    flash(failed
+      ? `Rooms imported — ${failed} wall(s) could not be placed, draw them by hand`
+      : 'Rooms imported from floorplan');
+  }
+
+  // Re-fit with a forced orientation (rotate/mirror nudges re-run the
+  // translation search so the plan stays centred on the outline).
+  function fpRefit(force) {
+    const p = fpPreview;
+    if (!p) return;
+    const lv = levels[p.levelIdx];
+    p.transform = FP.fitTransform({
+      planOutline: p.planFloor.outline, scale: p.transform.scale,
+      worldOutline: lv.outline, axisAngle: solid.axisAngle, force,
+    });
+    fpRefreshPreview();
+  }
+
+  fpBtn.addEventListener('click', fpStartPreview);
+  $('bm-fp-apply').addEventListener('click', fpApply);
+  $('bm-fp-cancel').addEventListener('click', fpCancelPreview);
+  $('bm-fp-rot').addEventListener('click', () => fpPreview && fpRefit({
+    q: (fpPreview.transform.q + 1) % 4, mirrored: fpPreview.transform.mirrored,
+  }));
+  $('bm-fp-mirror').addEventListener('click', () => fpPreview && fpRefit({
+    q: fpPreview.transform.q, mirrored: !fpPreview.transform.mirrored,
+  }));
+  // plan view is north-up: ↑ = −z (north), → = +x (east)
+  [['bm-fp-up', 0, -0.25], ['bm-fp-down', 0, 0.25], ['bm-fp-left', -0.25, 0], ['bm-fp-right', 0.25, 0]]
+    .forEach(([id, dx, dz]) => $(id).addEventListener('click', () => {
+      if (!fpPreview) return;
+      fpPreview.transform.tx += dx;
+      fpPreview.transform.tz += dz;
+      fpRefreshPreview();
+    }));
+  $('bm-fp-underlay').addEventListener('change', updateVisibility);
+
+  // ------------------------------------------------------------------
   // Window / radiator placement + selection
   // ------------------------------------------------------------------
   const raycaster = new THREE.Raycaster();
@@ -581,9 +756,13 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   function selectFloor(idx) {
     if (drawingWall) { drawingWall = false; planDraw.cancel(); }
+    fpCancelPreview();
     selectedFloorIdx = idx;
     wallBtn.disabled = idx === null;
     $('bm-undo-wall').disabled = idx === null;
+    fpBtn.disabled = idx === null || !planFloorFor(idx);
+    $('bm-fp-underlay-row').style.display =
+      (idx !== null && state.floors[idx] && state.floors[idx].floorplan) ? '' : 'none';
     updateVisibility();
     refreshFloorList();
     refreshRoomList();
@@ -857,7 +1036,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   function setActive(on) {
     modeActive = on;
     buildingRoot.visible = on && $('bm-show').checked;
-    if (!on) setPlacing(null);
+    if (!on) { setPlacing(null); fpCancelPreview(); }
     applyTerrainFlatten();
   }
 
