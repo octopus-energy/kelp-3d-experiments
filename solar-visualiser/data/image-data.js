@@ -24,6 +24,21 @@ window.IMAGE_DATA = {
       caption: 'Front: gable end, attached garage, front door',
       evidence: 'driveway, garage door, house number lamp; gable wall face-on',
       features: { windows: [{ bbox: [0.24, 0.33, 0.09, 0.09] }, { bbox: [0.52, 0.31, 0.11, 0.10] }, { bbox: [0.50, 0.50, 0.13, 0.14] }], doors: [{ bbox: [0.41, 0.52, 0.05, 0.15] }] },
+      // landmark px suggestions (normalised); verified against a render
+      // from the solved pose — rmse ≈ 11 px at 800 wide
+      match: {
+        imageSize: [800, 533],
+        landmarks: [
+          { id: 'apex_10', px: [0.245, 0.165] },
+          { id: 'eave_13', px: [0.200, 0.368] },
+          { id: 'eave_9', px: [0.350, 0.315] },
+          { id: 'ground_9', px: [0.376, 0.765] },
+          { id: 'apex_16', px: [0.563, 0.250] },
+          { id: 'eave_17', px: [0.631, 0.398] },
+          { id: 'ground_17', px: [0.628, 0.619] },
+        ],
+        occluders: ['box shrub over the window base', 'lamp post across the facade', 'oak canopy clipping the right edge'],
+      },
     },
     {
       id: 'a81194750e2b2f6a071a65c1cfb04dbd3b906747', file: 'a81194750e2b2f6a071a65c1cfb04dbd3b906747.webp',
@@ -31,6 +46,17 @@ window.IMAGE_DATA = {
       caption: 'Front: wider angle from the drive',
       evidence: 'same elevation as the other front shot, gravel drive',
       features: { windows: [{ bbox: [0.23, 0.33, 0.08, 0.08] }, { bbox: [0.47, 0.34, 0.09, 0.08] }, { bbox: [0.48, 0.48, 0.12, 0.12] }], doors: [{ bbox: [0.40, 0.49, 0.05, 0.13] }] },
+      match: {
+        imageSize: [800, 533],
+        landmarks: [
+          { id: 'apex_10', px: [0.513, 0.203] },
+          { id: 'eave_13', px: [0.441, 0.375] },
+          { id: 'eave_9', px: [0.583, 0.310] },
+          { id: 'ground_9', px: [0.621, 0.647] },
+          { id: 'apex_16', px: [0.790, 0.281] },
+        ],
+        occluders: ['oak tree over the wing gable', 'lamp post'],
+      },
     },
     {
       id: '4ad03c2f5dc8103f31f3cc542246f0c55994857c', file: '4ad03c2f5dc8103f31f3cc542246f0c55994857c.webp',
@@ -38,6 +64,20 @@ window.IMAGE_DATA = {
       caption: 'Rear: garden, two-storey gable + rear wing, patio',
       evidence: 'lawn, pergola over patio, rear extension visible',
       features: { windows: [{ bbox: [0.42, 0.28, 0.08, 0.07] }, { bbox: [0.41, 0.44, 0.10, 0.07] }] },
+      // ground corners are hidden behind the shed and planting — the
+      // ingest pass could not pin them, so this match needs a human to
+      // adjust the dots before it is trustworthy
+      match: {
+        needsReview: true,
+        imageSize: [800, 533],
+        landmarks: [
+          { id: 'apex_16', px: [0.456, 0.047] },
+          { id: 'eave_7', px: [0.094, 0.385] },
+          { id: 'eave_17', px: [0.765, 0.366] },
+          { id: 'ground_17', px: [0.763, 0.597] },
+        ],
+        occluders: ['timber shed hides the wall base', 'planting over the patio corner'],
+      },
     },
     {
       id: '142787e4514aeb8051d988a1b2d2b9b6e1f67034', file: '142787e4514aeb8051d988a1b2d2b9b6e1f67034.webp',
