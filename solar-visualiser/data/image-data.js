@@ -141,8 +141,8 @@ window.IMAGE_DATA = {
           { label: 'Dining Room', type: 'living', dims: [4.0, 2.8], rect: [165, 29, 269, 181] },
           { label: 'Sitting Room', type: 'living', dims: [4.3, 4.2], rect: [269, 29, 428, 181] },
           { label: 'Utility Room', type: 'storage', dims: [1.9, 1.8], rect: [165, 217, 234, 285] },
-          { label: 'WC', type: 'bathroom', dims: null, rect: [234, 217, 281, 285] },
-          { label: 'Hall', type: 'hallway', dims: null, labelAt: [344, 233] },
+          { label: 'Cloakroom', type: 'bathroom', dims: null, rect: [234, 217, 281, 285] },
+          { label: 'Entrance Hall', type: 'hallway', dims: null, labelAt: [344, 233] },
         ],
       },
       {
@@ -153,16 +153,49 @@ window.IMAGE_DATA = {
         ],
         rooms: [
           { label: 'Bedroom Four', type: 'bedroom', dims: [2.6, 2.1], rect: [166, 514, 241, 610] },
-          { label: 'WC', type: 'bathroom', dims: null, rect: [241, 514, 289, 610] },
+          { label: 'Shower Room', type: 'bathroom', dims: null, rect: [241, 514, 289, 610] },
           { label: 'Bedroom One', type: 'bedroom', dims: [3.6, 3.3], rect: [289, 514, 427, 644] },
           { label: 'Wardrobe', type: 'storage', dims: null, rect: [349, 644, 405, 668] },
-          { label: 'Bathroom', type: 'bathroom', dims: null, rect: [308, 672, 410, 736] },
+          { label: 'Family Bathroom', type: 'bathroom', dims: null, rect: [308, 672, 410, 736] },
           { label: 'Bedroom Two', type: 'bedroom', dims: [4.3, 2.8], rect: [30, 610, 130, 770] },
           { label: 'Wardrobes', type: 'storage', dims: null, rect: [130, 610, 166, 770] },
           { label: 'Bedroom Three', type: 'bedroom', dims: [3.4, 2.8], rect: [166, 643, 269, 770] },
           { label: 'Landing', type: 'hallway', dims: null, labelAt: [235, 626] },
         ],
       },
+    ],
+  },
+
+  // ------------------------------------------------------------------
+  // Structured read of the agent's online property description. Window
+  // sides are the agent's own front/side/rear terms (not compass — the
+  // exterior-photo mapping resolves them geometrically later). Radiator
+  // counts feed the radiator-placement stage.
+  // ------------------------------------------------------------------
+  listing: {
+    source: 'estate-agent description',
+    propertyNotes: [
+      'originally three-bedroom; two-storey rear extension (kitchen/dining below, bedroom two above)',
+      'en suite shower room off Bedroom One — small corner room with corner cubicle, not yet carved on the plan extraction',
+      'gas boiler in the understairs cupboard off the cloakroom',
+      'garage attached at the front; potting shed and brick shed in the rear garden',
+    ],
+    rooms: [
+      { label: 'Entrance Hall', floor: 0, windows: ['front'], radiators: 1 },
+      { label: 'Sitting Room', floor: 0, dims: [4.34, 4.21], windows: ['front'], radiators: 2 },
+      { label: 'Dining Room', floor: 0, dims: [4.01, 2.84], windows: ['rear patio sliders'], radiators: 1 },
+      { label: 'Cloakroom', floor: 0, windows: ['side obscured'], radiators: 0 },
+      { label: 'Kitchen/Dining Room', floor: 0, dims: [4.31, 3.76], windows: ['side', 'side'], doors: ['side passage'], radiators: 2 },
+      { label: 'Utility Room', floor: 0, dims: [1.93, 1.83], windows: ['side obscured'], radiators: 1 },
+      { label: 'Landing', floor: 1, windows: ['side obscured', 'rear'], radiators: 1 },
+      { label: 'Bedroom One', floor: 1, dims: [3.60, 3.25], windows: ['front'], radiators: 1 },
+      { label: 'En Suite Shower Room', floor: 1, windows: [], radiators: 0 },
+      { label: 'Bedroom Two', floor: 1, dims: [4.31, 2.77], windows: ['front', 'side'], radiators: 1 },
+      { label: 'Bedroom Three', floor: 1, dims: [3.60, 2.84], windows: ['side'], radiators: 1 },
+      { label: 'Bedroom Four', floor: 1, dims: [2.59, 2.06], windows: ['rear'], radiators: 1 },
+      { label: 'Shower Room', floor: 1, windows: [], radiators: 0 },
+      { label: 'Family Bathroom', floor: 1, windows: ['front obscured'], radiators: 1 },
+      { label: 'Garage', floor: 0, dims: [5.28, 2.54], notes: 'attached, not part of the heated envelope' },
     ],
   },
 };
