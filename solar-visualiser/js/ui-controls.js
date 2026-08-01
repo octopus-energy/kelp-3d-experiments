@@ -3,7 +3,7 @@
 // =====================================================================
 window.SolarViz = window.SolarViz || {};
 
-window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid, roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine, scaffoldRoot }) {
+window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid, roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine, scaffoldRoot, buildingRoot }) {
   const $ = id => document.getElementById(id);
 
   $('t-terrain').addEventListener('change', e => terrainMesh.visible = e.target.checked);
@@ -36,6 +36,7 @@ window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid
     rejectedGroup.scale.y = exag;
     markerLine.scale.y = exag;
     scaffoldRoot.scale.y = exag;
+    if (buildingRoot) buildingRoot.scale.y = exag;
   });
 
   $('img-opacity').addEventListener('input', e => {

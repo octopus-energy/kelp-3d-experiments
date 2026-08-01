@@ -21,7 +21,14 @@
   <div class="sub">Lat 50.8515 · Lon -0.7852 · 50°51'05"N 0°47'07"W</div>
 </div>
 
+<div class="mode-toggle" id="mode-toggle">
+  <button data-mode="solar" class="active">Solar</button>
+  <button data-mode="ashp">ASHP</button>
+  <button data-mode="evc">EVC<span class="soon">soon</span></button>
+</div>
+
 <div class="sidebar">
+<div class="mode-panel" id="panel-solar">
   <h2>Site Summary</h2>
   <div class="stat-row">
     <span class="stat-label">Outcome</span>
@@ -105,6 +112,106 @@
   <div id="array-list"></div>
 </div>
 
+<div class="mode-panel" id="panel-ashp" style="display:none">
+  <h2>Building Model</h2>
+  <div class="stat-row">
+    <span class="stat-label">Solid</span>
+    <span class="stat-value" id="bm-status">—</span>
+  </div>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-show" checked>
+    <span class="toggle-label">Show building</span>
+  </label>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-ghost">
+    <span class="toggle-label">Ghost shell (see inside)</span>
+  </label>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-edges" checked>
+    <span class="toggle-label">Edges</span>
+  </label>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-rejected" checked>
+    <span class="toggle-label">Include rejected faces</span>
+  </label>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-ortho" checked>
+    <span class="toggle-label">Square-up footprint</span>
+  </label>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-flatten" checked>
+    <span class="toggle-label">Flatten terrain under building</span>
+  </label>
+  <div class="slider-row">
+    <div class="lbl"><span>Snap tolerance</span><span id="v-bm-tol">0.70 m</span></div>
+    <input type="range" id="bm-tol" min="20" max="100" step="5" value="70">
+  </div>
+
+  <h2>Floors</h2>
+  <div class="stat-row rate-row">
+    <span class="stat-label">Storeys</span>
+    <input type="number" id="bm-storeys" value="2" min="1" max="5" step="1">
+  </div>
+  <div class="slider-row">
+    <div class="lbl"><span>Floor-to-floor</span><span id="v-bm-fh">2.50 m</span></div>
+    <input type="range" id="bm-fh" min="210" max="350" step="5" value="250">
+  </div>
+  <div class="slider-row">
+    <div class="lbl"><span>Slab thickness</span><span id="v-bm-slab">0.30 m</span></div>
+    <input type="range" id="bm-slab" min="15" max="50" step="5" value="30">
+  </div>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-attic" checked>
+    <span class="toggle-label">Attic level (if headroom)</span>
+  </label>
+  <div class="slider-row">
+    <div class="lbl"><span>Exploded view</span><span id="v-bm-explode">0.0 m</span></div>
+    <input type="range" id="bm-explode" min="0" max="60" step="2" value="0">
+  </div>
+  <div id="bm-floor-list"></div>
+
+  <h2>Rooms</h2>
+  <button class="btn" id="bm-wall-btn" disabled>+ Draw dividing wall</button>
+  <button class="btn bm-btn-gap" id="bm-undo-wall" disabled>Undo last wall</button>
+  <div id="bm-room-list"></div>
+
+  <h2>Windows &amp; Radiators</h2>
+  <button class="btn" id="bm-window-btn">+ Window (click a wall)</button>
+  <button class="btn bm-btn-gap" id="bm-rad-wall-btn">+ Radiator (click a wall)</button>
+  <button class="btn bm-btn-gap" id="bm-rad-under-btn" disabled>+ Radiator under window</button>
+  <div id="bm-window-edit" style="display:none">
+    <div class="slider-row">
+      <div class="lbl"><span>Position along wall</span><span id="v-bm-win-pos">—</span></div>
+      <input type="range" id="bm-win-pos" min="0" max="100" step="1" value="50">
+    </div>
+    <div class="slider-row">
+      <div class="lbl"><span>Width</span><span id="v-bm-win-width">—</span></div>
+      <input type="range" id="bm-win-width" min="40" max="300" step="5" value="120">
+    </div>
+    <div class="slider-row">
+      <div class="lbl"><span>Height</span><span id="v-bm-win-height">—</span></div>
+      <input type="range" id="bm-win-height" min="40" max="220" step="5" value="120">
+    </div>
+    <div class="slider-row">
+      <div class="lbl"><span>Sill height</span><span id="v-bm-win-sill">—</span></div>
+      <input type="range" id="bm-win-sill" min="20" max="200" step="5" value="90">
+    </div>
+    <button class="btn bm-btn-danger" id="bm-win-delete">Delete window</button>
+  </div>
+  <div id="bm-opening-list"></div>
+
+  <h2>Model Data</h2>
+  <button class="btn" id="bm-export">Export JSON</button>
+  <button class="btn bm-btn-gap" id="bm-import">Import JSON</button>
+  <input type="file" id="bm-import-file" accept=".json" style="display:none">
+</div>
+
+<div class="mode-panel" id="panel-evc" style="display:none">
+  <h2>EV Charging</h2>
+  <div class="scaffold-empty">EV charger survey tools are coming soon.</div>
+</div>
+</div>
+
 <div class="draw-banner" id="draw-banner">
   <span class="draw-banner-title" id="draw-banner-title">Scaffold draw mode</span>
   <div class="view-toggle">
@@ -163,8 +270,15 @@
 <script src="js/obstructions.js"></script>
 <script src="js/plan-draw.js"></script>
 <script src="js/scaffolding.js"></script>
+<script src="js/building/geometry.js"></script>
+<script src="js/building/solid.js"></script>
+<script src="js/building/floors.js"></script>
+<script src="js/building/rooms.js"></script>
+<script src="js/building/openings.js"></script>
+<script src="js/building/building-ui.js"></script>
 <script src="js/interactions.js"></script>
 <script src="js/ui-controls.js"></script>
+<script src="js/mode-switcher.js"></script>
 <script src="js/main.js"></script>
 
 </body>

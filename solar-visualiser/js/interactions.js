@@ -36,6 +36,11 @@ window.SolarViz.setupHoverTooltip = function ({ view, hoverables, tooltipEl }) {
           <div class="tt-row"><span>Height</span><span>${d.height}</span></div>
           <div class="tt-row"><span>Chargeable area</span><span>${d.area} m²</span></div>
           <div class="tt-row"><span>Cost</span><span>${d.cost}</span></div>`;
+      } else if (d.type === 'room') {
+        html = `
+          <div class="tt-title">${d.name}</div>
+          <div class="tt-row"><span>Floor</span><span>${d.floor}</span></div>
+          <div class="tt-row"><span>Area</span><span>${d.area} m²</span></div>`;
       } else if (d.type === 'roof') {
         html = `
           <div class="tt-title">${d.description}</div>

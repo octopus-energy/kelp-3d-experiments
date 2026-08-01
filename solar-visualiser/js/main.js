@@ -101,10 +101,36 @@
       siteData: SITE_DATA, hoverables, cameraAnimator, planDraw,
     });
 
+    setStatus('Building model');
+    let building = null;
+    try {
+      building = window.SolarViz.setupBuilding({
+        scene, siteData: SITE_DATA, coords, terrainMesh, planDraw,
+        camera, view, renderer, controls, cameraAnimator, hoverables,
+      });
+    } catch (e) {
+      console.error('Building model init failed:', e);
+    }
+
     window.SolarViz.setupUIControls({
       terrainMesh, matTextured, matSolid,
       roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,
       scaffoldRoot: scaffolding.root,
+      buildingRoot: building && building.root,
+    });
+
+    window.SolarViz.setupModeSwitcher({
+      groups: {
+        roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,
+        scaffoldRoot: scaffolding.root,
+      },
+      building, planDraw,
+      panels: {
+        solar: document.getElementById('panel-solar'),
+        ashp: document.getElementById('panel-ashp'),
+        evc: document.getElementById('panel-evc'),
+      },
+      legendEl: document.querySelector('.legend'),
     });
 
     // Render loop
@@ -132,7 +158,7 @@
     setStatus('Ready');
     setTimeout(() => document.getElementById('loader').classList.add('hidden'), 300);
     // Expose handles for inspection / external integrations
-    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, panelGroup, roofGroup, coords, scaffolding, planDraw };
+    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, panelGroup, roofGroup, coords, scaffolding, building, planDraw };
     animate();
 
   } catch (e) {
