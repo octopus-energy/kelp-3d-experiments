@@ -17,6 +17,8 @@ Load order is dependency order — see `<script>` tags in `index.html`. Don't re
 
 - `vendor/three.min.js`, `vendor/OrbitControls.js` — three.js r160 (UMD/global build) + OrbitControls.
 - `data/site-data.js` — `window.SITE_DATA` (property/roof/panel data), `window.__DSM_B64__` (base64 heightmap), `window.__AERIAL_DATAURL__` (aerial photo). **This is the future API swap point** — currently hardcoded, will eventually be fetched from a backend instead.
+- `data/image-data.js` — `window.IMAGE_DATA`: manifest over `data/images/` (listing photos + floorplan), produced by an offline AI ingest pass (currently hand-authored by Claude reading the images; same backend swap point as site-data). Photo entries carry kind/room guesses and feature bboxes; the floorplan entry carries per-floor room rectangles, labels and printed dimensions in image px. **Suggestions only** — the app never applies any of it without user confirmation, and never writes back to it.
+- `data/images/` — the raw listing images (webp) + `floorplan.webp`.
 - `js/geometry-utils.js` — shape/plane-fitting helpers.
 - `js/coordinates.js` — DSM decoding + lon/lat ↔ scene-coordinate conversion.
 - `js/scene-setup.js` — scene/camera/renderer/controls/lights.
@@ -31,7 +33,9 @@ Load order is dependency order — see `<script>` tags in `index.html`. Don't re
   - `solid.js` — regularisation pipeline: cluster roof vertices, snap them to plane intersections, level eaves, chain + square-up the footprint, extrude walls to ground → watertight indexed mesh. Compute half is pure; mesh builders need THREE.
   - `floors.js` — slices the solid into storeys (slab outlines from horizontal mesh cross-sections) + slab meshes.
   - `rooms.js` — room partitioning: floors start as one room, each drawn divider wall splits one room in two (rooms re-derived from the divider list, so undo = pop + replay). Wall-draw mode stays active after each split (Esc or the button exits) and pops a room-type prompt for the newly carved room. Also room types (kitchen/living/bedroom/bathroom/hallway/storage → tint + label) and the thick exterior-wall band shown while a floor is being edited (selecting a floor isolates it: shell + other floors hidden, openings filtered to that floor). Gotcha: transforms that place things on walls must be proper rotations — a makeBasis(dir, up, normal) basis is left-handed (a reflection) on half the walls; use `setFromUnitVectors(+Z, normal)` or an explicit right-handed z = x×y.
+  - `floorplan.js` — floorplan import (pure, node-testable): fits a similarity transform from plan-pixel space onto a floor outline (scale from the plan's printed room dimensions, orientation searched over 4 rotations × mirror, translation hill-climbed on outline overlap), converts the plan's room rectangles into divider polylines (interior edges, merged across adjacent rooms, snapped to the room boundary), and replays them through `deriveRooms` — so imported rooms are ordinary dividers: editable, persisted and undoable like hand-drawn ones. Note the floor outline is the **roof** footprint (~0.3 m proud of the plan's walls all round); the translation fit absorbs it.
   - `openings.js` — windows (real holes in wall panels + glass + frame) and radiators, in wall-local (u, v) coords.
+  - `gallery.js` — property-photo gallery (thumbnail grid + lightbox) for the ASHP sidebar; reads IMAGE_DATA only.
   - `building-ui.js` — sidebar section, edit modes, localStorage persistence + JSON export/import. All 3D state is derived; only settings + edits persist.
 - `js/interactions.js` — hover tooltips + camera fly-to animation.
 - `js/ui-controls.js` — sidebar toggle/slider bindings.
@@ -41,6 +45,8 @@ Load order is dependency order — see `<script>` tags in `index.html`. Don't re
 ## Tests
 
 `node tests/building-geometry.test.js` — checks the solid is watertight on the real site data, slices are closed loops, polygon splitting conserves area. Run after touching anything in `js/building/geometry.js`, `solid.js` or `floors.js`.
+
+`node tests/building-floorplan.test.js` — fits the bundled floorplan onto the derived floors and checks the imported rooms (scale, fit score, divider replay, labels/types). Run after touching `js/building/floorplan.js` or the floorplan section of `data/image-data.js`.
 
 ## Gotcha
 
