@@ -147,6 +147,7 @@
     <input type="range" id="bm-tol" min="20" max="100" step="5" value="70">
   </div>
   <button class="btn" id="bm-footprint-btn">Edit footprint</button>
+  <button class="btn bm-btn-gap bm-btn-danger" id="bm-footprint-delete" style="display:none">Delete corner</button>
   <button class="btn bm-btn-gap" id="bm-footprint-reset" style="display:none">Reset footprint edits</button>
 
   <h2>Floors</h2>
@@ -298,6 +299,10 @@
 <!-- Property image manifest: IMAGE_DATA, produced by an offline AI pass
      over data/images/ (suggestions only — same backend swap point). -->
 <script src="data/image-data.js"></script>
+
+<!-- Embedded data-URL copies of the images (keeps WebGL textures and
+     canvas pixel reads working from file:// — see gallery.js imageUrl). -->
+<script src="data/image-blobs.js"></script>
 
 <!-- App modules, in dependency order -->
 <script src="js/geometry-utils.js"></script>

@@ -106,7 +106,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
       g.add(new THREE.LineSegments(lg, frustumMat));
 
       const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ transparent: true, opacity: 0.95 }));
-      texLoader.load(base + im.file, (tex) => {
+      texLoader.load(window.SolarViz.imageUrl(im), (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace;
         sprite.material.map = tex;
         sprite.material.needsUpdate = true;
@@ -136,7 +136,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
       const item = document.createElement('div');
       item.className = 'array-item bm-photo-item' + (saved && saved.pose ? ' matched' : '');
       item.innerHTML = `
-        <img src="${base + im.file}" alt="">
+        <img src="${window.SolarViz.imageUrl(im)}" alt="">
         <div class="bm-photo-meta">
           <div class="name">${im.side || 'exterior'} photo</div>
           <div class="meta">${status}</div>
@@ -193,7 +193,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
         <button class="pm-x" title="Close">×</button>
       </div>
       <div class="pm-body">
-        <img src="${base + im.file}" alt="">
+        <img src="${window.SolarViz.imageUrl(im)}" alt="">
         <canvas></canvas>
       </div>
       <div class="pm-foot">
@@ -385,7 +385,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     alignEl = document.createElement('div');
     alignEl.className = 'pm-overlay';
     alignEl.innerHTML = `
-      <img src="${base + panel.im.file}" alt="">
+      <img src="${window.SolarViz.imageUrl(panel.im)}" alt="">
       <div class="pm-overlay-bar">
         <span>orbit until the model lines up behind the photo</span>
         <input type="range" min="5" max="95" value="45">
@@ -496,7 +496,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
       overlayEl = document.createElement('div');
       overlayEl.className = 'pm-overlay';
       overlayEl.innerHTML = `
-        <img src="${base + im.file}" alt="">
+        <img src="${window.SolarViz.imageUrl(im)}" alt="">
         <div class="pm-overlay-bar">
           <span>photo over model — drag to compare</span>
           <input type="range" min="0" max="100" value="55">

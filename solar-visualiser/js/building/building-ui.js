@@ -29,6 +29,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     version: 1,
     settings: { includeRejected: true, snapTol: 0.7, orthogonalize: true },
     footprintOffsets: null,    // per-vertex [dx, dz] edits to the main loop
+    footprintDeleted: null,    // deleted corners (pre-edit loop indices)
     storeys: {
       count: siteData.number_of_storeys || 2,
       storeyHeight: null,      // null = auto: (eaves − ground) / count
@@ -77,6 +78,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     dividerWall: new THREE.MeshStandardMaterial({ color: 0xe9e5db, roughness: 0.92, metalness: 0.0 }),
     dividerSel: new THREE.MeshStandardMaterial({ color: 0xf5b942, roughness: 0.8, metalness: 0.0, emissive: 0x332200 }),
     handle: new THREE.MeshBasicMaterial({ color: 0xf5b942 }),
+    handleSel: new THREE.MeshBasicMaterial({ color: 0x4dabf7 }),
     extWall: new THREE.MeshStandardMaterial({ color: 0xded7c9, roughness: 0.9, metalness: 0.0, side: THREE.DoubleSide }),
     glass: new THREE.MeshStandardMaterial({ color: 0x9fc8e8, transparent: true, opacity: 0.38, roughness: 0.12, metalness: 0.4, side: THREE.DoubleSide }),
     glassSel: new THREE.MeshStandardMaterial({ color: 0xf5b942, transparent: true, opacity: 0.55, roughness: 0.12, metalness: 0.4, side: THREE.DoubleSide }),
@@ -150,6 +152,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       orthogonalize: state.settings.orthogonalize,
       groundY: siteData.property_details.altitude,
       footprintOffsets: state.footprintOffsets,
+      footprintDeleted: state.footprintDeleted,
     });
     if (!solid) {
       $('bm-status').textContent = 'failed';
@@ -586,7 +589,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     side: THREE.DoubleSide, depthWrite: false,
   });
   if (IMG && IMG.floorplan) {
-    new THREE.TextureLoader().load(IMG.basePath + IMG.floorplan.file, (tex) => {
+    new THREE.TextureLoader().load(window.SolarViz.imageUrl(IMG.floorplan), (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
       underlayMat.map = tex;
       underlayMat.needsUpdate = true;
@@ -802,17 +805,39 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   function refreshFootprintHandles() {
     clearFootprintHandles();
+    selectFpHandle(null);
     if (!editingFootprint || !solid) return;
     solid.loops[0].ids.forEach((id, i) => {
       const c = solid.clusters[id];
       const m = new THREE.Mesh(handleGeom, mats.handle);
       m.position.set(c.x, c.y + 0.35, c.z);
-      m.userData = { type: 'fp-handle', fpIdx: i };
+      // fpIdx is the PRE-EDIT loop index (offsets and deletions stay
+      // keyed to the same corner as vertices come and go)
+      m.userData = {
+        type: 'fp-handle',
+        fpIdx: solid.footprintOrigIdx ? solid.footprintOrigIdx[i] : i,
+      };
       fpEditGroup.add(m);
       fpHandles.push(m);
     });
     rebuildFootprintOutlineLine();
   }
+
+  // click a handle (drag under 3 cm) selects it for deletion
+  let selectedFpHandle = null;   // pre-edit loop index, or null
+  function selectFpHandle(origIdx) {
+    selectedFpHandle = origIdx;
+    fpHandles.forEach((h) => {
+      h.material = h.userData.fpIdx === origIdx ? mats.handleSel : mats.handle;
+    });
+    $('bm-footprint-delete').style.display = origIdx === null ? 'none' : '';
+  }
+  $('bm-footprint-delete').addEventListener('click', () => {
+    if (selectedFpHandle === null) return;
+    state.footprintDeleted = (state.footprintDeleted || []).concat([selectedFpHandle]);
+    saveState();
+    rebuildSolid();
+  });
 
   function rebuildFootprintOutlineLine() {
     const old = fpEditGroup.children.find((c) => c.userData.isFpOutline);
@@ -839,11 +864,13 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   fpEditBtn.addEventListener('click', () => setFootprintEdit(!editingFootprint));
   fpResetBtn.addEventListener('click', () => {
     state.footprintOffsets = null;
+    state.footprintDeleted = null;
     saveState();
     rebuildSolid();
   });
   function syncFootprintButtons() {
-    const edited = state.footprintOffsets && state.footprintOffsets.some((o) => o && (o[0] || o[1]));
+    const edited = (state.footprintOffsets && state.footprintOffsets.some((o) => o && (o[0] || o[1]))) ||
+      (state.footprintDeleted && state.footprintDeleted.length);
     fpResetBtn.style.display = edited ? '' : 'none';
   }
 
@@ -886,6 +913,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   function beginFootprintDrag(handle) {
     drag = {
       kind: 'fp', idx: handle.userData.fpIdx, handle,
+      arrayIdx: fpHandles.indexOf(handle),   // for neighbour snap lookups
       planeY: handle.position.y,
       base: [handle.position.x, handle.position.z],
       cur: [handle.position.x, handle.position.z],
@@ -930,8 +958,14 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       if (refit.failed.length) flash(`${refit.failed.length} attached wall(s) dropped`);
     } else {
       const dx = d.cur[0] - d.base[0], dz = d.cur[1] - d.base[1];
-      if (Math.hypot(dx, dz) < 0.03 || !solid) return;
-      const n = solid.loops[0].ids.length;
+      if (!solid) return;
+      if (Math.hypot(dx, dz) < 0.03) {
+        // a click, not a drag: select the corner for deletion
+        selectFpHandle(selectedFpHandle === d.idx ? null : d.idx);
+        return;
+      }
+      // offsets are sized/keyed against the PRE-EDIT loop
+      const n = solid.footprintOrigCount || solid.loops[0].ids.length;
       if (!state.footprintOffsets || state.footprintOffsets.length !== n) {
         state.footprintOffsets = new Array(n).fill(null);
       }
@@ -1006,7 +1040,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       // keep footprint edges square: snap onto the axis line through
       // either neighbour when the edge is nearly axis-aligned
       const n = fpHandles.length;
-      [fpHandles[(drag.idx + n - 1) % n], fpHandles[(drag.idx + 1) % n]].forEach((nb) => {
+      [fpHandles[(drag.arrayIdx + n - 1) % n], fpHandles[(drag.arrayIdx + 1) % n]].forEach((nb) => {
         [x, z] = R.axisSnap([nb.position.x, nb.position.z], [x, z], solid.axisAngle, 8);
       });
       drag.cur = [x, z];

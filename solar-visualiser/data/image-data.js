@@ -102,7 +102,7 @@ window.IMAGE_DATA = {
       features: { windows: [{ bbox: [0.07, 0.32, 0.30, 0.28] }], radiators: [{ bbox: [0.06, 0.60, 0.31, 0.13] }] },
     },
     {
-      id: '847aea36a23c42f8144ab754a5a5ea9096a5ac5', file: '847aea36a23c42f8144ab754a5a5ea9096a5ac5.webp',
+      id: '847aea36a23c42f8144ab754a5a5ea9096ea5ac5', file: '847aea36a23c42f8144ab754a5a5ea9096ea5ac5.webp',
       kind: 'interior', room: { type: 'bedroom', confidence: 0.6 },
       caption: 'Empty room — very wide window, long radiator',
       evidence: 'carpeted, double built-in doors; tree-height view suggests first floor',

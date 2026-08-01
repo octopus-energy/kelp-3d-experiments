@@ -92,6 +92,49 @@ check('length-mismatched offsets are ignored with a warning',
   Math.abs(stale.footprintArea - solid.footprintArea) < 1e-6 &&
   stale.warnings.some((w) => /footprint edits ignored/.test(w)));
 
+// ---- merged planar walls + footprint edits ---------------------------
+console.log('\n== walls + footprint edits ==');
+const gable = solid.wallPanels.find((w) =>
+  w.topProfile.length > 2 && Math.max(...w.topProfile.map((p) => p[1])) > solid.eaveY + 0.5);
+check('a gable end merges into one wall panel', !!gable,
+  JSON.stringify(solid.wallPanels.map((w) => w.topProfile.length)));
+check('the gable wall spans the full end', gable && gable.len > 6,
+  gable && gable.len.toFixed(1) + ' m');
+if (gable) {
+  // interior vertices must sit exactly on the chord — one wall, one plane
+  let maxPerp = 0;
+  gable.ids.forEach((id) => {
+    const c = solid.clusters[id];
+    const perp = Math.abs(
+      (c.x - gable.a2[0]) * gable.normal[0] + (c.z - gable.a2[1]) * gable.normal[1]);
+    maxPerp = Math.max(maxPerp, perp);
+  });
+  check('gable vertices snapped into the wall plane', maxPerp < 1e-6, maxPerp + ' m');
+}
+check('wall panels cover every boundary edge exactly once',
+  solid.wallPanels.reduce((s, w) => s + w.ids.length - 1, 0) ===
+  solid.loops.reduce((s, l) => s + l.ids.length, 0));
+
+// delete the corner at the end of the footprint's shortest edge — the
+// parametric edit must keep the solid watertight
+let shortest = 0, shortestLen = Infinity;
+for (let i = 0; i < fpOut().length; i++) {
+  const a = fpOut()[i], b = fpOut()[(i + 1) % fpOut().length];
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  if (len < shortestLen) { shortestLen = len; shortest = (i + 1) % fpOut().length; }
+}
+function fpOut() { return solid.footprint; }
+const delSolid = S.buildSolid(inputFaces, { groundY, footprintDeleted: [shortest] });
+check('vertex deletion keeps the solid watertight',
+  delSolid.watertight.closed && delSolid.watertight.oriented,
+  JSON.stringify(delSolid.watertight.badEdges.slice(0, 4)));
+check('deleted corner leaves the footprint',
+  delSolid.footprint.length === solid.footprint.length - 1,
+  `${delSolid.footprint.length} vs ${solid.footprint.length}`);
+check('deletion barely changes the area',
+  Math.abs(delSolid.footprintArea - solid.footprintArea) / solid.footprintArea < 0.05,
+  delSolid.footprintArea.toFixed(1) + ' vs ' + solid.footprintArea.toFixed(1));
+
 // ---- Phase B probe: mesh slicing -------------------------------------
 console.log('\n== slicing ==');
 const heights = [

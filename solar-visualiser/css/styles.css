@@ -798,6 +798,24 @@
     margin: 0 auto;
     cursor: crosshair;
   }
+  .pm-body .fc-confirm {
+    position: absolute;
+    display: flex; gap: 4px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 4px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+    backdrop-filter: blur(8px);
+  }
+  .fc-nudge {
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-radius: 4px; font: inherit; font-size: 10px;
+    padding: 3px 8px; cursor: pointer;
+  }
+  .fc-nudge:hover { background: rgba(255,255,255,0.12); }
   .fc-confirm { display: flex; gap: 4px; }
   .fc-confirm button {
     border: 1px solid var(--panel-border);

@@ -343,7 +343,15 @@
         clipped = true;
         break;
       }
-      if (!clipped) break; // degenerate input; emit what we have
+      if (!clipped) {
+        // No clippable ear: the remainder is collinear (vertices snapped
+        // onto a straight run). Fan-fill it — the triangles are
+        // zero-area and invisible, but they keep every boundary edge in
+        // the mesh's edge accounting, which watertightness needs.
+        for (let i = 1; i < idx.length - 1; i++) tris.push([idx[0], idx[i], idx[i + 1]]);
+        idx.length = 0;
+        break;
+      }
     }
     if (idx.length === 3) tris.push([idx[0], idx[1], idx[2]]);
     return tris;

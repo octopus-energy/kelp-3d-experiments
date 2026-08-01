@@ -51,7 +51,7 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
       });
       onReady();
     };
-    img.src = base + im.file;
+    img.src = window.SolarViz.imageUrl(im);
   }
 
   // ------------------------------------------------------------------
@@ -83,7 +83,12 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
   // Bake one wall from every accepted match (best rmse first)
   // ------------------------------------------------------------------
   function bakeWall(solid, w, matches) {
-    const top = Math.max(w.topA, w.topB);
+    // cover the full stepped/gable top profile, not just the end heights
+    const top = Math.max(...(w.topProfile ? w.topProfile.map((p) => p[1]) : [w.topA, w.topB]));
+    // per-wall vertical sampling nudge: when pose and geometry disagree
+    // by a few centimetres the eave band samples roof pixels — shifting
+    // the sampling height moves the photo up/down on this wall only
+    const dv = (state.facadeAdjust && state.facadeAdjust[w.id]) || 0;
     const cw = Math.max(4, Math.min(768, Math.round(w.len * RES)));
     const ch = Math.max(4, Math.min(768, Math.round((top - w.bottom) * RES)));
     const canvas = document.createElement('canvas');
@@ -109,7 +114,7 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
           const u = ((cx + 0.5) / cw) * w.len;
           const px3 = w.a2[0] + w.dir[0] * u + w.normal[0] * 0.03;
           const pz3 = w.a2[1] + w.dir[1] * u + w.normal[1] * 0.03;
-          const uv = PM.projectPoint(pose, [ph.W, ph.H], [px3, v, pz3]);
+          const uv = PM.projectPoint(pose, [ph.W, ph.H], [px3, v + dv, pz3]);
           if (!uv || uv[0] < 0 || uv[1] < 0 || uv[0] >= ph.W || uv[1] >= ph.H) continue;
           const ddx = pose.pos[0] - px3, ddy = pose.pos[1] - v, ddz = pose.pos[2] - pz3;
           const dist = Math.hypot(ddx, ddy, ddz);
@@ -199,6 +204,26 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
 
   building.addRebuildListener(() => { if (active) setTextured(true); });
 
+  // Re-bake one wall (after a texture nudge) and swap its live texture.
+  function rebakeWall(wallId) {
+    const solid = building.solid;
+    const w = solid && solid.wallPanels.find((p) => p.id === wallId);
+    if (!w) return null;
+    const bake = bakeWall(solid, w, acceptedMatches());
+    bakes.set(wallId, bake);
+    const mat = facadeMats.get(wallId);
+    if (mat) {
+      if (mat.map) mat.map.dispose();
+      const tex = new THREE.CanvasTexture(bake.canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.repeat.set(1 / bake.len, 1 / (bake.top - bake.bottom));
+      tex.offset.set(0, -bake.bottom / (bake.top - bake.bottom));
+      mat.map = tex;
+      mat.needsUpdate = true;
+    }
+    return bake;
+  }
+
   // ------------------------------------------------------------------
   // Wall editor: draw window/door rectangles on the rectified facade
   // ------------------------------------------------------------------
@@ -208,6 +233,7 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
   drawBtn.addEventListener('click', () => {
     picking = !picking;
     drawBtn.classList.toggle('active', picking);
+    drawBtn.textContent = picking ? 'Now click a wall in the 3D view…' : 'Draw windows on a wall…';
     renderer.domElement.style.cursor = picking ? 'crosshair' : '';
   });
 
@@ -230,6 +256,7 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
     if (!hits.length) return;
     picking = false;
     drawBtn.classList.remove('active');
+    drawBtn.textContent = 'Draw windows on a wall…';
     renderer.domElement.style.cursor = '';
     openEditor(hits[0].object.userData.wallId);
   });
@@ -248,6 +275,13 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
       const matches = acceptedMatches();
       bake = bakeWall(solid, w, matches);
       bakes.set(wallId, bake);
+      // photo pixels load lazily — if they weren't in yet (texture
+      // toggle never used), re-bake once they arrive
+      matches.forEach((m) => ensurePhoto(m.imageId, () => {
+        if (!editor || editor.wallId !== wallId) return;
+        const fresh = rebakeWall(wallId);
+        if (fresh) { editor.bake = fresh; drawEditor(); }
+      }));
     }
     const scale = Math.min(640 / bake.len, 300 / (bake.top - bake.bottom));
     const cw = Math.round(bake.len * scale), ch = Math.round((bake.top - bake.bottom) * scale);
@@ -259,21 +293,31 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
         <span class="pm-stats">${w.len.toFixed(1)} m wide</span>
         <button class="pm-x" title="Close">×</button>
       </div>
-      <div class="pm-body"><canvas class="fc-canvas" width="${cw}" height="${ch}"></canvas></div>
-      <div class="pm-foot">
+      <div class="pm-body">
+        <canvas class="fc-canvas" width="${cw}" height="${ch}"></canvas>
         <span class="fc-confirm" style="display:none">
-          <button class="fc-win">Add window</button>
-          <button class="fc-door">Add door</button>
+          <button class="fc-win">Window</button>
+          <button class="fc-door">Door</button>
           <button class="fc-cancel">✕</button>
         </span>
-        <span class="pm-hint">photos are baked to scale — the grid is 1 m</span>
+      </div>
+      <div class="pm-foot">
+        <button class="fc-nudge fc-up" title="Shift this wall's photo up 5 cm">photo ▲</button>
+        <button class="fc-nudge fc-down" title="Shift this wall's photo down 5 cm">photo ▼</button>
+        <span class="pm-hint">drag a rectangle over a window or door — the grid is 1 m</span>
       </div>`;
     document.body.appendChild(el);
     editor = { el, wallId, bake, scale, drag: null, rect: null };
     el.querySelector('.pm-x').addEventListener('click', closeEditor);
-    el.querySelector('.fc-cancel').addEventListener('click', () => { editor.rect = null; drawEditor(); });
+    el.querySelector('.fc-cancel').addEventListener('click', () => {
+      editor.rect = null;
+      el.querySelector('.fc-confirm').style.display = 'none';
+      drawEditor();
+    });
     el.querySelector('.fc-win').addEventListener('click', () => commitRect('window'));
     el.querySelector('.fc-door').addEventListener('click', () => commitRect('door'));
+    el.querySelector('.fc-up').addEventListener('click', () => nudgeTexture(0.05));
+    el.querySelector('.fc-down').addEventListener('click', () => nudgeTexture(-0.05));
     const canvas = el.querySelector('canvas');
     canvas.addEventListener('pointerdown', (e) => {
       const r = canvas.getBoundingClientRect();
@@ -298,8 +342,28 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
     // the on-screen scale of this wall
     const big = r && Math.abs(r[2] - r[0]) / editor.scale > 0.25 &&
       Math.abs(r[3] - r[1]) / editor.scale > 0.25;
-    editor.el.querySelector('.fc-confirm').style.display = big ? '' : 'none';
-    if (!big) editor.rect = null;
+    const conf = editor.el.querySelector('.fc-confirm');
+    if (big) {
+      // the chooser floats right next to the rectangle just drawn
+      const canvas = editor.el.querySelector('canvas');
+      conf.style.display = '';
+      conf.style.left = (canvas.offsetLeft + Math.min(Math.max(r[0], r[2]) + 8, canvas.width - 140)) + 'px';
+      conf.style.top = (canvas.offsetTop + Math.max(4, Math.min(r[1], r[3]))) + 'px';
+    } else {
+      conf.style.display = 'none';
+      editor.rect = null;
+    }
+    drawEditor();
+  }
+
+  // per-wall vertical photo adjustment, persisted with the model
+  function nudgeTexture(dm) {
+    if (!editor) return;
+    if (!state.facadeAdjust) state.facadeAdjust = {};
+    state.facadeAdjust[editor.wallId] = (state.facadeAdjust[editor.wallId] || 0) + dm;
+    building.save();
+    const bake = rebakeWall(editor.wallId);
+    if (bake) editor.bake = bake;
     drawEditor();
   }
 
@@ -350,13 +414,28 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
       const y = canvas.height - m * scale;
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
     }
-    // existing openings on this wall
+    // grey out the sky above the wall's top profile — the canvas is
+    // rectangular, a gable wall isn't
+    const wp = building.solid && building.solid.wallPanels.find((p) => p.id === wallId);
+    if (wp && wp.topProfile) {
+      ctx.fillStyle = 'rgba(10, 12, 16, 0.75)';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      wp.topProfile.forEach(([u, y]) => {
+        ctx.lineTo(u * scale, canvas.height - (y - bake.bottom) * scale);
+      });
+      ctx.lineTo(canvas.width, 0);
+      ctx.closePath();
+      ctx.fill();
+    }
+    // existing openings on this wall (sill is level-relative)
     ctx.strokeStyle = '#37b24d';
     ctx.lineWidth = 2;
     (state.windows || []).filter((win) => win.wallId === wallId).forEach((win) => {
+      const lv = building.levels[Math.min(win.levelIdx, building.levels.length - 1)];
+      const v0 = (lv ? lv.slabTopY : bake.bottom) + win.sill - bake.bottom;
       const x = (win.u - win.width / 2) * scale;
-      const yTop = canvas.height - (win.sill + win.height - (bake.bottom - bake.bottom)) * scale;
-      ctx.strokeRect(x, canvas.height - (win.sill + win.height) * scale,
+      ctx.strokeRect(x, canvas.height - (v0 + win.height) * scale,
         win.width * scale, win.height * scale);
     });
     // rectangle being drawn (with live dimensions)

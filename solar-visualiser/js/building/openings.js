@@ -45,6 +45,23 @@
     return { u0, u1, v0, v1, wall: w, level: lv };
   }
 
+  // Lowest wall-top over a u-range. Stepped/gable top profiles mean the
+  // usable height depends on where along the wall the opening sits — a
+  // window mid-gable can rise toward the apex.
+  function panelTopMin(w, u0, u1) {
+    const prof = w.topProfile || [[0, w.topA], [w.len, w.topB]];
+    const yAt = (u) => {
+      for (let i = 0; i < prof.length - 1; i++) {
+        const [ua, ya] = prof[i], [ub, yb] = prof[i + 1];
+        if (u >= ua && u <= ub) return ub - ua < 1e-9 ? ya : ya + ((u - ua) / (ub - ua)) * (yb - ya);
+      }
+      return prof[u < prof[0][0] ? 0 : prof.length - 1][1];
+    };
+    let min = Math.min(yAt(u0), yAt(u1));
+    prof.forEach(([u, y]) => { if (u > u0 && u < u1) min = Math.min(min, y); });
+    return min;
+  }
+
   // Clamp a window inside its panel and below the wall top.
   function clampWindow(win, solid, levels) {
     const w = wallById(solid, win.wallId);
@@ -52,9 +69,9 @@
     if (!w || !lv) return null;
     if (w.len < 0.4 + 2 * EDGE_MARGIN) return null; // wall too short
     win.levelIdx = lv.idx;
-    const wallTop = Math.min(w.topA, w.topB);
     win.width = Math.max(0.4, Math.min(win.width, w.len - 2 * EDGE_MARGIN));
     win.u = Math.max(EDGE_MARGIN + win.width / 2, Math.min(w.len - EDGE_MARGIN - win.width / 2, win.u));
+    const wallTop = panelTopMin(w, win.u - win.width / 2, win.u + win.width / 2);
     const maxHeight = wallTop - EDGE_MARGIN - (lv.slabTopY + 0.2);
     if (maxHeight < 0.4) return null; // wall too short at this level
     win.height = Math.max(0.4, Math.min(win.height, maxHeight));

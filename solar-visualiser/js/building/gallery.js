@@ -8,6 +8,19 @@
 // =====================================================================
 window.SolarViz = window.SolarViz || {};
 
+// Resolve a manifest image entry ({id, file}) to a URL that is safe for
+// every consumer. Prefer the embedded data URL from data/image-blobs.js:
+// on file:// pages a plain file image can be shown in an <img> but can
+// NOT be uploaded as a WebGL texture or pixel-read from a canvas
+// (tainted-canvas rules) — which frustum thumbnails, the floorplan
+// underlay and facade baking all need.
+window.SolarViz.imageUrl = function (im) {
+  const blobs = window.__IMAGE_DATAURLS__;
+  if (blobs && im && blobs[im.id]) return blobs[im.id];
+  const base = (window.IMAGE_DATA && window.IMAGE_DATA.basePath) || '';
+  return base + (im ? im.file : '');
+};
+
 window.SolarViz.setupGallery = function ({ container, imageData }) {
   if (!imageData || !imageData.images || !imageData.images.length) {
     container.innerHTML = '<div class="scaffold-empty">No property photos.</div>';
@@ -60,7 +73,7 @@ window.SolarViz.setupGallery = function ({ container, imageData }) {
         const tile = document.createElement('div');
         tile.className = 'bm-gallery-tile';
         tile.innerHTML = `
-          <img src="${base + im.file}" alt="" loading="lazy">
+          <img src="${window.SolarViz.imageUrl(im)}" alt="" loading="lazy">
           ${dups.length ? `<span class="bm-gallery-count">×${dups.length + 1}</span>` : ''}
           <span class="bm-gallery-cap">${tileCaption(im)}</span>`;
         tile.addEventListener('click', () => openLightbox(im));
@@ -95,7 +108,7 @@ window.SolarViz.setupGallery = function ({ container, imageData }) {
       </div>`;
     const show = () => {
       const f = frames[idx];
-      lb.querySelector('img').src = base + f.file;
+      lb.querySelector('img').src = window.SolarViz.imageUrl(f);
       lb.querySelector('.bm-lightbox-cap').textContent = f.caption || tileCaption(f);
       lb.querySelector('.bm-lightbox-ev').textContent = f.evidence ? 'AI read: ' + f.evidence : '';
     };

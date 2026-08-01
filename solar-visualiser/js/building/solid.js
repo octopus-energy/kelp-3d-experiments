@@ -187,6 +187,86 @@
         warnings.push('footprint edits ignored: outline vertex count changed');
       }
     }
+    // Track each main-loop vertex's pre-edit position so user edits
+    // (offsets above, deletions below) stay keyed to the same corner
+    // across rebuilds.
+    const origCount = loops[0].ids.length;
+    let origIdx = loops[0].ids.map((_, i) => i);
+
+    // User-deleted footprint corners (narrow jogs): remove the cluster
+    // from the loop AND from the roof face rings, so the roof edge and
+    // the wall below both become the straight prev→next line and the
+    // mesh stays watertight.
+    if (cfg.footprintDeleted && cfg.footprintDeleted.length &&
+        loops[0].ids.length - cfg.footprintDeleted.length >= 3) {
+      const del = new Set();
+      cfg.footprintDeleted.forEach((oi) => {
+        const pos = origIdx.indexOf(oi);
+        if (pos >= 0) del.add(loops[0].ids[pos]);
+      });
+      if (del.size) {
+        origIdx = origIdx.filter((oi, i) => !del.has(loops[0].ids[i]));
+        loops = loops.map((l) => ({ ids: l.ids.filter((id) => !del.has(id)) }));
+        keptFaces.forEach((f) => { f.ids = f.ids.filter((id) => !del.has(id)); });
+      }
+    }
+    loops.forEach((l) => { l.poly = l.ids.map((id) => [clusters[id].x, clusters[id].z]); });
+
+    // ---- collinear boundary runs → single planar walls ----------------
+    // A gable end arrives as several boundary edges (eave corner → apex →
+    // step → eave corner) that are already collinear in plan. Snap the
+    // interior vertices exactly onto the chord and treat the run as ONE
+    // wall panel with a stepped top profile — so a window can span what
+    // would otherwise be a seam between quads, on a single plane.
+    const COLL_TOL = 0.12;
+    const loopRuns = loops.map((loop) => {
+      const n = loop.ids.length;
+      const runs = [];
+      if (n < 3) return runs;
+      const P = (k) => {
+        const c = clusters[loop.ids[((k % n) + n) % n]];
+        return [c.x, c.z];
+      };
+      const runOk = (s, e) => {
+        const a = P(s), b = P(e);
+        const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        if (len < 1e-6) return false;
+        for (let k = s + 1; k < e; k++) {
+          const p = P(k);
+          if (Math.abs((p[0] - a[0]) * (b[1] - a[1]) - (p[1] - a[1]) * (b[0] - a[0])) / len > COLL_TOL) return false;
+        }
+        return true;
+      };
+      let i = 0;
+      while (i < n) {
+        let e = i + 1;
+        while (e - i < n - 1 && runOk(i, e + 1)) e++;
+        runs.push([i, e]);
+        i = e;
+      }
+      // a run may straddle the loop seam: try joining last + first
+      if (runs.length > 1) {
+        const last = runs[runs.length - 1], first = runs[0];
+        if (last[1] === n && runOk(last[0], n + first[1])) {
+          first[0] = last[0] - n;
+          runs.pop();
+        }
+      }
+      runs.forEach(([s, e]) => {
+        const a = P(s), b = P(e);
+        const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        if (len < 1e-6) return;
+        const dir = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
+        for (let k = s + 1; k < e; k++) {
+          const c = clusters[loop.ids[((k % n) + n) % n]];
+          const u = (c.x - a[0]) * dir[0] + (c.z - a[1]) * dir[1];
+          c.x = a[0] + dir[0] * u;
+          c.z = a[1] + dir[1] * u;
+        }
+      });
+      loop.poly = loop.ids.map((id) => [clusters[id].x, clusters[id].z]);
+      return runs;
+    });
     const footprint = loops[0].poly;
 
     // Dominant axis angle (for axis-snapped room drawing later).
@@ -203,25 +283,34 @@
     });
 
     // -- 8. wall panels ----------------------------------------------
+    // One panel per collinear boundary run. `ids` holds every loop
+    // vertex along the run (the mesh + ground cap still use them all);
+    // `topProfile` is the [u, y] polyline the wall top follows — flat
+    // for eave walls, stepped/peaked for gable ends.
     const groundY = cfg.groundY;
     const wallPanels = [];
     loops.forEach((loop, li) => {
       const n = loop.ids.length;
-      for (let i = 0; i < n; i++) {
-        const aId = loop.ids[i], bId = loop.ids[(i + 1) % n];
-        const a = clusters[aId], b = clusters[bId];
+      loopRuns[li].forEach(([s, e]) => {
+        const ids = [];
+        for (let k = s; k <= e; k++) ids.push(loop.ids[((k % n) + n) % n]);
+        const a = clusters[ids[0]], b = clusters[ids[ids.length - 1]];
         const len = Math.hypot(b.x - a.x, b.z - a.z);
-        if (len < 1e-6) continue;
+        if (len < 1e-6) return;
         const dir = [(b.x - a.x) / len, (b.z - a.z) / len];
         let nrm = [dir[1], -dir[0]];
         const mx = (a.x + b.x) / 2 + nrm[0] * 0.05, mz = (a.z + b.z) / 2 + nrm[1] * 0.05;
         if (G.pointInPolygon(loop.poly, mx, mz)) nrm = [-nrm[0], -nrm[1]];
         wallPanels.push({
-          id: 'w' + wallPanels.length, loop: li, aId, bId,
+          id: 'w' + wallPanels.length, loop: li, ids, aId: ids[0], bId: ids[ids.length - 1],
           a2: [a.x, a.z], b2: [b.x, b.z], dir, normal: nrm,
           len, bottom: groundY, topA: a.y, topB: b.y,
+          topProfile: ids.map((id) => {
+            const c = clusters[id];
+            return [(c.x - a.x) * dir[0] + (c.z - a.z) * dir[1], c.y];
+          }),
         });
-      }
+      });
     });
 
     // -- 9. indexed triangle soup ------------------------------------
@@ -253,11 +342,16 @@
       });
     });
     wallPanels.forEach((w) => {
-      const at = topIndex.get(w.aId), bt = topIndex.get(w.bId);
-      const ab = bottomIndex.get(w.aId), bb = bottomIndex.get(w.bId);
-      // outward-facing quad: bottom a -> bottom b -> top b -> top a
-      pushWallTri(tris, meshVerts, ab, bb, bt, w.normal);
-      pushWallTri(tris, meshVerts, ab, bt, at, w.normal);
+      // per boundary edge within the run, so the wall shares the exact
+      // roof/cap vertices — merging is presentational, the mesh keeps
+      // the same edge accounting as unmerged panels
+      for (let k = 0; k < w.ids.length - 1; k++) {
+        const at = topIndex.get(w.ids[k]), bt = topIndex.get(w.ids[k + 1]);
+        const ab = bottomIndex.get(w.ids[k]), bb = bottomIndex.get(w.ids[k + 1]);
+        // outward-facing quad: bottom a -> bottom b -> top b -> top a
+        pushWallTri(tris, meshVerts, ab, bb, bt, w.normal);
+        pushWallTri(tris, meshVerts, ab, bt, at, w.normal);
+      }
     });
     loops.forEach((loop) => {
       G.triangulatePolygon(loop.poly).forEach(([p, q, r]) => {
@@ -277,6 +371,8 @@
       verts: meshVerts, tris, watertight, warnings,
       groundY, eaveY, ridgeY, axisAngle,
       footprintArea: Math.abs(G.polygonArea(footprint)),
+      // user footprint edits are keyed by pre-edit loop position
+      footprintOrigIdx: origIdx, footprintOrigCount: origCount,
     };
     solid.roofHeightAt = (x, z) => {
       let best = null;
@@ -334,8 +430,8 @@
     const shape = new THREE.Shape();
     shape.moveTo(0, panel.bottom);
     shape.lineTo(panel.len, panel.bottom);
-    shape.lineTo(panel.len, panel.topB);
-    shape.lineTo(0, panel.topA);
+    const prof = panel.topProfile || [[0, panel.topA], [panel.len, panel.topB]];
+    for (let i = prof.length - 1; i >= 0; i--) shape.lineTo(prof[i][0], prof[i][1]);
     shape.closePath();
     (holes || []).forEach((h) => {
       const path = new THREE.Path();
