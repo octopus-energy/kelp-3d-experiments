@@ -10,19 +10,18 @@
 //
 // Costing: run length × billed height × rate (£/m²). Billed height is
 // whole 2m lifts (rounded up from ground-to-eaves, adjustable per run).
+//
+// The plan-view drawing interaction itself lives in the shared
+// plan-draw.js engine (also used by the building-model wall drawing).
 // =====================================================================
 window.SolarViz = window.SolarViz || {};
 
-window.SolarViz.setupScaffolding = function ({ scene, camera, view, renderer, controls, terrainMesh, coords, siteData, hoverables, cameraAnimator }) {
+window.SolarViz.setupScaffolding = function ({ scene, terrainMesh, coords, siteData, hoverables, cameraAnimator, planDraw }) {
   const $ = (id) => document.getElementById(id);
   const drawBtn = $('scaffold-draw-btn');
   const listEl = $('scaffold-list');
   const totalEl = $('scaffold-total');
   const rateInput = $('scaffold-rate');
-  const banner = $('draw-banner');
-  const bannerLen = $('draw-banner-length');
-  const planBtn = $('draw-view-plan');
-  const threeDBtn = $('draw-view-3d');
 
   // Scaffold dimensioning (metres)
   const LIFT_H = 2.0;       // height per lift; billed height = whole lifts
@@ -46,21 +45,15 @@ window.SolarViz.setupScaffolding = function ({ scene, camera, view, renderer, co
 
   const groundAt = (x, z) => coords.sampleDSM(x, coords.HEIGHT - z);
 
-  // Groups: root is toggled/exaggerated as one, runs are finished
-  // scaffolds, drawGroup holds the in-progress markers.
+  // Root is toggled/exaggerated as one; runsGroup holds finished runs.
   const root = new THREE.Group();
   const runsGroup = new THREE.Group();
-  const drawGroup = new THREE.Group();
-  root.add(runsGroup, drawGroup);
+  root.add(runsGroup);
   scene.add(root);
 
   const tubeMat = new THREE.MeshStandardMaterial({ color: 0xb9c2cb, metalness: 0.8, roughness: 0.35 });
   const boardMat = new THREE.MeshStandardMaterial({ color: 0xa98c5f, roughness: 0.85, metalness: 0.0, side: THREE.DoubleSide });
-  const markerMat = new THREE.MeshBasicMaterial({ color: 0xf5b942 });
-  const pathMat = new THREE.LineBasicMaterial({ color: 0xf5b942 });
-  const previewMat = new THREE.LineDashedMaterial({ color: 0xf5b942, dashSize: 0.5, gapSize: 0.3, transparent: true, opacity: 0.7 });
   const unitTube = new THREE.CylinderGeometry(1, 1, 1, 6);
-  const markerGeom = new THREE.SphereGeometry(0.22, 12, 8);
   const UP = new THREE.Vector3(0, 1, 0);
 
   function addTube(parent, a, b) {
@@ -292,7 +285,7 @@ window.SolarViz.setupScaffolding = function ({ scene, camera, view, renderer, co
   }
 
   function flyToRun(run) {
-    if (drawing && planMode) setViewMode('3d');
+    if (drawing && planDraw.inPlanMode()) planDraw.setViewMode('3d');
     const c = new THREE.Vector3();
     run.verts.forEach((v) => c.add(v3(v.x, 0, v.z)));
     c.divideScalar(run.verts.length);
@@ -303,201 +296,63 @@ window.SolarViz.setupScaffolding = function ({ scene, camera, view, renderer, co
   }
 
   // ------------------------------------------------------------------
-  // View modes: orthographic plan (true overhead, no perspective) for
-  // drawing, or the regular perspective view for precise picking.
-  // ------------------------------------------------------------------
-  const orthoCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.5, 200);
-  orthoCam.up.set(0, 0, -1); // north up on screen
-
-  function resetOrtho() {
-    orthoCam.position.set(bc.x, 70, bc.z);
-    orthoCam.lookAt(bc.x, 0, bc.z);
-    orthoCam.zoom = 1;
-    orthoControls.target.set(bc.x, 0, bc.z);
-    syncOrthoFrustum();
-  }
-  function syncOrthoFrustum() {
-    const aspect = window.innerWidth / window.innerHeight;
-    const half = 20; // metres of site visible vertically
-    orthoCam.left = -half * aspect;
-    orthoCam.right = half * aspect;
-    orthoCam.top = half;
-    orthoCam.bottom = -half;
-    orthoCam.updateProjectionMatrix();
-  }
-  window.addEventListener('resize', () => { if (planMode) syncOrthoFrustum(); });
-
-  const orthoControls = new THREE.OrbitControls(orthoCam, renderer.domElement);
-  orthoControls.enableRotate = false;
-  orthoControls.enableDamping = false;
-  // left-drag pans (a no-move click still places a vertex)
-  orthoControls.mouseButtons.LEFT = THREE.MOUSE.PAN;
-  orthoControls.enabled = false;
-
-  let planMode = false;
-  function setViewMode(mode) {
-    planMode = mode === 'plan' && drawing;
-    if (planMode) {
-      syncOrthoFrustum();
-      view.camera = orthoCam;
-      controls.enabled = false;
-      orthoControls.enabled = true;
-    } else {
-      view.camera = camera;
-      controls.enabled = true;
-      orthoControls.enabled = false;
-    }
-    planBtn.classList.toggle('active', planMode);
-    threeDBtn.classList.toggle('active', !planMode);
-  }
-  planBtn.addEventListener('click', () => setViewMode('plan'));
-  threeDBtn.addEventListener('click', () => setViewMode('3d'));
-
-  // ------------------------------------------------------------------
-  // Draw mode: click to place vertices on the ground
+  // Draw mode via the shared plan-draw engine
   // ------------------------------------------------------------------
   let drawing = false;
-  let dverts = [];
-  let pathLine = null, previewLine = null;
-  let downPos = null;
-
-  const raycaster = new THREE.Raycaster();
-  const ndc = new THREE.Vector2();
 
   function groundPointFromEvent(e) {
-    const rect = renderer.domElement.getBoundingClientRect();
-    ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-    raycaster.setFromCamera(ndc, view.camera);
-    const hits = raycaster.intersectObject(terrainMesh, false);
+    const hits = planDraw.ray(e).intersectObject(terrainMesh, false);
     if (!hits.length) return null;
     const p = hits[0].point;
     // y from the DSM (unscaled) so vertical exaggeration stays consistent
     return v3(p.x, groundAt(p.x, p.z), p.z);
   }
 
-  const lifted = (v) => v3(v.x, v.y + 0.15, v.z);
-  const drawnLength = () => {
+  const drawnLength = (verts) => {
     let L = 0;
-    for (let i = 0; i < dverts.length - 1; i++) L += Math.hypot(dverts[i + 1].x - dverts[i].x, dverts[i + 1].z - dverts[i].z);
+    for (let i = 0; i < verts.length - 1; i++) L += Math.hypot(verts[i + 1].x - verts[i].x, verts[i + 1].z - verts[i].z);
     return L;
   };
 
-  function rebuildPathLine() {
-    if (pathLine) { drawGroup.remove(pathLine); pathLine.geometry.dispose(); pathLine = null; }
-    if (dverts.length >= 2) {
-      pathLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(dverts.map(lifted)), pathMat);
-      drawGroup.add(pathLine);
-    }
-  }
-
-  function addDrawVertex(p) {
-    dverts.push(p);
-    const m = new THREE.Mesh(markerGeom, markerMat);
-    m.position.copy(lifted(p));
-    m.userData.isMarker = true;
-    drawGroup.add(m);
-    rebuildPathLine();
-    bannerLen.textContent = drawnLength().toFixed(1) + ' m';
-  }
-
-  function undoVertex() {
-    if (!dverts.length) return;
-    dverts.pop();
-    const markers = drawGroup.children.filter((c) => c.userData.isMarker);
-    if (markers.length) drawGroup.remove(markers[markers.length - 1]);
-    rebuildPathLine();
-    bannerLen.textContent = drawnLength().toFixed(1) + ' m';
-  }
-
-  function updatePreview(e) {
-    if (previewLine) { drawGroup.remove(previewLine); previewLine.geometry.dispose(); previewLine = null; }
-    let extra = 0;
-    const p = groundPointFromEvent(e);
-    if (p && dverts.length) {
-      const last = dverts[dverts.length - 1];
-      previewLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints([lifted(last), lifted(p)]), previewMat);
-      previewLine.computeLineDistances();
-      drawGroup.add(previewLine);
-      extra = Math.hypot(p.x - last.x, p.z - last.z);
-    }
-    bannerLen.textContent = (drawnLength() + extra).toFixed(1) + ' m';
-  }
-
   function startDraw() {
     drawing = true;
-    dverts = [];
     drawBtn.textContent = 'Finish run';
     drawBtn.classList.add('active');
-    banner.classList.add('visible');
-    bannerLen.textContent = '0.0 m';
-    renderer.domElement.style.cursor = 'crosshair';
-    resetOrtho();
-    setViewMode('plan');
+    planDraw.begin({
+      title: 'Scaffold draw mode',
+      center: bc,
+      pick: groundPointFromEvent,
+      status: (verts, preview) => {
+        let L = drawnLength(verts);
+        if (preview && verts.length) L += Math.hypot(preview.x - verts[verts.length - 1].x, preview.z - verts[verts.length - 1].z);
+        return L.toFixed(1) + ' m';
+      },
+      onFinish: (verts3) => {
+        exitDrawUI();
+        const verts = verts3.map((v) => ({ x: v.x, z: v.z }));
+        runSeq++;
+        const run = {
+          name: 'Scaffold run ' + runSeq,
+          verts,
+          liftDelta: 0,
+          tooltipData: { type: 'scaffold', name: 'Scaffold run ' + runSeq },
+        };
+        attachRunGroup(run, buildRunGroup(verts, 0));
+        runs.push(run);
+        refreshCosts();
+      },
+      onCancel: exitDrawUI,
+      minVerts: 2,
+    });
   }
 
-  function exitDrawMode() {
+  function exitDrawUI() {
     drawing = false;
     drawBtn.textContent = '+ Draw scaffold run';
     drawBtn.classList.remove('active');
-    banner.classList.remove('visible');
-    renderer.domElement.style.cursor = '';
-    while (drawGroup.children.length) {
-      const c = drawGroup.children[0];
-      drawGroup.remove(c);
-      if (c.geometry && c.geometry !== markerGeom) c.geometry.dispose();
-    }
-    pathLine = previewLine = null;
-    setViewMode('3d');
   }
 
-  function cancelDraw() {
-    dverts = [];
-    exitDrawMode();
-  }
-
-  function finishDraw() {
-    // Drop the duplicate vertex a double-click leaves behind.
-    while (dverts.length >= 2 && dverts[dverts.length - 1].distanceTo(dverts[dverts.length - 2]) < 0.4) dverts.pop();
-    if (dverts.length < 2) { cancelDraw(); return; }
-    const verts = dverts.map((v) => ({ x: v.x, z: v.z }));
-    runSeq++;
-    const run = {
-      name: 'Scaffold run ' + runSeq,
-      verts,
-      liftDelta: 0,
-      tooltipData: { type: 'scaffold', name: 'Scaffold run ' + runSeq },
-    };
-    attachRunGroup(run, buildRunGroup(verts, 0));
-    runs.push(run);
-    refreshCosts();
-    dverts = [];
-    exitDrawMode();
-  }
-
-  drawBtn.addEventListener('click', () => (drawing ? finishDraw() : startDraw()));
-
-  renderer.domElement.addEventListener('pointerdown', (e) => {
-    if (drawing && e.button === 0) downPos = { x: e.clientX, y: e.clientY };
-  });
-  renderer.domElement.addEventListener('pointerup', (e) => {
-    if (!drawing || e.button !== 0 || !downPos) return;
-    const moved = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
-    downPos = null;
-    if (moved > 6) return; // it was a drag (pan/orbit/zoom), not a click
-    const p = groundPointFromEvent(e);
-    if (p) addDrawVertex(p);
-  });
-  renderer.domElement.addEventListener('dblclick', () => { if (drawing) finishDraw(); });
-  renderer.domElement.addEventListener('pointermove', (e) => { if (drawing) updatePreview(e); });
-  window.addEventListener('keydown', (e) => {
-    if (!drawing) return;
-    if (e.target && e.target.tagName === 'INPUT') return;
-    if (e.key === 'Escape') cancelDraw();
-    else if (e.key === 'Enter') finishDraw();
-    else if (e.key === 'Backspace') { e.preventDefault(); undoVertex(); }
-    else if (e.key === 'v' || e.key === 'V') setViewMode(planMode ? '3d' : 'plan');
-  });
+  drawBtn.addEventListener('click', () => (drawing ? planDraw.finish() : startDraw()));
 
   refreshCosts();
 

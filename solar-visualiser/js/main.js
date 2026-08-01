@@ -58,6 +58,11 @@
     const hoverables = [];
     const cameraAnimator = window.SolarViz.createCameraAnimator(camera, controls);
 
+    // Active-camera holder: plan-draw mode swaps in an orthographic
+    // camera; render loop and raycasts follow it.
+    const view = { camera };
+    const planDraw = window.SolarViz.createPlanDraw({ scene, camera, view, renderer, controls });
+
     window.SolarViz.buildRoofFaces({
       siteData: SITE_DATA, coords,
       groups: { roofGroup, panelGroup, rejectedGroup },
@@ -86,18 +91,14 @@
     markerLine.computeLineDistances();
     scene.add(markerLine);
 
-    // Active-camera holder: scaffolding's plan mode swaps in an
-    // orthographic camera; render loop and raycasts follow it.
-    const view = { camera };
-
     window.SolarViz.setupHoverTooltip({
       view, hoverables, tooltipEl: document.getElementById('tooltip'),
     });
 
     setStatus('Scaffolding tools');
     const scaffolding = window.SolarViz.setupScaffolding({
-      scene, camera, view, renderer, controls, terrainMesh, coords,
-      siteData: SITE_DATA, hoverables, cameraAnimator,
+      scene, terrainMesh, coords,
+      siteData: SITE_DATA, hoverables, cameraAnimator, planDraw,
     });
 
     window.SolarViz.setupUIControls({
@@ -131,7 +132,7 @@
     setStatus('Ready');
     setTimeout(() => document.getElementById('loader').classList.add('hidden'), 300);
     // Expose handles for inspection / external integrations
-    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, panelGroup, roofGroup, coords, scaffolding };
+    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, panelGroup, roofGroup, coords, scaffolding, planDraw };
     animate();
 
   } catch (e) {
