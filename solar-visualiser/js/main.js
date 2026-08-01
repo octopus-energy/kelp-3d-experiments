@@ -122,11 +122,15 @@
     }
 
     let photoMatch = null;
+    let facade = null;
     try {
       if (building && building.solid) {
         photoMatch = window.SolarViz.setupPhotoMatch({
           camera, view, renderer, controls, cameraAnimator, planDraw,
           building, imageData: window.IMAGE_DATA,
+        });
+        facade = window.SolarViz.setupFacade({
+          renderer, view, building, photoMatch, imageData: window.IMAGE_DATA,
         });
       }
     } catch (e) {
@@ -145,7 +149,7 @@
         roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,
         scaffoldRoot: scaffolding.root,
       },
-      building, photoMatch, planDraw,
+      building, photoMatch, facade, planDraw,
       panels: {
         solar: document.getElementById('panel-solar'),
         ashp: document.getElementById('panel-ashp'),

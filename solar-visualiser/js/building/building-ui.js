@@ -178,6 +178,30 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   // other modules (photo matching) react to the solid being re-derived
   const rebuildListeners = [];
 
+  // Programmatic window/door creation (facade editor): u/width/height in
+  // wall metres, sill measured up from the wall bottom (ground) —
+  // converted to the level-relative sill the opening model uses.
+  function addWindow(spec) {
+    if (!solid) return false;
+    const w = O.wallById(solid, spec.wallId);
+    if (!w) return false;
+    const midY = solid.groundY + spec.sill + spec.height / 2;
+    const hit = new THREE.Vector3(
+      w.a2[0] + w.dir[0] * spec.u, midY, w.a2[1] + w.dir[1] * spec.u);
+    const win = O.makeWindowAt(hit, spec.wallId, solid, levels);
+    if (!win) return false;
+    win.kind = spec.kind || 'window';
+    win.width = spec.width;
+    win.height = spec.height;
+    win.u = spec.u;
+    win.sill = solid.groundY + spec.sill - levels[win.levelIdx].slabTopY;
+    if (!O.clampWindow(win, solid, levels)) return false;
+    if (O.overlapsExisting(win, state.windows, solid, levels)) return false;
+    state.windows.push(win);
+    rebuildOpenings();
+    return true;
+  }
+
   function unregisterHoverables(group) {
     group.traverse((c) => {
       const i = hoverables.indexOf(c);
@@ -1356,7 +1380,10 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     setActive,
     save: saveState,
     selectFloor,
+    addWindow,
+    mats,
     addRebuildListener: (fn) => rebuildListeners.push(fn),
+    get shell() { return shell; },
     get solid() { return solid; },
     get levels() { return levels; },
     get state() { return state; },

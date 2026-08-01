@@ -58,7 +58,9 @@
     const maxHeight = wallTop - EDGE_MARGIN - (lv.slabTopY + 0.2);
     if (maxHeight < 0.4) return null; // wall too short at this level
     win.height = Math.max(0.4, Math.min(win.height, maxHeight));
-    win.sill = Math.max(0.2, Math.min(win.sill, wallTop - EDGE_MARGIN - win.height - lv.slabTopY));
+    // doors sit on the slab; windows keep a minimum sill
+    const minSill = win.kind === 'door' ? 0 : 0.2;
+    win.sill = Math.max(minSill, Math.min(win.sill, wallTop - EDGE_MARGIN - win.height - lv.slabTopY));
     return win;
   }
 

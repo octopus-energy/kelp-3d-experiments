@@ -790,6 +790,25 @@
     font-size: 9px; color: var(--text-dim);
     margin-left: auto; text-align: right;
   }
+  /* the wall editor canvas is the panel body (unlike the photo-match
+     canvas, which overlays an img) */
+  .pm-body canvas.fc-canvas {
+    position: static;
+    display: block;
+    margin: 0 auto;
+    cursor: crosshair;
+  }
+  .fc-confirm { display: flex; gap: 4px; }
+  .fc-confirm button {
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-radius: 4px; font: inherit; font-size: 10px;
+    padding: 3px 8px; cursor: pointer;
+  }
+  .fc-confirm .fc-win { border-color: var(--good); }
+  .fc-confirm .fc-door { border-color: var(--accent); }
+  .fc-confirm button:hover { background: rgba(255,255,255,0.12); }
 
   /* Fly-to photo cross-fade */
   .pm-overlay {
