@@ -164,9 +164,29 @@
       if (cfg.orthogonalize) poly = G.orthogonalizeLoop(poly, { angleSnapDeg: cfg.angleSnapDeg });
       loop.forEach((id, i) => { clusters[id].x = poly[i][0]; clusters[id].z = poly[i][1]; });
     });
-    const loops = chained.loops
+    let loops = chained.loops
       .map((ids) => ({ ids, poly: ids.map((id) => [clusters[id].x, clusters[id].z]) }))
       .sort((a, b) => Math.abs(G.polygonArea(b.poly)) - Math.abs(G.polygonArea(a.poly)));
+
+    // User's parametric footprint edits: per-vertex [dx, dz] offsets
+    // keyed by position in the main loop. Only x/z move (eave heights
+    // stay levelled); walls, floors and the mesh all derive from the
+    // shifted clusters below. A length mismatch means the regularised
+    // topology changed since the offsets were recorded — ignore them.
+    if (cfg.footprintOffsets) {
+      if (cfg.footprintOffsets.length === loops[0].ids.length) {
+        loops[0].ids.forEach((id, i) => {
+          const o = cfg.footprintOffsets[i];
+          if (o && (o[0] || o[1])) {
+            clusters[id].x += o[0];
+            clusters[id].z += o[1];
+          }
+        });
+        loops = loops.map((l) => ({ ids: l.ids, poly: l.ids.map((id) => [clusters[id].x, clusters[id].z]) }));
+      } else {
+        warnings.push('footprint edits ignored: outline vertex count changed');
+      }
+    }
     const footprint = loops[0].poly;
 
     // Dominant axis angle (for axis-snapped room drawing later).

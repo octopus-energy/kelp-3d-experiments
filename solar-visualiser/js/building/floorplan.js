@@ -252,7 +252,11 @@
       const len = Math.hypot(dx, dz);
       if (len < 1e-9) return false;
       const ux = dx / len, uz = dz / len;
-      let best = null;
+      // Prefer true edge crossings; accept crossings slightly beyond an
+      // edge's end too (the wall meets the boundary right at a corner,
+      // where fit residual pushes the crossing just past the segment) —
+      // that keeps the wall on its axis instead of bending to the corner.
+      let best = null, bestLoose = null;
       for (let i = 0; i < poly.length; i++) {
         const a = poly[i], b = poly[(i + 1) % poly.length];
         const ex = b[0] - a[0], ez = b[1] - a[1];
@@ -260,12 +264,17 @@
         if (Math.abs(den) < 1e-9) continue;
         const t = ((a[0] - pr[0]) * ez - (a[1] - pr[1]) * ex) / den;
         const u = ((a[1] - pr[1]) * ux - (a[0] - pr[0]) * uz) / -den;
-        if (u < -1e-6 || u > 1 + 1e-6) continue;
         const s = t - len; // distance past the end point
         // never trim back past the segment midpoint
         if (s < -Math.min(len * 0.5, maxExtend) || s > maxExtend) continue;
-        if (best === null || Math.abs(s) < Math.abs(best)) best = s;
+        const offSeg = (u < 0 ? -u : u > 1 ? u - 1 : 0) * Math.hypot(ex, ez);
+        if (offSeg <= 1e-4) {
+          if (best === null || Math.abs(s) < Math.abs(best)) best = s;
+        } else if (offSeg <= 0.45) {
+          if (bestLoose === null || Math.abs(s) < Math.abs(bestLoose)) bestLoose = s;
+        }
       }
+      if (best === null) best = bestLoose;
       if (best !== null) {
         pts[endIdx] = [e[0] + ux * best, e[1] + uz * best];
         return true;
@@ -282,7 +291,28 @@
         if (s.d <= maxExtend && (!np || s.d < np.d)) np = s;
       }
       if (!np) return false;
-      pts[endIdx] = [np.x, np.z];
+      // The corner is slightly off the wall's axis line. Keep the run
+      // orthogonal by adding a hinge just before the end, so only a
+      // short tail bends sideways to reach the corner. Beyond ~a metre
+      // of sideways reach the wall would look broken — fail instead so
+      // the mismatch is reported (usually a footprint edit fixes it).
+      const off = Math.hypot(np.x - e[0], np.z - e[1]);
+      const along = (np.x - e[0]) * ux + (np.z - e[1]) * uz;
+      const sideways = Math.sqrt(Math.max(0, off * off - along * along));
+      if (sideways > 1.2) return false;
+      const tail = 0.5;
+      if (sideways > 0.03 && len > tail * 2) {
+        const hinge = [e[0] + ux * (along - tail), e[1] + uz * (along - tail)];
+        if (endIdx === 0) {
+          pts[0] = [np.x, np.z];
+          pts.splice(1, 0, hinge);
+        } else {
+          pts[endIdx] = [np.x, np.z];
+          pts.splice(endIdx, 0, hinge);
+        }
+      } else {
+        pts[endIdx] = [np.x, np.z];
+      }
       return true;
     }
 
@@ -349,6 +379,37 @@
     return { dividers, roomNames, roomTypes, failed };
   }
 
+  // ------------------------------------------------------------------
+  // Re-fit existing dividers after the floor outline changed (parametric
+  // footprint edits) or a wall was moved: replay incrementally, and when
+  // a divider no longer splits cleanly, re-snap its ends to the room
+  // that contains it before giving up. Returns { dividers, failed }.
+  // ------------------------------------------------------------------
+  function refitDividers({ worldOutline, dividers, deriveRooms, maxExtend = 1.0 }) {
+    const out = [], failed = [];
+    let rooms = [{ id: 'r', poly: worldOutline.map((p) => p.slice()) }];
+    (dividers || []).forEach((d) => {
+      let ok = null;
+      if (deriveRooms(worldOutline, out.concat([d])).failed.length === 0) {
+        ok = d;
+      } else {
+        const mid = polylineMidpoint(d);
+        const host = rooms.find((r) => G.pointInPolygon(r.poly, mid[0], mid[1]));
+        const snapped = host && snapDividerToRoom(d, host.poly, maxExtend);
+        if (snapped && deriveRooms(worldOutline, out.concat([snapped])).failed.length === 0) {
+          ok = snapped;
+        }
+      }
+      if (ok) {
+        out.push(ok);
+        rooms = deriveRooms(worldOutline, out).rooms;
+      } else {
+        failed.push(d);
+      }
+    });
+    return { dividers: out, failed };
+  }
+
   // point halfway along a polyline's arc length
   function polylineMidpoint(pts) {
     let total = 0;
@@ -384,5 +445,6 @@
   return {
     applyToPoint, applyToPoly, planScale, overlapScore, fitTransform,
     deriveDividers, snapDividerToRoom, mapPlan, importFloorplan,
+    refitDividers, polylineMidpoint,
   };
 });

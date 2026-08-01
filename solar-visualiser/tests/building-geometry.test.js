@@ -78,6 +78,20 @@ for (let i = 0; i < fp.length; i++) {
 check('footprint corners mostly right angles or straight',
   rightish >= fp.length - 2, `${rightish}/${fp.length}`);
 
+// ---- parametric footprint offsets ------------------------------------
+console.log('\n== footprint offsets ==');
+const nFp = solid.loops[0].ids.length;
+const offsets = new Array(nFp).fill(null);
+offsets[0] = [0.5, 0.5];
+const edited = S.buildSolid(inputFaces, { groundY, footprintOffsets: offsets });
+check('edited solid still watertight', edited.watertight.closed && edited.watertight.oriented);
+check('edited footprint area differs', Math.abs(edited.footprintArea - solid.footprintArea) > 0.05,
+  `${solid.footprintArea.toFixed(1)} -> ${edited.footprintArea.toFixed(1)}`);
+const stale = S.buildSolid(inputFaces, { groundY, footprintOffsets: [[1, 1]] });
+check('length-mismatched offsets are ignored with a warning',
+  Math.abs(stale.footprintArea - solid.footprintArea) < 1e-6 &&
+  stale.warnings.some((w) => /footprint edits ignored/.test(w)));
+
 // ---- Phase B probe: mesh slicing -------------------------------------
 console.log('\n== slicing ==');
 const heights = [

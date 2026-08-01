@@ -99,6 +99,36 @@ check('kitchen + sitting room labelled', gNames.includes('Kitchen/Dining Room') 
   JSON.stringify(gNames));
 check('a room is typed kitchen', Object.values(g.roomTypes).includes('kitchen'));
 
+// imported walls stay square to the building axes; only short corner
+// tails (the hinged connectors snapping adds where the roof outline and
+// the plan disagree at a corner) are allowed to bend
+let offAxis = 0;
+g.dividers.forEach((d) => {
+  for (let i = 0; i < d.length - 1; i++) {
+    const len = Math.hypot(d[i + 1][0] - d[i][0], d[i + 1][1] - d[i][1]);
+    if (len < 1.2) continue;
+    const ang = Math.atan2(d[i + 1][1] - d[i][1], d[i + 1][0] - d[i][0]);
+    let da = (ang - solid.axisAngle) % (Math.PI / 2);
+    if (da > Math.PI / 4) da -= Math.PI / 2;
+    if (da < -Math.PI / 4) da += Math.PI / 2;
+    if (Math.abs(da) > (1.5 * Math.PI) / 180) offAxis++;
+  }
+});
+check('imported wall runs are orthogonal to the building axes', offAxis === 0,
+  offAxis + ' off-axis segment(s)');
+
+// refit: nudge the outline outward (as a footprint edit would) and the
+// stored dividers re-snap rather than drop
+const grown = levels[0].outline.map(([x, z]) => {
+  const [cx, cz] = [0, 0];
+  return [x * 1.02, z * 1.02];
+});
+const refit = FP.refitDividers({
+  worldOutline: grown, dividers: g.dividers, deriveRooms: R.deriveRooms,
+});
+check('dividers survive an outline nudge via refit', refit.failed.length === 0,
+  refit.failed.length + ' failed');
+
 // ---- first floor import ----------------------------------------------
 console.log('\n== first floor ==');
 // our first-floor outline is the full roof footprint while the plan's

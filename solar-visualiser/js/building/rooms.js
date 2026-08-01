@@ -123,8 +123,9 @@
     const ceilingAt = ceilingFnFor(level, solid);
 
     // Divider walls — extruded profiles so the top can follow the roof
-    // on the top floor.
-    (dividers || []).forEach((path) => {
+    // on the top floor. Tagged with their divider index so the UI can
+    // select/move/delete individual walls.
+    (dividers || []).forEach((path, di) => {
       for (let s = 0; s < path.length - 1; s++) {
         const a = path[s], b = path[s + 1];
         const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
@@ -155,7 +156,9 @@
         );
         geom.applyMatrix4(m);
         geom.computeVertexNormals();
-        group.add(new THREE.Mesh(geom, mats.dividerWall));
+        const mesh = new THREE.Mesh(geom, mats.dividerWall);
+        mesh.userData = { type: 'divider', dividerIdx: di, segIdx: s };
+        group.add(mesh);
       }
     });
 
