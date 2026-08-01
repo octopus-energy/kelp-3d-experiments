@@ -1355,6 +1355,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     root: buildingRoot,
     setActive,
     save: saveState,
+    selectFloor,
     addRebuildListener: (fn) => rebuildListeners.push(fn),
     get solid() { return solid; },
     get levels() { return levels; },

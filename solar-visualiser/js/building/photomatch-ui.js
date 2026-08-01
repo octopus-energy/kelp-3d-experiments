@@ -129,7 +129,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
       const saved = state.photoMatches[im.id];
       const suggested = im.match;
       const status = saved && saved.pose
-        ? `matched · ${saved.pose.rmse.toFixed(0)} px`
+        ? (isFinite(saved.pose.rmse) ? `matched · ${saved.pose.rmse.toFixed(0)} px` : 'matched by eye')
         : suggested
           ? (suggested.needsReview ? 'suggested — needs review' : 'suggested')
           : 'no landmarks yet';
@@ -163,10 +163,20 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
   building.root.add(highlightMesh);
 
   function closePanel() {
+    if (alignEl) finishAlign(false);
     if (!panel) return;
     panel.el.remove();
     panel = null;
     highlightMesh.visible = false;
+  }
+
+  function flashWarn(msg) {
+    const el = document.createElement('div');
+    el.className = 'bm-flash';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.classList.add('gone'), 2600);
+    setTimeout(() => el.remove(), 3100);
   }
 
   function openPanel(im) {
@@ -187,6 +197,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
         <canvas></canvas>
       </div>
       <div class="pm-foot">
+        <button class="pm-align-btn" title="Orbit the 3D view until the model lines up behind the photo">Align view…</button>
         <select class="pm-add"><option value="">+ Add landmark…</option></select>
         <span class="pm-sel"></span>
         <span class="pm-hint">green &lt; 8 px · orange &lt; 25 px · red worse — the wireframe should lock onto the building</span>
@@ -200,6 +211,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     };
     el.querySelector('.pm-x').addEventListener('click', closePanel);
     el.querySelector('.pm-accept').addEventListener('click', acceptMatch);
+    el.querySelector('.pm-align-btn').addEventListener('click', startAlign);
     const add = el.querySelector('.pm-add');
     landmarks.forEach((l) => {
       const o = document.createElement('option');
@@ -229,16 +241,20 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     panel.canvas.height = r.height;
   }
 
+  // With an existing pose (solved or set by orbit-aligning) always
+  // warm-refine: a full reseeded solve could jump to a different pose
+  // family than the one the user just established visually. Full solves
+  // happen only when there is no pose yet.
   function solveWorking(full) {
     const match = { imageSize: panel.imageSize, landmarks: panel.working };
     const points = toPoints(match);
     if (points.length >= 4) {
-      panel.pose = (full || !panel.pose)
-        ? solveMatch(match)
-        : PM.refinePose(panel.pose, {
+      panel.pose = panel.pose
+        ? PM.refinePose(panel.pose, {
           points, imageSize: panel.imageSize, groundY: building.solid.groundY,
-        });
-    } else {
+        })
+        : (full ? solveMatch(match) : null);
+    } else if (!panel.manualPose) {
       panel.pose = null;
     }
     drawPanel();
@@ -262,7 +278,12 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     }
     const points = toPoints({ imageSize: panel.imageSize, landmarks: panel.working });
     const errById = new Map();
-    if (pose) points.forEach((pt, i) => errById.set(pt.id, pose.perPoint[i]));
+    if (pose) {
+      points.forEach((pt) => {
+        const uv = PM.projectPoint(pose, panel.imageSize, pt.p);
+        errById.set(pt.id, uv ? Math.hypot(uv[0] - pt.px[0], uv[1] - pt.px[1]) : Infinity);
+      });
+    }
     panel.working.forEach((w) => {
       const x = w.px[0] * W * sx, y = w.px[1] * H * sy;
       const err = errById.get(w.id);
@@ -277,9 +298,12 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
       }
     });
     const stats = panel.el.querySelector('.pm-stats');
+    const errs = [...errById.values()].filter((e) => isFinite(e));
+    const rmse = errs.length ? Math.sqrt(errs.reduce((s, e) => s + e * e, 0) / errs.length) : null;
     stats.textContent = pose
-      ? `rmse ${pose.rmse.toFixed(0)} px · fov ${pose.fovV.toFixed(0)}°`
-      : `${panel.working.length}/4 points`;
+      ? `rmse ${rmse === null ? '—' : rmse.toFixed(0) + ' px'} · fov ${pose.fovV.toFixed(0)}°` +
+        (rmse !== null && rmse > 30 ? ' — try Align view' : '')
+      : `${panel.working.length}/4 points — try Align view`;
     const sel = panel.el.querySelector('.pm-sel');
     if (panel.selected) {
       const l = landmarkById.get(panel.selected);
@@ -339,8 +363,90 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     }
   }
 
+  // ------------------------------------------------------------------
+  // Align by orbiting: overlay the photo semi-transparently on the 3D
+  // view and let the user orbit until the model lines up behind it; the
+  // camera then *is* the pose. Ideal when suggested dots are bad — the
+  // wireframe drawn from the aligned pose makes fixing dots easy, and
+  // subsequent drags warm-refine from this pose family.
+  // ------------------------------------------------------------------
+  let alignEl = null;
+  let alignSavedFov = null;
+
+  function startAlign() {
+    if (!panel) return;
+    if (building.selectFloor) building.selectFloor(null);
+    closeOverlay();
+    panel.el.style.display = 'none';
+    alignSavedFov = camera.fov;
+    camera.fov = panel.pose ? panel.pose.fovV : 65;
+    camera.updateProjectionMatrix();
+    frustumGroup.visible = false;
+    alignEl = document.createElement('div');
+    alignEl.className = 'pm-overlay';
+    alignEl.innerHTML = `
+      <img src="${base + panel.im.file}" alt="">
+      <div class="pm-overlay-bar">
+        <span>orbit until the model lines up behind the photo</span>
+        <input type="range" min="5" max="95" value="45">
+        <button class="pm-align-use">Use this view</button>
+        <button class="pm-align-cancel">Cancel</button>
+      </div>`;
+    const img = alignEl.querySelector('img');
+    img.style.opacity = 0.45;
+    alignEl.querySelector('input').addEventListener('input', (e) => {
+      img.style.opacity = e.target.value / 100;
+    });
+    alignEl.querySelector('.pm-align-use').addEventListener('click', () => finishAlign(true));
+    alignEl.querySelector('.pm-align-cancel').addEventListener('click', () => finishAlign(false));
+    document.body.appendChild(alignEl);
+  }
+
+  function finishAlign(use) {
+    if (!alignEl) return;
+    alignEl.remove();
+    alignEl = null;
+    frustumGroup.visible = true;
+    if (use && panel) {
+      // the current camera is the pose estimate
+      const e = new THREE.Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+      const H = panel.imageSize[1];
+      panel.pose = {
+        pos: camera.position.toArray(),
+        yaw: e.y, pitch: e.x, roll: e.z,
+        f: H / 2 / Math.tan((camera.fov * Math.PI) / 360),
+        fovV: camera.fov,
+        rmse: NaN, perPoint: [],
+      };
+      panel.manualPose = true;
+      // deliberately no refine here: the existing dots may be the very
+      // thing that's wrong, and refining against them would yank the
+      // pose straight back to the bad optimum. The wireframe drawn from
+      // this pose shows the user where the dots SHOULD be; refinement
+      // resumes as they drag them.
+    }
+    if (alignSavedFov !== null) {
+      camera.fov = alignSavedFov;
+      camera.updateProjectionMatrix();
+      alignSavedFov = null;
+    }
+    if (panel) {
+      panel.el.style.display = '';
+      sizeCanvas();
+      drawPanel();
+    }
+  }
+
   function acceptMatch() {
     if (!panel || !panel.pose) return;
+    // physically implausible cameras usually mean a wrong dot, not a
+    // wrong solver — warn, don't block
+    const G = window.SolarViz.buildingGeometry;
+    const p = panel.pose;
+    const h = p.pos[1] - building.solid.groundY;
+    if (G.pointInPolygon(building.solid.footprint, p.pos[0], p.pos[2]) || h < -2 || h > 8) {
+      flashWarn('This camera position looks implausible — check the dots or try Align view');
+    }
     state.photoMatches[panel.im.id] = {
       imageSize: panel.imageSize,
       points: panel.working.map((w) => ({ id: w.id, px: w.px.slice() })),
@@ -365,6 +471,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
       camera.updateProjectionMatrix();
       savedFov = null;
     }
+    frustumGroup.visible = true;
   }
 
   function flyToPhoto(imageId) {
@@ -372,6 +479,12 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     const im = photos.find((p) => p.id === imageId);
     if (!m || !m.pose || !im) return;
     closeOverlay();
+    // standing at the photographer's position: the frustum's thumbnail
+    // sprite sits 1.5 m ahead and would exactly fill the view (untextured
+    // it renders solid white) — hide frustums, and drop any floor
+    // isolation so the whole model is comparable behind the photo
+    if (building.selectFloor) building.selectFloor(null);
+    frustumGroup.visible = false;
     const pose = m.pose;
     const pos = new THREE.Vector3(...pose.pos);
     const fwd = new THREE.Vector3(...PM.poseForward(pose));
