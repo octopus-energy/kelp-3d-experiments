@@ -146,6 +146,8 @@
     <div class="lbl"><span>Snap tolerance</span><span id="v-bm-tol">0.70 m</span></div>
     <input type="range" id="bm-tol" min="20" max="100" step="5" value="70">
   </div>
+  <button class="btn" id="bm-footprint-btn">Edit footprint</button>
+  <button class="btn bm-btn-gap" id="bm-footprint-reset" style="display:none">Reset footprint edits</button>
 
   <h2>Floors</h2>
   <div class="stat-row rate-row">
@@ -191,6 +193,10 @@
     <input type="checkbox" id="bm-fp-underlay" checked>
     <span class="toggle-label">Floorplan underlay</span>
   </label>
+  <div id="bm-wall-edit" style="display:none">
+    <div class="bm-fp-score">Wall selected — drag it sideways in the view to move it</div>
+    <button class="btn bm-btn-danger" id="bm-wall-delete">Delete wall</button>
+  </div>
   <div id="bm-room-list"></div>
 
   <h2>Windows &amp; Radiators</h2>

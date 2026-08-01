@@ -28,6 +28,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   let state = {
     version: 1,
     settings: { includeRejected: true, snapTol: 0.7, orthogonalize: true },
+    footprintOffsets: null,    // per-vertex [dx, dz] edits to the main loop
     storeys: {
       count: siteData.number_of_storeys || 2,
       storeyHeight: null,      // null = auto: (eaves − ground) / count
@@ -73,6 +74,8 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     slab: new THREE.MeshStandardMaterial({ color: 0xc7cdd6, roughness: 0.9, metalness: 0.0 }),
     outline: new THREE.LineBasicMaterial({ color: 0xf5b942, transparent: true, opacity: 0.9 }),
     dividerWall: new THREE.MeshStandardMaterial({ color: 0xe9e5db, roughness: 0.92, metalness: 0.0 }),
+    dividerSel: new THREE.MeshStandardMaterial({ color: 0xf5b942, roughness: 0.8, metalness: 0.0, emissive: 0x332200 }),
+    handle: new THREE.MeshBasicMaterial({ color: 0xf5b942 }),
     extWall: new THREE.MeshStandardMaterial({ color: 0xded7c9, roughness: 0.9, metalness: 0.0, side: THREE.DoubleSide }),
     glass: new THREE.MeshStandardMaterial({ color: 0x9fc8e8, transparent: true, opacity: 0.38, roughness: 0.12, metalness: 0.4, side: THREE.DoubleSide }),
     glassSel: new THREE.MeshStandardMaterial({ color: 0xf5b942, transparent: true, opacity: 0.55, roughness: 0.12, metalness: 0.4, side: THREE.DoubleSide }),
@@ -145,6 +148,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       snapTol: state.settings.snapTol,
       orthogonalize: state.settings.orthogonalize,
       groundY: siteData.property_details.altitude,
+      footprintOffsets: state.footprintOffsets,
     });
     if (!solid) {
       $('bm-status').textContent = 'failed';
@@ -165,6 +169,8 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
     rebuildFloors();
     applyTerrainFlatten();
+    refreshFootprintHandles();
+    syncFootprintButtons();
   }
 
   function unregisterHoverables(group) {
@@ -225,12 +231,27 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   function rebuildRoomsForLevel(idx, opts) {
     const lv = levels[idx];
     const fs = floorState(idx);
-    const res = R.deriveRooms(lv.outline, fs.dividers);
-    if (res.failed.length) {
-      console.warn(`[building] ${res.failed.length} divider(s) no longer fit floor ${idx}, dropped`);
+    let res = R.deriveRooms(lv.outline, fs.dividers);
+    if (res.failed.length && FP) {
+      // the outline moved under the walls (footprint edit, storey
+      // change): re-snap wall ends to the new boundary before giving up
+      const oldRooms = derivedRooms[idx];
+      const refit = FP.refitDividers({
+        worldOutline: lv.outline, dividers: fs.dividers, deriveRooms: R.deriveRooms,
+      });
+      fs.dividers = refit.dividers;
+      res = R.deriveRooms(lv.outline, fs.dividers);
+      if (oldRooms) remapRoomMeta(fs, oldRooms, res.rooms);
+      if (refit.failed.length) {
+        console.warn(`[building] ${refit.failed.length} divider(s) no longer fit floor ${idx}, dropped`);
+      }
+    } else if (res.failed.length) {
       fs.dividers = res.applied;
     }
     derivedRooms[idx] = res.rooms;
+    if (idx === selectedFloorIdx && selectedWall !== null && selectedWall >= fs.dividers.length) {
+      selectedWall = null;
+    }
 
     const lg = levelGroups[idx];
     // room tints registered as hoverables must be unregistered first
@@ -244,11 +265,31 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       lg.roomsGroup.add(g);
       g.traverse((o) => { if (o.userData && o.userData.type === 'room') hoverables.push(o); });
     }
+    if (idx === selectedFloorIdx) refreshWallSelection();
     if (!(opts && opts.skipLists)) {
       refreshFloorList();
       refreshRoomList();
       saveState();
     }
+  }
+
+  // Carry room names/types across a re-derivation that changed the room
+  // ids (wall deleted or dropped, outline edited): match old rooms to
+  // new ones by centroid containment.
+  function remapRoomMeta(fs, oldRooms, newRooms) {
+    const names = {}, types = {};
+    oldRooms.forEach((r) => {
+      const name = fs.roomNames[r.id], type = fs.roomTypes[r.id];
+      if (!name && !type) return;
+      const [cx, cz] = G.polygonCentroid(r.poly);
+      const hit = newRooms.find((nr) => G.pointInPolygon(nr.poly, cx, cz));
+      if (hit && !names[hit.id] && !types[hit.id]) {
+        if (name) names[hit.id] = name;
+        if (type) types[hit.id] = type;
+      }
+    });
+    fs.roomNames = names;
+    fs.roomTypes = types;
   }
 
   function rebuildOpenings(opts) {
@@ -663,6 +704,216 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   $('bm-fp-underlay').addEventListener('change', updateVisibility);
 
   // ------------------------------------------------------------------
+  // Wall editing: click a divider wall to select it, drag it sideways
+  // to move (attached T-junction walls re-snap onto its new position),
+  // delete via the button. Room names survive via centroid remapping.
+  // ------------------------------------------------------------------
+  let selectedWall = null;   // divider index on the selected floor
+
+  function dividerMeshesFor(idx) {
+    const out = [];
+    if (idx === null || !levelGroups[idx]) return out;
+    levelGroups[idx].roomsGroup.traverse((o) => {
+      if (o.userData && o.userData.type === 'divider') out.push(o);
+    });
+    return out;
+  }
+
+  function refreshWallSelection() {
+    dividerMeshesFor(selectedFloorIdx).forEach((m) => {
+      m.material = m.userData.dividerIdx === selectedWall ? mats.dividerSel : mats.dividerWall;
+    });
+    $('bm-wall-edit').style.display = selectedWall === null ? 'none' : '';
+  }
+
+  function selectWall(idx) {
+    selectedWall = idx;
+    refreshWallSelection();
+  }
+
+  $('bm-wall-delete').addEventListener('click', () => {
+    if (selectedWall === null || selectedFloorIdx === null) return;
+    const fs = floorState(selectedFloorIdx);
+    const lv = levels[selectedFloorIdx];
+    const oldRooms = derivedRooms[selectedFloorIdx] || [];
+    const trial = fs.dividers.slice();
+    trial.splice(selectedWall, 1);
+    // walls that ended on the deleted one re-snap where they can
+    const refit = FP.refitDividers({
+      worldOutline: lv.outline, dividers: trial, deriveRooms: R.deriveRooms,
+    });
+    fs.dividers = refit.dividers;
+    remapRoomMeta(fs, oldRooms, R.deriveRooms(lv.outline, fs.dividers).rooms);
+    selectedWall = null;
+    rebuildRoomsForLevel(selectedFloorIdx);
+    if (refit.failed.length) flash(`${refit.failed.length} attached wall(s) removed too`);
+  });
+
+  // ------------------------------------------------------------------
+  // Parametric footprint editing: draggable handles on the main loop's
+  // vertices. Committed drags persist as per-vertex offsets and rebuild
+  // the whole chain — solid, floors, rooms (re-snapped), openings.
+  // ------------------------------------------------------------------
+  const fpEditBtn = $('bm-footprint-btn');
+  const fpResetBtn = $('bm-footprint-reset');
+  let editingFootprint = false;
+  let fpHandles = [];
+  const fpEditGroup = new THREE.Group();
+  buildingRoot.add(fpEditGroup);
+  const handleGeom = new THREE.SphereGeometry(0.26, 14, 10);
+
+  function clearFootprintHandles() {
+    while (fpEditGroup.children.length) {
+      const c = fpEditGroup.children[0];
+      fpEditGroup.remove(c);
+      if (c.geometry && c.geometry !== handleGeom) c.geometry.dispose();
+    }
+    fpHandles = [];
+  }
+
+  function refreshFootprintHandles() {
+    clearFootprintHandles();
+    if (!editingFootprint || !solid) return;
+    solid.loops[0].ids.forEach((id, i) => {
+      const c = solid.clusters[id];
+      const m = new THREE.Mesh(handleGeom, mats.handle);
+      m.position.set(c.x, c.y + 0.35, c.z);
+      m.userData = { type: 'fp-handle', fpIdx: i };
+      fpEditGroup.add(m);
+      fpHandles.push(m);
+    });
+    rebuildFootprintOutlineLine();
+  }
+
+  function rebuildFootprintOutlineLine() {
+    const old = fpEditGroup.children.find((c) => c.userData.isFpOutline);
+    if (old) { fpEditGroup.remove(old); old.geometry.dispose(); }
+    if (!fpHandles.length) return;
+    const pts = fpHandles.map((h) => h.position.clone());
+    pts.push(pts[0].clone());
+    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mats.outline);
+    line.userData.isFpOutline = true;
+    fpEditGroup.add(line);
+  }
+
+  function setFootprintEdit(on) {
+    editingFootprint = on;
+    fpEditBtn.classList.toggle('active', on);
+    fpEditBtn.textContent = on ? 'Done editing footprint' : 'Edit footprint';
+    if (on) {
+      if (selectedFloorIdx !== null) selectFloor(null);
+      setPlacing(null);
+      fpCancelPreview();
+    }
+    refreshFootprintHandles();
+  }
+  fpEditBtn.addEventListener('click', () => setFootprintEdit(!editingFootprint));
+  fpResetBtn.addEventListener('click', () => {
+    state.footprintOffsets = null;
+    saveState();
+    rebuildSolid();
+  });
+  function syncFootprintButtons() {
+    const edited = state.footprintOffsets && state.footprintOffsets.some((o) => o && (o[0] || o[1]));
+    fpResetBtn.style.display = edited ? '' : 'none';
+  }
+
+  // ------------------------------------------------------------------
+  // Shared drag machinery (wall move + footprint handle move)
+  // ------------------------------------------------------------------
+  let drag = null;
+  const dragPlane = new THREE.Plane();
+  const dragPt = new THREE.Vector3();
+  function pointOnPlane(e, y) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(ndc, view.camera);
+    dragPlane.set(new THREE.Vector3(0, 1, 0), -y);
+    return raycaster.ray.intersectPlane(dragPlane, dragPt) ? dragPt : null;
+  }
+
+  function beginWallDrag(startPoint) {
+    const fs = floorState(selectedFloorIdx);
+    const path = fs.dividers[selectedWall];
+    // move axis = perpendicular of the longest segment
+    let ax = 0, az = 0, bestLen = 0;
+    for (let i = 0; i < path.length - 1; i++) {
+      const dx = path[i + 1][0] - path[i][0], dz = path[i + 1][1] - path[i][1];
+      const l = Math.hypot(dx, dz);
+      if (l > bestLen) { bestLen = l; ax = -dz / l; az = dx / l; }
+    }
+    if (!bestLen) return;
+    drag = {
+      kind: 'wall', axis: [ax, az], delta: 0,
+      start: [startPoint.x, startPoint.z],
+      path: path.map((p) => p.slice()),
+      planeY: levels[selectedFloorIdx].slabTopY,
+      meshes: dividerMeshesFor(selectedFloorIdx).filter((m) => m.userData.dividerIdx === selectedWall),
+    };
+    controls.enabled = false;
+  }
+
+  function beginFootprintDrag(handle) {
+    drag = {
+      kind: 'fp', idx: handle.userData.fpIdx, handle,
+      planeY: handle.position.y,
+      base: [handle.position.x, handle.position.z],
+      cur: [handle.position.x, handle.position.z],
+      grab: null,   // pointer offset from the handle, set on first move
+    };
+    controls.enabled = false;
+  }
+
+  function commitDrag() {
+    const d = drag;
+    drag = null;
+    controls.enabled = true;
+    if (d.kind === 'wall') {
+      d.meshes.forEach((m) => m.position.set(0, 0, 0));
+      if (Math.abs(d.delta) < 0.02 || selectedFloorIdx === null) return;
+      const fs = floorState(selectedFloorIdx);
+      const lv = levels[selectedFloorIdx];
+      const moved = d.path.map(([x, z]) => [x + d.axis[0] * d.delta, z + d.axis[1] * d.delta]);
+      const trial = fs.dividers.slice();
+      trial[selectedWall] = moved;
+      const refit = FP.refitDividers({
+        worldOutline: lv.outline, dividers: trial, deriveRooms: R.deriveRooms,
+      });
+      if (refit.failed.includes(moved)) {
+        flash('Wall cannot move there');
+        rebuildRoomsForLevel(selectedFloorIdx);
+        return;
+      }
+      const oldRooms = derivedRooms[selectedFloorIdx] || [];
+      fs.dividers = refit.dividers;
+      remapRoomMeta(fs, oldRooms, R.deriveRooms(lv.outline, fs.dividers).rooms);
+      // keep the moved wall selected: nearest stored divider by midpoint
+      const mid = FP.polylineMidpoint(moved);
+      let bi = null, bd = Infinity;
+      fs.dividers.forEach((p, i) => {
+        const m = FP.polylineMidpoint(p);
+        const dd = Math.hypot(m[0] - mid[0], m[1] - mid[1]);
+        if (dd < bd) { bd = dd; bi = i; }
+      });
+      selectedWall = bi;
+      rebuildRoomsForLevel(selectedFloorIdx);
+      if (refit.failed.length) flash(`${refit.failed.length} attached wall(s) dropped`);
+    } else {
+      const dx = d.cur[0] - d.base[0], dz = d.cur[1] - d.base[1];
+      if (Math.hypot(dx, dz) < 0.03 || !solid) return;
+      const n = solid.loops[0].ids.length;
+      if (!state.footprintOffsets || state.footprintOffsets.length !== n) {
+        state.footprintOffsets = new Array(n).fill(null);
+      }
+      const o = state.footprintOffsets[d.idx] || [0, 0];
+      state.footprintOffsets[d.idx] = [o[0] + dx, o[1] + dz];
+      saveState();
+      rebuildSolid();   // floors, rooms and openings all re-derive
+    }
+  }
+
+  // ------------------------------------------------------------------
   // Window / radiator placement + selection
   // ------------------------------------------------------------------
   const raycaster = new THREE.Raycaster();
@@ -696,10 +947,48 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   let downPos = null;
   renderer.domElement.addEventListener('pointerdown', (e) => {
-    if (e.button === 0) downPos = { x: e.clientX, y: e.clientY };
+    if (e.button !== 0) return;
+    downPos = { x: e.clientX, y: e.clientY };
+    if (!modeActive || planDraw.isActive() || !solid) return;
+    // begin a drag when the press lands on a footprint handle or on the
+    // already-selected wall — otherwise leave the press to OrbitControls
+    if (editingFootprint) {
+      const hits = raycastFromEvent(e, fpHandles);
+      if (hits.length) beginFootprintDrag(hits[0].object);
+      return;
+    }
+    if (selectedWall !== null && selectedFloorIdx !== null && !placing) {
+      const own = dividerMeshesFor(selectedFloorIdx)
+        .filter((m) => m.userData.dividerIdx === selectedWall);
+      const hits = raycastFromEvent(e, own);
+      if (hits.length) beginWallDrag(hits[0].point);
+    }
+  });
+  renderer.domElement.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const p = pointOnPlane(e, drag.planeY);
+    if (!p) return;
+    if (drag.kind === 'wall') {
+      drag.delta = (p.x - drag.start[0]) * drag.axis[0] + (p.z - drag.start[1]) * drag.axis[1];
+      drag.meshes.forEach((m) => m.position.set(drag.axis[0] * drag.delta, 0, drag.axis[1] * drag.delta));
+    } else {
+      if (!drag.grab) drag.grab = [p.x - drag.base[0], p.z - drag.base[1]];
+      let x = p.x - drag.grab[0], z = p.z - drag.grab[1];
+      // keep footprint edges square: snap onto the axis line through
+      // either neighbour when the edge is nearly axis-aligned
+      const n = fpHandles.length;
+      [fpHandles[(drag.idx + n - 1) % n], fpHandles[(drag.idx + 1) % n]].forEach((nb) => {
+        [x, z] = R.axisSnap([nb.position.x, nb.position.z], [x, z], solid.axisAngle, 8);
+      });
+      drag.cur = [x, z];
+      drag.handle.position.set(x, drag.planeY, z);
+      rebuildFootprintOutlineLine();
+    }
   });
   renderer.domElement.addEventListener('pointerup', (e) => {
-    if (e.button !== 0 || !downPos) return;
+    if (e.button !== 0) return;
+    if (drag) { commitDrag(); downPos = null; return; }
+    if (!downPos) return;
     const moved = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
     downPos = null;
     if (moved > 6 || !modeActive || planDraw.isActive() || !solid || !shell) return;
@@ -722,6 +1011,16 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       setPlacing(null);
       rebuildOpenings();
       return;
+    }
+
+    // click on a divider wall: select it for move/delete
+    if (selectedFloorIdx !== null && !fpPreview) {
+      const hits = raycastFromEvent(e, dividerMeshesFor(selectedFloorIdx));
+      if (hits.length) {
+        selectWall(hits[0].object.userData.dividerIdx);
+        return;
+      }
+      if (selectedWall !== null) selectWall(null);
     }
 
     // plain click: select/deselect a window
@@ -757,7 +1056,10 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   function selectFloor(idx) {
     if (drawingWall) { drawingWall = false; planDraw.cancel(); }
     fpCancelPreview();
+    if (idx !== null && editingFootprint) setFootprintEdit(false);
+    selectedWall = null;
     selectedFloorIdx = idx;
+    refreshWallSelection();
     wallBtn.disabled = idx === null;
     $('bm-undo-wall').disabled = idx === null;
     fpBtn.disabled = idx === null || !planFloorFor(idx);
@@ -1036,7 +1338,11 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   function setActive(on) {
     modeActive = on;
     buildingRoot.visible = on && $('bm-show').checked;
-    if (!on) { setPlacing(null); fpCancelPreview(); }
+    if (!on) {
+      setPlacing(null);
+      fpCancelPreview();
+      if (editingFootprint) setFootprintEdit(false);
+    }
     applyTerrainFlatten();
   }
 
