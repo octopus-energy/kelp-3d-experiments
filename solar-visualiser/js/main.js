@@ -121,6 +121,18 @@
       console.error('Photo gallery init failed:', e);
     }
 
+    let photoMatch = null;
+    try {
+      if (building && building.solid) {
+        photoMatch = window.SolarViz.setupPhotoMatch({
+          camera, view, renderer, controls, cameraAnimator, planDraw,
+          building, imageData: window.IMAGE_DATA,
+        });
+      }
+    } catch (e) {
+      console.error('Photo matching init failed:', e);
+    }
+
     window.SolarViz.setupUIControls({
       terrainMesh, matTextured, matSolid,
       roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,
@@ -133,7 +145,7 @@
         roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine,
         scaffoldRoot: scaffolding.root,
       },
-      building, planDraw,
+      building, photoMatch, planDraw,
       panels: {
         solar: document.getElementById('panel-solar'),
         ashp: document.getElementById('panel-ashp'),

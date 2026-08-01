@@ -694,6 +694,124 @@
   .bm-lightbox-close:hover,
   .bm-lightbox-nav:hover { background: rgba(255,255,255,0.15); }
 
+  /* Photo positions list */
+  .bm-photo-item { display: flex; gap: 8px; align-items: center; }
+  .bm-photo-item img {
+    width: 64px; height: 43px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex: none;
+  }
+  .bm-photo-item.matched { border-left-color: var(--good); }
+  .bm-photo-meta { min-width: 0; flex: 1; }
+  .bm-photo-actions { display: flex; gap: 4px; margin-top: 4px; }
+  .bm-photo-actions button {
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    font: inherit; font-size: 10px;
+    cursor: pointer;
+  }
+  .bm-photo-actions button:hover { background: rgba(255,255,255,0.1); }
+
+  /* Photo match panel */
+  .pm-panel {
+    position: fixed;
+    right: 14px; bottom: 14px;
+    width: min(46vw, 640px);
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    z-index: 60;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+  }
+  .pm-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .pm-title { font-size: 11px; color: var(--text); flex: 1; }
+  .pm-stats { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent-2); white-space: nowrap; }
+  .pm-head button {
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-radius: 4px;
+    font: inherit; font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .pm-head .pm-accept { border-color: var(--good); }
+  .pm-head button:hover { background: rgba(255,255,255,0.12); }
+  .pm-body { position: relative; }
+  .pm-body img { display: block; width: 100%; border-radius: 0; }
+  .pm-body canvas {
+    position: absolute; inset: 0;
+    cursor: crosshair;
+    touch-action: none;
+  }
+  .pm-foot {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px;
+    border-top: 1px solid var(--panel-border);
+  }
+  .pm-foot select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--panel-border);
+    color: var(--text);
+    border-radius: 4px;
+    font: inherit; font-size: 10px;
+    padding: 2px 4px;
+    max-width: 170px;
+  }
+  .pm-sel { font-size: 10px; color: var(--text); white-space: nowrap; }
+  .pm-sel button {
+    border: 1px solid var(--warn);
+    background: transparent; color: var(--warn);
+    border-radius: 4px; font: inherit; font-size: 9px;
+    padding: 1px 6px; cursor: pointer; margin-left: 4px;
+  }
+  .pm-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--text-dim);
+    margin-left: auto; text-align: right;
+  }
+
+  /* Fly-to photo cross-fade */
+  .pm-overlay {
+    position: fixed; inset: 0;
+    z-index: 55;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .pm-overlay img {
+    height: 100vh;
+    width: auto;
+    object-fit: contain;
+  }
+  .pm-overlay-bar {
+    position: absolute;
+    bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    pointer-events: auto;
+    font-size: 11px; color: var(--text);
+    backdrop-filter: blur(12px);
+  }
+  .pm-overlay-bar button {
+    border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-radius: 4px; font: inherit; font-size: 11px;
+    padding: 3px 10px; cursor: pointer;
+  }
+
   .error-banner {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     background: #2a0e0e; color: #ffb4a8;

@@ -6,7 +6,7 @@
 // =====================================================================
 window.SolarViz = window.SolarViz || {};
 
-window.SolarViz.setupModeSwitcher = function ({ groups, building, planDraw, panels, legendEl }) {
+window.SolarViz.setupModeSwitcher = function ({ groups, building, photoMatch, planDraw, panels, legendEl }) {
   const $ = (id) => document.getElementById(id);
   const buttons = Array.from(document.querySelectorAll('#mode-toggle button'));
   const KEY = 'viz-mode';
@@ -39,6 +39,7 @@ window.SolarViz.setupModeSwitcher = function ({ groups, building, planDraw, pane
       groups.markerLine.visible = false;
     }
     if (building) building.setActive(mode === 'ashp');
+    if (photoMatch) photoMatch.setActive(mode === 'ashp');
     try { localStorage.setItem(KEY, mode); } catch (e) { /* private mode */ }
   }
 

@@ -38,6 +38,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     floors: {},                // levelIdx -> { dividers, roomNames, roomTypes }
     windows: [],
     radiators: [],
+    photoMatches: {},          // imageId -> { landmarks, pose } (photomatch-ui)
   };
   try {
     const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
@@ -171,7 +172,11 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     applyTerrainFlatten();
     refreshFootprintHandles();
     syncFootprintButtons();
+    rebuildListeners.forEach((fn) => { try { fn(); } catch (e) { console.error(e); } });
   }
+
+  // other modules (photo matching) react to the solid being re-derived
+  const rebuildListeners = [];
 
   function unregisterHoverables(group) {
     group.traverse((c) => {
@@ -1349,6 +1354,8 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   return {
     root: buildingRoot,
     setActive,
+    save: saveState,
+    addRebuildListener: (fn) => rebuildListeners.push(fn),
     get solid() { return solid; },
     get levels() { return levels; },
     get state() { return state; },
