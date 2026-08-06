@@ -18,3 +18,11 @@ A browser-based 3D viewer for solar panel site surveys, built with [three.js](ht
 - Mouse controls: drag to rotate, shift+drag to pan, scroll to zoom, plus a compass for orientation and hover tooltips on roof faces/panels
 
 The site data (property geometry, heightmap, aerial photo) is currently bundled as hardcoded JS in `data/site-data.js` — this is the eventual swap point for a real backend/API. See [solar-visualiser/CLAUDE.md](solar-visualiser/CLAUDE.md) for the module layout if you're diving into the code.
+
+### [pipeline-explainer](pipeline-explainer/)
+
+A step-through 3D explainer of how the solar analysis pipeline works — from a flat aerial photo to a costed panel design. Six steps mirror the backend's `solar_potential_from_address()`: CV roof detection (real Roboflow output for this tile), OS site/building filtering, DSM → 3D, plane fitting for slope/azimuth (animated live regression), the brute-force panel layout search, and the MCS horizon-scan shading assessment seen from the panel's own point of view.
+
+Steps 4–6 run faithful mini-reimplementations of the real algorithms live in the browser against the bundled DSM — the simulated panel count and shading factor match the production run.
+
+**Running it:** serve the repo root with any static server (the page references `../solar-visualiser` for vendor libs and site data), or open `pipeline-explainer/index.html` directly via `file://`.

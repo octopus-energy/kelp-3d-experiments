@@ -54,7 +54,7 @@
 
     setStatus('Drawing roof faces');
     // Default panel mounting lift (metres) — realistic for hooks + rails on a flush mount
-    const PANEL_LIFT = 0.12;
+    const PANEL_LIFT = 0.20;
     const hoverables = [];
     const cameraAnimator = window.SolarViz.createCameraAnimator(camera, controls);
 

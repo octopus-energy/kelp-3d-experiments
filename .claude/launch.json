@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8743", "--directory", "solar-visualiser"],
       "port": 8743
+    },
+    {
+      "name": "repo-root",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8642"],
+      "port": 8642
     }
   ]
 }

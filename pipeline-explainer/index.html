@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Solar Analysis Pipeline — Explainer</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-text">Loading pipeline explainer</div>
+  <div class="loader-bar"></div>
+  <div class="loader-text" id="loader-status" style="opacity:0.5;">Initialising</div>
+</div>
+
+<div class="header">
+  <h1><span>Solar Analysis Pipeline</span> · how an address becomes a panel design</h1>
+  <div class="sub">solar_potential_from_address() · PO19 5DZ · aerial 100 m × 100 m @ 25 cm</div>
+</div>
+
+<div id="canvas-wrap"></div>
+<div id="labels"></div>
+
+<aside class="sidebar" id="sidebar">
+  <nav class="step-nav" id="step-nav"></nav>
+  <div class="step-body">
+    <div class="step-kicker" id="step-kicker">STEP 0</div>
+    <h2 class="step-title" id="step-title"></h2>
+    <div class="step-text" id="step-text"></div>
+    <div class="step-code" id="step-code"></div>
+  </div>
+  <div class="step-controls">
+    <button id="btn-prev" class="nav-btn">&larr; Back</button>
+    <button id="btn-next" class="nav-btn primary">Next &rarr;</button>
+  </div>
+  <div class="hint">arrow keys work too · drag to orbit, scroll to zoom</div>
+</aside>
+
+<div class="inset" id="inset" hidden>
+  <div class="inset-title" id="inset-title"></div>
+  <canvas id="inset-canvas"></canvas>
+  <div class="inset-hud" id="inset-hud"></div>
+</div>
+
+<!-- vendor + data shared with the solar-visualiser experiment -->
+<script src="../solar-visualiser/vendor/three.min.js"></script>
+<script src="../solar-visualiser/vendor/OrbitControls.js"></script>
+<script src="../solar-visualiser/data/site-data.js"></script>
+<script src="../solar-visualiser/js/coordinates.js"></script>
+
+<!-- explainer modules -->
+<script src="data/mcs-segments.js"></script>
+<script src="data/detections.js"></script>
+<script src="data/os-data.js"></script>
+<script src="js/geometry2d.js"></script>
+<script src="js/data-prep.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/plane-fit.js"></script>
+<script src="js/layout-sim.js"></script>
+<script src="js/shading-sim.js"></script>
+<script src="js/steps.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
