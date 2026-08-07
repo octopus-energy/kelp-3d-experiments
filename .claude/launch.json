@@ -12,6 +12,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8642"],
       "port": 8642
+    },
+    {
+      "name": "lct-sandbox",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["-C", "/Users/reinierzeldenrust/Documents/repos/lct-vibe-sandbox", "dev"],
+      "port": 3000
     }
   ]
 }
