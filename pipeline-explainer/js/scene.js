@@ -194,7 +194,7 @@ window.PE.createScene = function (data, container) {
 
   // ---- persistent groups -------------------------------------------
   const groups = {};
-  for (const name of ['detections', 'os', 'roofs3D', 'panels3D', 'obstructions3D', 'planeFit', 'layout3D', 'shading']) {
+  for (const name of ['detections', 'os', 'roofs3D', 'panels3D', 'obstructions3D', 'planeFit', 'layout3D', 'shading', 'electrical']) {
     const g = new THREE.Group();
     g.visible = false;
     scene.add(g);

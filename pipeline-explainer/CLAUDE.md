@@ -6,9 +6,9 @@ A step-through explainer of the backend's `solar_potential_from_address()` pipel
 
 ## The steps
 
-0. flat aerial tile → 1. CV detections (real, whole tile) → 2. OS site/building filter → 3. DSM point cloud, photo morphs up to meet it → 4. live OLS plane fit on real DSM points (animated regression + azimuth candidate arbitrage) → 5. live panel-layout search (flatten → strips → offsets/alignments → validate against the exact face shape) → 6. horizon scan from the MCS point (first-person sweep east→west, MCS sky segments, shading factor + generation).
+0. flat aerial tile + geocoded point → 1. CV detections (real, 50 m crop, raw→regularised) → 2. OS site/building filter → 3. DSM point cloud, photo morphs up to meet it → 4. live OLS plane fit on real DSM points (animated regression + azimuth candidate arbitrage) → 5. live panel-layout search (flatten → strips → offsets/alignments → validate against the exact face shape) → 6. horizon scan from the MCS point (first-person sweep east→west, MCS sky segments, shading factor + generation) → 7. electrical: series strings on MPPT inputs through a simulated June day, mixed-orientation wiring vs one-orientation-per-tracker.
 
-Steps 4–6 are faithful mini-reimplementations of the backend algorithms running live in JS on the real DSM — not canned animations. The step-5 panel count and step-6 shading factor land within rounding of the production values.
+Steps 4–6 are faithful mini-reimplementations of the backend algorithms running live in JS on the real DSM — not canned animations. The step-5 panel count and step-6 shading factor land within rounding of the production values. Step 7 is an illustrative electrical model (single-diode + bypass IV curves, per-string global MPPT, 3.68 kW clip) — that layer isn't in the backend pipeline.
 
 ## Files
 
@@ -21,6 +21,7 @@ Steps 4–6 are faithful mini-reimplementations of the backend algorithms runnin
 - `js/plane-fit.js` — step 4: DSM sampling, OLS fit, animatable plane, azimuth candidates.
 - `js/layout-sim.js` — step 5: flatten/strip/offset/alignment search + inset-canvas renderer.
 - `js/shading-sim.js` — step 6: horizon scan, MCS segment intersection, 3D fan + chart.
+- `js/electrical-sim.js` — step 7: panel/string IV model, day sim, wiring visuals, P–V dashboard.
 - `js/steps.js` — narrative text + per-step scene choreography.
 - `js/main.js` — boot + navigation. Exposes `window.PE_DEBUG = { ctx, goTo, viz, data }` for tooling.
 

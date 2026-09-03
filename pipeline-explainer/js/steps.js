@@ -134,7 +134,7 @@ window.PE.buildSteps = function (ctx) {
   // ---------------------------------------------------------------
   // Declarative scene state
   // ---------------------------------------------------------------
-  const GROUPS = ['os', 'roofs3D', 'panels3D', 'obstructions3D', 'planeFit', 'layout3D', 'shading'];
+  const GROUPS = ['os', 'roofs3D', 'panels3D', 'obstructions3D', 'planeFit', 'layout3D', 'shading', 'electrical'];
   // Lazily-built DSM point cloud for step 3 (one dot per 50 cm sample).
   function ensureDsmCloud() {
     if (world.dsmCloud) return world.dsmCloud;
@@ -573,6 +573,114 @@ window.PE.buildSteps = function (ctx) {
           }
         };
         requestAnimationFrame(sweep);
+      },
+    },
+
+    // ---------------- STEP 7 ----------------
+    {
+      title: '7 · Strings, MPPT and the inverter',
+      get text() {
+        const sim = PE.electricalSim.compute(data);
+        const letters = sim.groups.map((g) => `${g.letter} (${g.panels.length})`).join(', ');
+        const mixName = sim.scenarios.mixed.strings[0].name.replace('S1 · ', '');
+        const gain = ((sim.scenarios.split.kwh / sim.scenarios.mixed.kwh - 1) * 100).toFixed(0);
+        return `
+<p>The pipeline stops at kWh per array — harvesting them is the inverter's job. Panels are wired in <strong>series strings</strong> (follow the coloured wires): their voltages add up, but the whole string carries <strong>one shared current</strong>.</p>
+<p>Here's the subtle part: a string has no fixed output. The inverter chooses what <strong>voltage</strong> to hold it at, and the power depends on that choice — that's the curve on the left <em>(every possible voltage, and the power you'd get)</em>. Hold it too low and you waste voltage; push too high and the current collapses. The sweet spot in between is the <strong>Maximum Power Point</strong> — and it drifts all day as light changes. An <strong>MPPT</strong> (Maximum Power Point <em>Tracker</em>) is a small controller that constantly nudges the voltage and re-measures, hunting for the peak — the dot riding each curve. This inverter has <strong>3 independent trackers</strong>, each free to hold a different voltage.</p>
+<p>But panels sharing one tracker must live at <strong>one voltage, one current</strong> — a poorly-lit panel can't pass the others' current, its bypass diode cuts it out, and the curve splits into <strong>humps</strong>; the tracker can only stand on one of them. Arrays here: <strong>${letters}</strong>.</p>
+<p>So watch the same June day twice. First with <strong>${mixName}</strong> forced onto one tracker — whichever side the sun favours, the other drags it down. Then re-wired, <strong>one orientation per tracker</strong>: <strong>+${gain}% energy from the same panels</strong>. That's why orientations get their own strings.</p>
+<div class="note">Illustrative electrical model (450 W panels, simplified single-diode + bypass, clear June day, no temperature effects) — this layer isn't in the pipeline yet.</div>`;
+      },
+      code: `not in solar_potential_from_address yet — the pipeline<br>hands the design over at array level (kWh, layout, materials)`,
+      enter() {
+        const sim = PE.electricalSim.compute(data);
+        // build both wiring worlds once
+        if (!world.elec) {
+          world.elec = {
+            mixed: PE.electricalSim.buildWiring(data, viz, 'mixed'),
+            split: PE.electricalSim.buildWiring(data, viz, 'split'),
+          };
+          viz.groups.electrical.add(world.elec.mixed.group, world.elec.split.group);
+          world.elec.sunDisc = new THREE.Mesh(
+            new THREE.SphereGeometry(2.4, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0xffd989 })
+          );
+          viz.groups.electrical.add(world.elec.sunDisc);
+          world.elec.sunHome = viz.scene.children
+            .filter((c) => c.isDirectionalLight)
+            .map((l) => ({ l, pos: l.position.clone(), intensity: l.intensity }));
+          viz.catalogueOpacity(viz.groups.electrical);
+        }
+        const bc = PE.geom.centroid(data.buildingOutline);
+        const centre = viz.toScene(bc[0], bc[1], data.groundLevel + 4);
+        applyState({
+          panels3D: 1, morph: 1, electrical: 1,
+          camera: { pos: new THREE.Vector3(centre.x + 7, data.groundLevel + 21, centre.z + 28), tgt: centre, duration: 1800 },
+        });
+        viz.addLabel(`inverter · 3.68 kW · ${PE.electricalSim.INVERTER.mppts} MPPT`, world.elec.mixed.invPos.clone().add(new THREE.Vector3(0, 1.3, 0)));
+
+        inset.show('the same June day, twice — mixed wiring vs one orientation per MPPT');
+        const dash = PE.electricalSim.makeDashboard(inset.canvas, data);
+        const sun = (l) => world.elec.sunHome.find((s) => s.l === l);
+
+        // playback: mixed day → re-wire → split day → verdict, looping
+        const NS = PE.electricalSim.NSTEPS;
+        const STEP_MS = 135;
+        let phase = 0; // 0 = mixed, 1 = split
+        let idx = 0;
+        let holdUntil = 0;
+        world.elec.mixed.group.visible = true;
+        world.elec.split.group.visible = false;
+
+        const restoreSun = () => {
+          for (const s of world.elec.sunHome) { s.l.position.copy(s.pos); s.l.intensity = s.intensity; }
+          world.elec.sunDisc.visible = false;
+        };
+
+        // interval, not rAF: keeps the day advancing even if the tab is
+        // briefly backgrounded mid-playback
+        const timer = setInterval(() => {
+          if (ctx.currentStep !== 7) { restoreSun(); clearInterval(timer); return; }
+          const now = performance.now();
+          if (now >= holdUntil) {
+            const scenKey = phase === 0 ? 'mixed' : 'split';
+            const active = world.elec[scenKey];
+            active.setIrradiance(idx);
+            dash.draw(scenKey, idx, phase === 1 ? 'mixed' : null);
+            // steer the sun light + disc
+            const sp = PE.electricalSim.sunScenePos(data, viz, idx, centre);
+            const main = world.elec.sunHome[0];
+            main.l.position.copy(sp.pos);
+            main.l.intensity = sp.alt > 0 ? 0.6 + 1.1 * Math.sin((Math.max(0, sp.alt) * Math.PI) / 180) : 0.25;
+            world.elec.sunDisc.visible = sp.alt > 0;
+            world.elec.sunDisc.position.copy(sp.pos);
+            // HUD
+            const st = sim.scenarios[scenKey].steps[idx];
+            const parts = st.perString.map((r, si) => `${sim.scenarios[scenKey].strings[si].name.slice(0, 2)} ${r.P.toFixed(0)}W`);
+            inset.hud.innerHTML = `<span class="dim">${dash.fmtTime(sim.times[idx])} · ${sim.scenarios[scenKey].label}</span>  ${parts.join(' · ')} → <span class="${st.ac >= 3680 ? 'bad' : 'ok'}">AC ${st.ac.toFixed(0)}W${st.ac >= 3680 ? ' (clipping)' : ''}</span>`;
+
+            idx++;
+            if (idx >= NS) {
+              idx = 0;
+              if (phase === 0) {
+                phase = 1;
+                world.elec.mixed.group.visible = false;
+                world.elec.split.group.visible = true;
+                inset.hud.innerHTML = `<span class="dim">re-wiring…</span> mixed day: <span class="bad">${sim.scenarios.mixed.kwh.toFixed(1)} kWh</span> — now one orientation per MPPT`;
+                holdUntil = now + 2200; // hold on the re-wire beat
+              } else {
+                phase = 0;
+                const gain = ((sim.scenarios.split.kwh / sim.scenarios.mixed.kwh - 1) * 100).toFixed(0);
+                inset.hud.innerHTML =
+                  `mixed <span class="bad">${sim.scenarios.mixed.kwh.toFixed(1)} kWh</span> → split <span class="ok">${sim.scenarios.split.kwh.toFixed(1)} kWh</span> (+${gain}%) · same panels, same day` +
+                  `\n<span class="dim">replaying…</span>`;
+                world.elec.split.group.visible = false;
+                world.elec.mixed.group.visible = true;
+                holdUntil = now + 4200; // hold on the verdict
+              }
+            }
+          }
+        }, STEP_MS);
       },
     },
   ];
