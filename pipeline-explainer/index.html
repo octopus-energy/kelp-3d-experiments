@@ -39,6 +39,31 @@
   <div class="hint">arrow keys work too · drag to orbit, scroll to zoom</div>
 </aside>
 
+<div class="game" id="game" hidden>
+  <div class="game-inner">
+    <div class="game-title" id="game-title"></div>
+    <div class="game-instruction" id="game-instruction"></div>
+    <canvas id="game-curve"></canvas>
+    <div class="game-row" id="game-timerow" hidden>
+      <button id="game-play" class="game-btn primary">▶ play day</button>
+      <input type="range" id="game-time" min="0" max="67" value="8">
+      <span id="game-clock" class="game-mono">07:00</span>
+    </div>
+    <div class="game-row game-stats" id="game-statsrow" hidden>
+      <span>you <b id="game-you">–</b></span>
+      <span>perfect tracker <b id="game-perfect">–</b></span>
+      <div class="game-eff"><div id="game-eff-bar"></div></div>
+      <span id="game-score" class="game-mono">–</span>
+    </div>
+    <div class="game-row" id="game-modesrow" hidden>
+      <button id="game-wiring-split" class="game-btn">one orientation per tracker</button>
+      <button id="game-wiring-mixed" class="game-btn">N + S mixed on one tracker</button>
+      <span id="game-others" class="game-mono game-dim"></span>
+    </div>
+    <div class="game-verdict" id="game-verdict"></div>
+  </div>
+</div>
+
 <div class="inset" id="inset" hidden>
   <div class="inset-title" id="inset-title"></div>
   <canvas id="inset-canvas"></canvas>
@@ -62,6 +87,7 @@
 <script src="js/layout-sim.js"></script>
 <script src="js/shading-sim.js"></script>
 <script src="js/electrical-sim.js"></script>
+<script src="js/mppt-game.js"></script>
 <script src="js/steps.js"></script>
 <script src="js/main.js"></script>
 </body>

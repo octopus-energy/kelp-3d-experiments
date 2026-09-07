@@ -21,7 +21,7 @@ The site data (property geometry, heightmap, aerial photo) is currently bundled 
 
 ### [pipeline-explainer](pipeline-explainer/)
 
-A step-through 3D explainer of how the solar analysis pipeline works — from a flat aerial photo to a costed panel design. Steps 1–6 mirror the backend's `solar_potential_from_address()`: CV roof detection (real Roboflow output for this tile), OS site/building filtering, DSM → 3D, plane fitting for slope/azimuth (animated live regression), the brute-force panel layout search, and the MCS horizon-scan shading assessment seen from the panel's own point of view. A final electrical step simulates the inverter side: series strings on independent MPPT inputs through a June day, showing why different roof orientations need different strings.
+A step-through 3D explainer of how the solar analysis pipeline works — from a flat aerial photo to a costed panel design. Steps 1–6 mirror the backend's `solar_potential_from_address()`: CV roof detection (real Roboflow output for this tile), OS site/building filtering, DSM → 3D, plane fitting for slope/azimuth (animated live regression), the brute-force panel layout search, and the MCS horizon-scan shading assessment seen from the panel's own point of view. It ends with a three-step MPPT mini-game: drag a string's operating voltage to find the maximum power point, then track it by hand through a simulated June day against a perfect tracker, then feel the two-hump trap of wiring mixed orientations onto one tracker — the physics case for one-orientation-per-string.
 
 Steps 4–6 run faithful mini-reimplementations of the real algorithms live in the browser against the bundled DSM — the simulated panel count and shading factor match the production run.
 

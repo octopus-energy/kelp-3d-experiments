@@ -228,6 +228,94 @@ canvas { display: block; }
 .inset-hud .bad { color: var(--bad); }
 .inset-hud .dim { color: var(--text-dim); }
 
+/* ---- MPPT mini-game ---- */
+.game {
+  position: fixed;
+  left: 400px;
+  right: 16px;
+  top: 84px;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.game-inner {
+  pointer-events: auto;
+  width: min(760px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.game-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--accent-2);
+  margin-bottom: 4px;
+}
+.game-title b { color: var(--text); }
+.game-instruction {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text);
+  margin-bottom: 8px;
+  min-height: 18px;
+}
+.game-instruction b { color: var(--accent); }
+#game-curve {
+  width: 100%;
+  border-radius: 8px;
+  background: #0e1116;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.game-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.game-row[hidden] { display: none; }
+.game-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.game-btn:hover { border-color: var(--text-dim); }
+.game-btn.primary { background: var(--accent); color: #14161a; border-color: var(--accent); }
+.game-btn.active { background: var(--accent-2); color: #14161a; border-color: var(--accent-2); }
+#game-time { flex: 1; accent-color: var(--accent); }
+.game-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.game-dim { color: var(--text-dim); }
+.game-stats { font-size: 12px; }
+.game-stats b { font-family: 'JetBrains Mono', monospace; }
+.game-eff {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+#game-eff-bar { height: 100%; width: 0; background: var(--good); transition: width 0.15s linear; }
+.game-verdict {
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text);
+  min-height: 18px;
+}
+.game-verdict b { color: var(--accent); }
+
 /* ---- loader ---- */
 .loader {
   position: fixed; inset: 0;
