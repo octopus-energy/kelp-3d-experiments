@@ -1,0 +1,2948 @@
+{
+  "schemaVersion": 1,
+  "kind": "monocular-prediction-evidence",
+  "status": "complete",
+  "input_fingerprint": "a45e268ffa77e54b8e9f326aa3b32bd56a38667080b01ebbd4b3e80af5a7e128",
+  "settings": {
+    "property_id": "3broomroad",
+    "modalities": [
+      "depth",
+      "normals",
+      "albedo",
+      "depth_seethrough"
+    ],
+    "max_edge": 1024,
+    "seed": 2025,
+    "source_root": "/content/input_photos",
+    "sources": [
+      {
+        "source": "08968f54527a305a14c70973df11894c.jpeg",
+        "source_sha256": "49009a9bd2ba6c547e8cfac91f67d4840c92c8d0c1116093d634ea1cbeacd2ab",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "b9633662a47232c257aba686e16dc20bbf5b535105cc5e017e314905e01bfdd4"
+      },
+      {
+        "source": "0fd2882fa08c1065b617894a2342c16d.jpeg",
+        "source_sha256": "780f6e0c3c26181a7860489171afd38af03b5a7f5e7598829dadd09f3d9b44b5",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "8031d022c00f6ed3c645a6ffb2c4ccdfb89954a423d3bd23f3092584da37ef52"
+      },
+      {
+        "source": "35f17817024aeb5a833ac4f0ed4d592a.jpeg",
+        "source_sha256": "730b09cd1c5ad5e2514aab36ee8da93627516b58608b1e5af4031dd139c6210c",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "ecfe6757d965a444981c3300d791cf52b27d0837f74ad50781b84e8a2598ad67"
+      },
+      {
+        "source": "3e5497efae3158eb89c5af10b89fa4f9.jpeg",
+        "source_sha256": "cbff039827111b8206d603a1e97593b16fb5a83b94cf22e3fd6f1f6930c51cfd",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "d4dfacae61d36c337c9bde202d8bd49add8182c4479060662755c3a553d1907c"
+      },
+      {
+        "source": "4319b0211a370eba9015b36e035cc7a1.jpeg",
+        "source_sha256": "298bcec49a91ad69ec048d9c0090b80a9d20378aed94eef7c0317ba25de72d55",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "2132540c296e132077ac3d3ca145416d71344f8b6c3e11a7c882c4750fa608db"
+      },
+      {
+        "source": "4632731e6e024a0324b73e5f606932e7.jpeg",
+        "source_sha256": "940bdcfa9ba66fafdf78109d7007f5f771597ebf14de427e768e2f06875372a6",
+        "original_size": [
+          1024,
+          682
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          682
+        ],
+        "pixel_sha256": "5ab93d15da69b13158611a756694939935f2c94fc16723d2236f8077df7a4cf1"
+      },
+      {
+        "source": "655c2e755834a41b23f260899a2fe835.jpeg",
+        "source_sha256": "b9ca93be6fb7ce3c1ab140530d2f1cec33ab5b2cdcb8cb7edb5f3189ed4adcb2",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "27d100303395df2cd2e5d8a5981a60bcebeccf35afa7a20025de36dd629ef839"
+      },
+      {
+        "source": "665a47dfe68e005497291515decd24d8.jpeg",
+        "source_sha256": "19dec706b89d1b99c6906c54d4098dd92292a8a6e2f5aee1e69e9c7f8abed36d",
+        "original_size": [
+          1024,
+          684
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          684
+        ],
+        "pixel_sha256": "07eb27074fbce199102c7665f43db7f923a49c4f883a4d1fc35126fb7e0ab9ed"
+      },
+      {
+        "source": "76e4aee1a9ecc380a4783862c4f59f42.jpeg",
+        "source_sha256": "ef02746b7557b3181192222906afee33f0723515ae026be31f05b3ecf5119a7c",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "b2ea3e5330146aae7d4776e52e60df643963f944c1c2ccbdc761a118bef64904"
+      },
+      {
+        "source": "80c683d944553f0ea65667c4d3965e6c.jpeg",
+        "source_sha256": "de4818538295dea633dfd3e504804fdd9d13994a9b3c33f78e9b84881e4cb514",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "33dc2303925589a30150a36922bcd8668bedcd1a6fe36595fab4cb88593fd374"
+      },
+      {
+        "source": "88a6310f77aee7b99e0c2e18136d4b78.jpeg",
+        "source_sha256": "4e3aef8a7c4703f874eb6989d18e3b86382f3e98054ac48441c1cddf1fc7e69c",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "b5c73a656132a531ef383c5c799f1dd5c7bb37b66f8caf0a772a34dfe49d412c"
+      },
+      {
+        "source": "892cd7bd9167b815665c02cd81ed99bc.jpeg",
+        "source_sha256": "fce3f5dd12e4391a1d7eff124f5b0aca66c59bae573c2f881b5da8d706505aec",
+        "original_size": [
+          1024,
+          682
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          682
+        ],
+        "pixel_sha256": "be479781a47ab8bce92189e8ce302619ace1b3b70cb883ae299ebe8d9a28bed2"
+      },
+      {
+        "source": "8d1cee4f0ff1f1632f03ce295d77e9eb.jpeg",
+        "source_sha256": "d9a3b67b8ff9a7e487e0cdbc1ddf593f5602e88667bd8cc171cbafa6a93f0eb7",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "afd69d54013e925c7a28f6d8c790bc24f8e4aee243d36c9f35e3762172932fe5"
+      },
+      {
+        "source": "a1fa58eeab3907bb341064e1fe88eced.jpeg",
+        "source_sha256": "01535f00a7cd6c62213e6bb0867a068185545634e27005630b5f893d96689b84",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "a6ead36351209e2cbe46f4b82d0abafbc9f055a2f1cac06558703d7f44b83a3a"
+      },
+      {
+        "source": "a40dadd2d6f86d5b4b85593d231f240b.jpeg",
+        "source_sha256": "9bcf6859a01bedd2884d56d9eb7d85bf6b4022e9e67ac14eec52c742cbb5e421",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "006a4d68d91c2ef93053d776d8b4a2e81b9255fee41d65f43b9f3cd8d68de10d"
+      },
+      {
+        "source": "b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+        "source_sha256": "f54b88c6c7dabc730a4b28025e92a9049e1bed9554b782b8c62e8f90c7d2e8c9",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "1b00509a92987d6a3b860a303f3ac581fc8f0e5cd23ed687db5fbb1aca0d6706"
+      },
+      {
+        "source": "bd31bdb708cc878cc82d2d19ad072c68.jpeg",
+        "source_sha256": "344d3a06edc37eeab289742edda9951666234d2de6d3e172b9b0fa540dcf56c0",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "c8581148bf151200e5d69f0b6f4442b458d76e9769da4c54ccabde1ecc61322a"
+      },
+      {
+        "source": "d234ecc31aca67d6789df113f1b380c8.jpeg",
+        "source_sha256": "71b718e6f3bf2f441598877ba31d40abb058ce800b89d02a29c28ab352adfeac",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "582ac2218907e17d1b5d810f4cf621cbfebb8d73fba696bb599c93089d4fdd98"
+      },
+      {
+        "source": "dd85ffc2fbe1c92a140814bbf153dea7.jpeg",
+        "source_sha256": "684540debc2a20e53be4116abfbab628894726c0977260ab34f2d9023b9c36c5",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "a99332fc2d9a99c240e5e8eb0f209a2efa5724b3ca1b1e00e557c7bac9a6e6ec"
+      },
+      {
+        "source": "e5ccf137f38f3fea774a3f2d86ba7e07.jpeg",
+        "source_sha256": "ee69470b89e4741dacf269aafe9a59db5ec78d4691f6c2c9d7e3a03a29713422",
+        "original_size": [
+          1024,
+          682
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          682
+        ],
+        "pixel_sha256": "67edfedbd9e45b377083998208588279142902c9b0a741f724c41b98b550cb45"
+      },
+      {
+        "source": "eb8c0c2684a60d28116c4548e7edc336.jpeg",
+        "source_sha256": "50fb49ecb5817a8bd1efdb96047da4462ce56fda3cee17c52b31e4de537c0325",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "07daa638d23e45f88baf3195c0ec8f028f5ae446cd6752ec0dc44b61785fb871"
+      },
+      {
+        "source": "f27956ac9a67057d086fe7f403a8f073.jpeg",
+        "source_sha256": "0245eb6c7e590ec68ed9e1b2d7bb7f7472d1390aebe712e46a9a60af1800058f",
+        "original_size": [
+          1024,
+          683
+        ],
+        "exif_orientation": 1,
+        "oriented_size": [
+          1024,
+          683
+        ],
+        "pixel_sha256": "12e2d2dad7fc52c551ccdaa9a52462ea58f41113cdc4856fcbe4e18e7fa0afbb"
+      }
+    ]
+  },
+  "created_at": "2026-09-10T11:08:54.792412+00:00",
+  "images": [
+    {
+      "source": "08968f54527a305a14c70973df11894c.jpeg",
+      "source_sha256": "49009a9bd2ba6c547e8cfac91f67d4840c92c8d0c1116093d634ea1cbeacd2ab",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "b9633662a47232c257aba686e16dc20bbf5b535105cc5e017e314905e01bfdd4",
+      "id": "b9633662a47232c257aba686",
+      "aliases": [],
+      "input": "inputs/b9633662a47232c257aba686.png",
+      "input_sha256": "18ea56edf093401be24f10556b69849d271cb8c68fefc48bfe543e2ef1c08a74",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/b9633662a47232c257aba686/depth.npy",
+          "png": "results/b9633662a47232c257aba686/depth.png",
+          "npy_sha256": "ec152786091cfcbf3e248e26fedb3e04ae7e0eeea8670c516e485073322be21a",
+          "png_sha256": "7792830a9236d1a3c2231e5e43a7e2b86d77c810518518e598ac037757455aa2",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4335620701313019,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/b9633662a47232c257aba686/normals.npy",
+          "png": "results/b9633662a47232c257aba686/normals.png",
+          "npy_sha256": "16d2b29c2f79e48d48ab439208a9c93e94cf9ca7dc21f374009bb5d8edcba6aa",
+          "png_sha256": "9a04061c97578eaa4ecac5f3020bf5cdc0d2cbee51fbec7e65e09e6a8bfad896",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5604630708694458,
+            "warnings": [],
+            "median_normal_length": 1.0000499486923218,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/b9633662a47232c257aba686/albedo.npy",
+          "png": "results/b9633662a47232c257aba686/albedo.png",
+          "npy_sha256": "312838207b51190155baae25b17a16923b0df68ae56f97ebd560606b9351a7cb",
+          "png_sha256": "fb53dc0061995d712f7542b9d58235b192446136daae85b46d69895bc388f2ac",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.97265625,
+            "std": 0.35104525089263916,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/b9633662a47232c257aba686/depth_seethrough.npy",
+          "png": "results/b9633662a47232c257aba686/depth_seethrough.png",
+          "npy_sha256": "a6db826a0c43fe16478685f0f2f2b704bc2683394d4a87e749ada0a01ad5448e",
+          "png_sha256": "a76ea221eb2a72b8681bdd7db677d9fffff21472966bebf94a351e5ae3ff4661",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4308984577655792,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "0fd2882fa08c1065b617894a2342c16d.jpeg",
+      "source_sha256": "780f6e0c3c26181a7860489171afd38af03b5a7f5e7598829dadd09f3d9b44b5",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "8031d022c00f6ed3c645a6ffb2c4ccdfb89954a423d3bd23f3092584da37ef52",
+      "id": "8031d022c00f6ed3c645a6ff",
+      "aliases": [],
+      "input": "inputs/8031d022c00f6ed3c645a6ff.png",
+      "input_sha256": "128d6962c8275e5aa93ed2b81007469bafb7464825b23e13fee138d526d0f688",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/8031d022c00f6ed3c645a6ff/depth.npy",
+          "png": "results/8031d022c00f6ed3c645a6ff/depth.png",
+          "npy_sha256": "52905bb6c799a242ebe6703c5c9a821d08c8e2af20374e9b0897ed64733a6aa4",
+          "png_sha256": "2b8c9e98ca9dcbff73c9e507fd004dccd01bff52864a1339701d723fada7e21a",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4664735496044159,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/8031d022c00f6ed3c645a6ff/normals.npy",
+          "png": "results/8031d022c00f6ed3c645a6ff/normals.png",
+          "npy_sha256": "2c938b5df5942901b08245d76aaf3a42680422c24d9b5d09346de69ee3a54965",
+          "png_sha256": "f9b4a92d2b10519bf3b3a563fb991d4736514cbc9762196529d09038e527e328",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.555189311504364,
+            "warnings": [],
+            "median_normal_length": 0.9998993873596191,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/8031d022c00f6ed3c645a6ff/albedo.npy",
+          "png": "results/8031d022c00f6ed3c645a6ff/albedo.png",
+          "npy_sha256": "87a1950ba486f90a08ff9fc5c07f484229835ad798a4bf5d3abf70e01e88981c",
+          "png_sha256": "86712cb35627df30dcd5eee7f047df84a8c99d5e415ecf511a696f66c16015d8",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.96875,
+            "std": 0.3179081380367279,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/8031d022c00f6ed3c645a6ff/depth_seethrough.npy",
+          "png": "results/8031d022c00f6ed3c645a6ff/depth_seethrough.png",
+          "npy_sha256": "964e1d7216667e2f5fa321d187c7ba8d095308453497530c987cc1baa1e20e5a",
+          "png_sha256": "3862dbeabf01d111b1f43e483b82feaced504ddbe14a5ceac3d9ecb58fe45ba8",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.42914077639579773,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "35f17817024aeb5a833ac4f0ed4d592a.jpeg",
+      "source_sha256": "730b09cd1c5ad5e2514aab36ee8da93627516b58608b1e5af4031dd139c6210c",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "ecfe6757d965a444981c3300d791cf52b27d0837f74ad50781b84e8a2598ad67",
+      "id": "ecfe6757d965a444981c3300",
+      "aliases": [],
+      "input": "inputs/ecfe6757d965a444981c3300.png",
+      "input_sha256": "40d0eea3d2e14fa6fb6fb69789e559b27d1532ac967a90237030f36738b4b703",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/ecfe6757d965a444981c3300/depth.npy",
+          "png": "results/ecfe6757d965a444981c3300/depth.png",
+          "npy_sha256": "d6729dc2e7ad07bb1fa5242fc00bb0f19205448c1eef4bdd1f33018604c69183",
+          "png_sha256": "500e1efdf8a03e5ebd3ee4e7110f73955266e5935abc1952503fa22d37521107",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.515917181968689,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/ecfe6757d965a444981c3300/normals.npy",
+          "png": "results/ecfe6757d965a444981c3300/normals.png",
+          "npy_sha256": "952482b02d75b040d966212a4f1224ca819b221ca86cbf668aa993f2b61ba687",
+          "png_sha256": "8006b85826d34d1fd64960d6a500fa612f651a42b49446ef67d48493538d08aa",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.569299042224884,
+            "warnings": [],
+            "median_normal_length": 1.0000065565109253,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/ecfe6757d965a444981c3300/albedo.npy",
+          "png": "results/ecfe6757d965a444981c3300/albedo.png",
+          "npy_sha256": "9d71c1a30664568f9ae526fe10491de32d8e7b351f52035e6dfad43d78c2d3e2",
+          "png_sha256": "9d8399079c8f2ac0644e30782132be88eff0a9ecc647e7a8c587a553dd4e65ef",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9609231948852539,
+            "std": 0.252988338470459,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/ecfe6757d965a444981c3300/depth_seethrough.npy",
+          "png": "results/ecfe6757d965a444981c3300/depth_seethrough.png",
+          "npy_sha256": "f0270f38c5da23e964eca62c872d6e81ffbc6ecaea9dbdcc125ba98a890c65b6",
+          "png_sha256": "4981febe72f31aa88701808518732055332dbdae80c2cfda5a890a3621c06251",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5129977464675903,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "3e5497efae3158eb89c5af10b89fa4f9.jpeg",
+      "source_sha256": "cbff039827111b8206d603a1e97593b16fb5a83b94cf22e3fd6f1f6930c51cfd",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "d4dfacae61d36c337c9bde202d8bd49add8182c4479060662755c3a553d1907c",
+      "id": "d4dfacae61d36c337c9bde20",
+      "aliases": [],
+      "input": "inputs/d4dfacae61d36c337c9bde20.png",
+      "input_sha256": "b31d78d01737f019e9d9064c61266d37dc7ebd7b3e45f8cb79bcd25e7d402cab",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/d4dfacae61d36c337c9bde20/depth.npy",
+          "png": "results/d4dfacae61d36c337c9bde20/depth.png",
+          "npy_sha256": "572e21abd7116cbf219b0534366578bcedd6d30bd5b6f640563e8eef52327067",
+          "png_sha256": "17fca43478518e4a5aeee38557e44cc933874c25e5ec86e4420823aa34555f51",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6588091254234314,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/d4dfacae61d36c337c9bde20/normals.npy",
+          "png": "results/d4dfacae61d36c337c9bde20/normals.png",
+          "npy_sha256": "6dd530b6b85fcbd808c23f1bee3816e995991967aa9dda7cfa2133e6015c3b9a",
+          "png_sha256": "a366cf46f5a41dcffe62d7a3742ca9a1e319f18d2dfeafef1b02a9bca28a5d9b",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5331069231033325,
+            "warnings": [],
+            "median_normal_length": 0.9994815587997437,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/d4dfacae61d36c337c9bde20/albedo.npy",
+          "png": "results/d4dfacae61d36c337c9bde20/albedo.png",
+          "npy_sha256": "65f27f0217cce4e7461047ca661b3a0a3db2dea08c4590836fcc8b6fc42e0bcc",
+          "png_sha256": "acd306fb92e92d983d02d445c2662896e2b2db13649c2b81e7749ecdecd0771d",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.15470151603221893,
+            "maximum": 0.8944883346557617,
+            "std": 0.16863906383514404,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/d4dfacae61d36c337c9bde20/depth_seethrough.npy",
+          "png": "results/d4dfacae61d36c337c9bde20/depth_seethrough.png",
+          "npy_sha256": "ee57ae60914dfbffaee491be85a80c364460f4265341d94c051fa76dc51693cf",
+          "png_sha256": "0a7d2742a6ad441db8e1c82a0d0eb34a1a568297f0bd929f4b17ea5d4b679c1b",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.632368803024292,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "4319b0211a370eba9015b36e035cc7a1.jpeg",
+      "source_sha256": "298bcec49a91ad69ec048d9c0090b80a9d20378aed94eef7c0317ba25de72d55",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "2132540c296e132077ac3d3ca145416d71344f8b6c3e11a7c882c4750fa608db",
+      "id": "2132540c296e132077ac3d3c",
+      "aliases": [],
+      "input": "inputs/2132540c296e132077ac3d3c.png",
+      "input_sha256": "c562c3c69b60c5e17ed94b5d4d5f3ef5f13e44ec811296e5cebbb22a6b6e4659",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/2132540c296e132077ac3d3c/depth.npy",
+          "png": "results/2132540c296e132077ac3d3c/depth.png",
+          "npy_sha256": "30f9a2ad897261530838c1c2cc11aa3a4b9e8a74c1e2030a8f6b691c562d5bac",
+          "png_sha256": "b9ac4a3969658efcc40e21da6c09c93e32344e910027e38dbc562e39ba662274",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5876061916351318,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/2132540c296e132077ac3d3c/normals.npy",
+          "png": "results/2132540c296e132077ac3d3c/normals.png",
+          "npy_sha256": "5891e8f15d6cbf23bb3026cb850894aa7f72ae054ba7f5e4c423e93513c86f61",
+          "png_sha256": "735af2507c7c50fa9c73bb1a032bbcd9c823ebac5ce2e09a1b22dca7673b0ee4",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -0.99609375,
+            "maximum": 1.0,
+            "std": 0.49560466408729553,
+            "warnings": [],
+            "median_normal_length": 0.9996770024299622,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/2132540c296e132077ac3d3c/albedo.npy",
+          "png": "results/2132540c296e132077ac3d3c/albedo.png",
+          "npy_sha256": "f2a2de7bb10c04aaae51f6bbb85fbad18a5cc6a2fb5ff257bf32ece03ad6efff",
+          "png_sha256": "a8a794a4cdcb598a7d7cc081e9e1e2f8045032d8e33ef03ac3e4cc5e664c5027",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9643089771270752,
+            "std": 0.1981787234544754,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/2132540c296e132077ac3d3c/depth_seethrough.npy",
+          "png": "results/2132540c296e132077ac3d3c/depth_seethrough.png",
+          "npy_sha256": "f886d5fe7e0624aff2a1053e4bfbe5379de45286fff5ca96972f4f773eabf92d",
+          "png_sha256": "e166a801152c00e9b09b9d27f8b2c0bab00597cc33af1567ebf72c455ff9f863",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5668405890464783,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "4632731e6e024a0324b73e5f606932e7.jpeg",
+      "source_sha256": "940bdcfa9ba66fafdf78109d7007f5f771597ebf14de427e768e2f06875372a6",
+      "original_size": [
+        1024,
+        682
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        682
+      ],
+      "pixel_sha256": "5ab93d15da69b13158611a756694939935f2c94fc16723d2236f8077df7a4cf1",
+      "id": "5ab93d15da69b13158611a75",
+      "aliases": [],
+      "input": "inputs/5ab93d15da69b13158611a75.png",
+      "input_sha256": "e13507dd859921dd5eeb5aed9a095c060a3fa3d390e45d42c3f5bd8729d254bf",
+      "input_size": [
+        1024,
+        682
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/5ab93d15da69b13158611a75/depth.npy",
+          "png": "results/5ab93d15da69b13158611a75/depth.png",
+          "npy_sha256": "227794ab6003749259cfd6de344ee213a4cc2a4fb320d14dcf616875cf2d0161",
+          "png_sha256": "bb36fb6a0524a5b5d4a2f59934656b172f7c9119dda0e8c5c32e09065b276872",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6022382378578186,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/5ab93d15da69b13158611a75/normals.npy",
+          "png": "results/5ab93d15da69b13158611a75/normals.png",
+          "npy_sha256": "61c0644322fb5068f9d4aa3d10958f330685d0916933b5332e29383847c01991",
+          "png_sha256": "b02be1811848925d296f33fd6becc1cddf3458a29f3d1d9dd46d0220f41e702d",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5649940967559814,
+            "warnings": [],
+            "median_normal_length": 0.9999940991401672,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/5ab93d15da69b13158611a75/albedo.npy",
+          "png": "results/5ab93d15da69b13158611a75/albedo.png",
+          "npy_sha256": "23f437565303c34fe00ce5f360dcffdeecda5734c38fa2a3caeb3b83cdbcc693",
+          "png_sha256": "2aba60c03dfb8034d4ccd648fc02669a8b47cbc0b29cc5e137edf580e029ff88",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9604620933532715,
+            "std": 0.3603978455066681,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/5ab93d15da69b13158611a75/depth_seethrough.npy",
+          "png": "results/5ab93d15da69b13158611a75/depth_seethrough.png",
+          "npy_sha256": "25ac3bcc9259c22e38982f988d022f9f45c528967cac71a3d2af2cbbdbc11f7e",
+          "png_sha256": "fa82e5236459fa4b7bac7f66c18e034c68ff5aac74c11dc9ff9b52d0f8c287ec",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5401047468185425,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "655c2e755834a41b23f260899a2fe835.jpeg",
+      "source_sha256": "b9ca93be6fb7ce3c1ab140530d2f1cec33ab5b2cdcb8cb7edb5f3189ed4adcb2",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "27d100303395df2cd2e5d8a5981a60bcebeccf35afa7a20025de36dd629ef839",
+      "id": "27d100303395df2cd2e5d8a5",
+      "aliases": [],
+      "input": "inputs/27d100303395df2cd2e5d8a5.png",
+      "input_sha256": "a9a7dff5c722556661badf20b417494735314ba3906220802b43d21c0865fb86",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/27d100303395df2cd2e5d8a5/depth.npy",
+          "png": "results/27d100303395df2cd2e5d8a5/depth.png",
+          "npy_sha256": "e64e2c868fd5027af4b64de0e0f3fc05ee0182417434e9ec77c7433a9d0cfc64",
+          "png_sha256": "59ecb712046b3d6731dd8ddf1a182b23fab2c53e2547d6c09b9b12465fe63df9",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5508437156677246,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/27d100303395df2cd2e5d8a5/normals.npy",
+          "png": "results/27d100303395df2cd2e5d8a5/normals.png",
+          "npy_sha256": "94101db9d3ca11487b59fa8e5f90d34bdcb87e03c018baf0aae9ea85471fa935",
+          "png_sha256": "93a375f6ab511aa0cfafa344eee8368b4f7106bb401349aaa3e8e429c5ec9451",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5137162208557129,
+            "warnings": [],
+            "median_normal_length": 0.9997124671936035,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/27d100303395df2cd2e5d8a5/albedo.npy",
+          "png": "results/27d100303395df2cd2e5d8a5/albedo.png",
+          "npy_sha256": "cbfe446f04355a9ec01cc1463eee0b1eb1cc6a1d8661e289f8e0b6349425ce90",
+          "png_sha256": "9ef2e6089fc0ecee630eff2cac778567f3284fb18e3af3eb37d99fcdaeec40e6",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.953125,
+            "std": 0.18412862718105316,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/27d100303395df2cd2e5d8a5/depth_seethrough.npy",
+          "png": "results/27d100303395df2cd2e5d8a5/depth_seethrough.png",
+          "npy_sha256": "ee0d372e98c460eb29e2465cf86ba7e4efc14f5ea84ad06b55121910316d80e9",
+          "png_sha256": "4abff2f07b4259e0e3fdfc921cde5db703e8dfa74663f56a85108b043d6bbf83",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5257590413093567,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "665a47dfe68e005497291515decd24d8.jpeg",
+      "source_sha256": "19dec706b89d1b99c6906c54d4098dd92292a8a6e2f5aee1e69e9c7f8abed36d",
+      "original_size": [
+        1024,
+        684
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        684
+      ],
+      "pixel_sha256": "07eb27074fbce199102c7665f43db7f923a49c4f883a4d1fc35126fb7e0ab9ed",
+      "id": "07eb27074fbce199102c7665",
+      "aliases": [],
+      "input": "inputs/07eb27074fbce199102c7665.png",
+      "input_sha256": "357e02cadd1c2e009b78edafd8012eba08088e914319358455a69a1149b6d4ba",
+      "input_size": [
+        1024,
+        684
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/07eb27074fbce199102c7665/depth.npy",
+          "png": "results/07eb27074fbce199102c7665/depth.png",
+          "npy_sha256": "0900972fb443a6f4ee2b6494e7a193ae53a8efe5a5a59930b4ec84e51c9016a9",
+          "png_sha256": "9ced46e330e0b3843445acb6a878c65a9c777e9556c3145f377d25645222f955",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              684,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5133927464485168,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/07eb27074fbce199102c7665/normals.npy",
+          "png": "results/07eb27074fbce199102c7665/normals.png",
+          "npy_sha256": "7dd45afbaa205cd4ab904991fb4ce077333a3b04258c299247e38e38aa650b82",
+          "png_sha256": "8838d8da3cb57a3a8ce6ed4a2475f37ed7836b9abee85f3212dd1ca371cb6eb6",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              684,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.561410129070282,
+            "warnings": [],
+            "median_normal_length": 0.9999421834945679,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/07eb27074fbce199102c7665/albedo.npy",
+          "png": "results/07eb27074fbce199102c7665/albedo.png",
+          "npy_sha256": "8096c8d951c9133d81ff57288f04d21aff58a9a89aa531f19da12258064a3ac3",
+          "png_sha256": "072c759cb895988d0c005656e767cb9f7d3dbdd8914e9b1d8559e2a373fa58ed",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              684,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9673222899436951,
+            "std": 0.37096038460731506,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/07eb27074fbce199102c7665/depth_seethrough.npy",
+          "png": "results/07eb27074fbce199102c7665/depth_seethrough.png",
+          "npy_sha256": "8cfe404dd4e51fbcff8971479560b43e90e09a500280c0ef3ec725e19f2cea8f",
+          "png_sha256": "8c68366b9643d260b583e6ca995223e2600646e6d91cc87cd1680e403198b32a",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              684,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4333776831626892,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "76e4aee1a9ecc380a4783862c4f59f42.jpeg",
+      "source_sha256": "ef02746b7557b3181192222906afee33f0723515ae026be31f05b3ecf5119a7c",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "b2ea3e5330146aae7d4776e52e60df643963f944c1c2ccbdc761a118bef64904",
+      "id": "b2ea3e5330146aae7d4776e5",
+      "aliases": [],
+      "input": "inputs/b2ea3e5330146aae7d4776e5.png",
+      "input_sha256": "fd8e57e01386eac5dd83888b2b2c7efd2248b1501224c63ce4d1362579b9d863",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/b2ea3e5330146aae7d4776e5/depth.npy",
+          "png": "results/b2ea3e5330146aae7d4776e5/depth.png",
+          "npy_sha256": "7dceea3bfb3f60103fd9df1dda4f2c55826c8fd5c9a8548ebdd218db5e58a8d0",
+          "png_sha256": "25aa97cf79533458212132daaa627153763ac58115cbadbf2363a7d99482d215",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.543971836566925,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/b2ea3e5330146aae7d4776e5/normals.npy",
+          "png": "results/b2ea3e5330146aae7d4776e5/normals.png",
+          "npy_sha256": "4a05317249e93208d0f74f0be1db247df40836102eca2c6afe977a229e27eb00",
+          "png_sha256": "540a4aca5eaedc19d378a5339bed63bdc4a1a66d6d84cde3f623aecda465f134",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5543555021286011,
+            "warnings": [],
+            "median_normal_length": 0.9999432563781738,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/b2ea3e5330146aae7d4776e5/albedo.npy",
+          "png": "results/b2ea3e5330146aae7d4776e5/albedo.png",
+          "npy_sha256": "b3fd529cecb75bb84ee7e1a13eb1cca2c8783de039a9fd7e60b737f6a2102ec2",
+          "png_sha256": "54b0c23709cdac9e24983f782b14ff29b5a2b99cde5e6270ba8a01c49cd344dc",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9609375,
+            "std": 0.22775010764598846,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/b2ea3e5330146aae7d4776e5/depth_seethrough.npy",
+          "png": "results/b2ea3e5330146aae7d4776e5/depth_seethrough.png",
+          "npy_sha256": "f81bdf4a6e271bb49591dd51bb23b96e08efcc2c699c314285c5c7b049c47242",
+          "png_sha256": "e7d13ef3ce6e88296056a9ad817fd8cbccce57292033fbbbd6d87826ce3267c3",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5273990035057068,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "80c683d944553f0ea65667c4d3965e6c.jpeg",
+      "source_sha256": "de4818538295dea633dfd3e504804fdd9d13994a9b3c33f78e9b84881e4cb514",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "33dc2303925589a30150a36922bcd8668bedcd1a6fe36595fab4cb88593fd374",
+      "id": "33dc2303925589a30150a369",
+      "aliases": [],
+      "input": "inputs/33dc2303925589a30150a369.png",
+      "input_sha256": "a4acd86b9908c988fd0fbb31cae2b386ae8a2242f04c34c96078ea3ac9b55144",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/33dc2303925589a30150a369/depth.npy",
+          "png": "results/33dc2303925589a30150a369/depth.png",
+          "npy_sha256": "8a864f5cbfd497b968242a8c7a930a220b90d6699ed5c8380902dea8de17b1e1",
+          "png_sha256": "355ef6ce4e2696c06ba3a70e3d42fff3cefe24c1746d2b3e1b0c41fbe50cf35f",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5329717993736267,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/33dc2303925589a30150a369/normals.npy",
+          "png": "results/33dc2303925589a30150a369/normals.png",
+          "npy_sha256": "cd855e6affc78e7d7ddb165833c233f0e3726fd241fe3cc52f0e775d84136c53",
+          "png_sha256": "b3f4ba628b36d641176acc234997e14a0b96a05c05722e04af7e732dacb2e3ff",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.556201696395874,
+            "warnings": [],
+            "median_normal_length": 1.0004698038101196,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/33dc2303925589a30150a369/albedo.npy",
+          "png": "results/33dc2303925589a30150a369/albedo.png",
+          "npy_sha256": "254f76256d6f9ac1ad45113f603ec1cc0aaaa857cd79674e628a020cfcc4df2b",
+          "png_sha256": "607a0c60a85aef0c25c0bf29bc33696102b229d56e4ae16fb998a2d6a20f9cd9",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9609375,
+            "std": 0.3586667776107788,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/33dc2303925589a30150a369/depth_seethrough.npy",
+          "png": "results/33dc2303925589a30150a369/depth_seethrough.png",
+          "npy_sha256": "3544635f839f7a2f4b554c39f88fd239d34b66b01ac7d00b7ab3668e349718c2",
+          "png_sha256": "4296cbd380574e01840f47dd6513773bc594fca51a0ba25f65add17d256fc4cf",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5317220091819763,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "88a6310f77aee7b99e0c2e18136d4b78.jpeg",
+      "source_sha256": "4e3aef8a7c4703f874eb6989d18e3b86382f3e98054ac48441c1cddf1fc7e69c",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "b5c73a656132a531ef383c5c799f1dd5c7bb37b66f8caf0a772a34dfe49d412c",
+      "id": "b5c73a656132a531ef383c5c",
+      "aliases": [],
+      "input": "inputs/b5c73a656132a531ef383c5c.png",
+      "input_sha256": "bc28684f7c9f2017a6938383979d9229b2e0e569ee3eb1e488df6f4318da7e9c",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/b5c73a656132a531ef383c5c/depth.npy",
+          "png": "results/b5c73a656132a531ef383c5c/depth.png",
+          "npy_sha256": "9ff0754e36937d4bef245e144b6511065e1be32ce9c3d2d241e45816c4cf05ca",
+          "png_sha256": "be55fb8fde89f56c37ec0ad346ae3bcc07af6b0b322f7611b6fdccaf0b71595e",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.47909116744995117,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/b5c73a656132a531ef383c5c/normals.npy",
+          "png": "results/b5c73a656132a531ef383c5c/normals.png",
+          "npy_sha256": "0d58a2e7bb8de5f07d738e468a8ebd657670f2c7823a314c1ae74093d85f4b0e",
+          "png_sha256": "60874b833974819769c3d62d3d172963810356db612d82c50ac2481836f655ca",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5054450631141663,
+            "warnings": [],
+            "median_normal_length": 0.9996982216835022,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/b5c73a656132a531ef383c5c/albedo.npy",
+          "png": "results/b5c73a656132a531ef383c5c/albedo.png",
+          "npy_sha256": "ed2f108158826da0b1137446cd1c5b8090171585ab4589569cb2a45bc2fb76ec",
+          "png_sha256": "abd07fed70761fbb0aadb1b62a58f9a05fd021210b760c4ed3bb11762b0439c0",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9609375,
+            "std": 0.19632835686206818,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/b5c73a656132a531ef383c5c/depth_seethrough.npy",
+          "png": "results/b5c73a656132a531ef383c5c/depth_seethrough.png",
+          "npy_sha256": "dd2171e7b1693a0dcd3db318dfc78471aec02a272d1a5be0c0d349f59098f196",
+          "png_sha256": "b4e39311140988159d082bf26baa3a66170ccc0a078bdbcc940c887a7966ba7d",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4611891210079193,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "892cd7bd9167b815665c02cd81ed99bc.jpeg",
+      "source_sha256": "fce3f5dd12e4391a1d7eff124f5b0aca66c59bae573c2f881b5da8d706505aec",
+      "original_size": [
+        1024,
+        682
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        682
+      ],
+      "pixel_sha256": "be479781a47ab8bce92189e8ce302619ace1b3b70cb883ae299ebe8d9a28bed2",
+      "id": "be479781a47ab8bce92189e8",
+      "aliases": [],
+      "input": "inputs/be479781a47ab8bce92189e8.png",
+      "input_sha256": "189209ab20c016f7bd3ad2603f19cb67b7d1be45a20f970de8fba530f148ad36",
+      "input_size": [
+        1024,
+        682
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/be479781a47ab8bce92189e8/depth.npy",
+          "png": "results/be479781a47ab8bce92189e8/depth.png",
+          "npy_sha256": "956fa7b1409d7ffe78852adaf3e6c0121e19be517c8f875373cccc529d1cbd5e",
+          "png_sha256": "ec0983c4c88cd4a1396d987a777555c4f71a30c4bea9b5152fb7a7d667c1e8db",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5939462780952454,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/be479781a47ab8bce92189e8/normals.npy",
+          "png": "results/be479781a47ab8bce92189e8/normals.png",
+          "npy_sha256": "bdc2e26d54509edb427aa92a8d97b2c6b47e792c57b5b045ffc6db2c05efcf49",
+          "png_sha256": "0536626b813aa5aebc947b199b27d1cdd00f4be04c7a944e30faf97f1686908b",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5507690906524658,
+            "warnings": [],
+            "median_normal_length": 1.0001147985458374,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/be479781a47ab8bce92189e8/albedo.npy",
+          "png": "results/be479781a47ab8bce92189e8/albedo.png",
+          "npy_sha256": "c866b5d4f25fcc7733e0155ce2cac68dd8d7a4b9dd4f6c1c45a53e55af5ee627",
+          "png_sha256": "15433826b15764b5291e08bcb616ef9a7ded1ca608c85e3d4ba6cbe5b2482f98",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9531078338623047,
+            "std": 0.22500728070735931,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/be479781a47ab8bce92189e8/depth_seethrough.npy",
+          "png": "results/be479781a47ab8bce92189e8/depth_seethrough.png",
+          "npy_sha256": "efa034cce3a5ab3f9b4c42d216ca8f56e1957fe0a8789f474591907804e82845",
+          "png_sha256": "c5ea69a2d0ac16d69fbc4f49db2bf5e1d09f8bb8cb9d76d0446fbdb4bfa8703e",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5788073539733887,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "8d1cee4f0ff1f1632f03ce295d77e9eb.jpeg",
+      "source_sha256": "d9a3b67b8ff9a7e487e0cdbc1ddf593f5602e88667bd8cc171cbafa6a93f0eb7",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "afd69d54013e925c7a28f6d8c790bc24f8e4aee243d36c9f35e3762172932fe5",
+      "id": "afd69d54013e925c7a28f6d8",
+      "aliases": [],
+      "input": "inputs/afd69d54013e925c7a28f6d8.png",
+      "input_sha256": "0d13e230e4e411fc6e242201b25882489951c3ae07f954ba9a6d089e43e79d6b",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/afd69d54013e925c7a28f6d8/depth.npy",
+          "png": "results/afd69d54013e925c7a28f6d8/depth.png",
+          "npy_sha256": "60178bac346c6977ea4b15677ae840f24764060395018b41e1362b3dab6fd334",
+          "png_sha256": "9acb934ac9ef149c9f37e23bd9d150f24651798f27f8bbd0c3c9116ce4a8e395",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4546659290790558,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/afd69d54013e925c7a28f6d8/normals.npy",
+          "png": "results/afd69d54013e925c7a28f6d8/normals.png",
+          "npy_sha256": "6e1edf5cf56d24d6595bb3bfac28bfe59c496dd6d364b4ea2fedfc5da1131a51",
+          "png_sha256": "25711c4bd2766cc6c6bc81ce4ed822914325e0ab326e786955e56acc01b0ae71",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5594223141670227,
+            "warnings": [],
+            "median_normal_length": 1.000032663345337,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/afd69d54013e925c7a28f6d8/albedo.npy",
+          "png": "results/afd69d54013e925c7a28f6d8/albedo.png",
+          "npy_sha256": "a4326d318f6ca8060c8baa63d98fa07aa11830f1a2c3b0a5ddc8f5c58d56533c",
+          "png_sha256": "ba2846111f31198c6235cd071f7d737d7d1fd2dcbbece11539a47de3d6795ecf",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.953125,
+            "std": 0.14844205975532532,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/afd69d54013e925c7a28f6d8/depth_seethrough.npy",
+          "png": "results/afd69d54013e925c7a28f6d8/depth_seethrough.png",
+          "npy_sha256": "f5d60d7b40ff195a2f9711908c310fe643df6a695ea2dc1b9aabc3fda5e8b32a",
+          "png_sha256": "24693ad642828a31c3fe48b199692ccf0c109e36eb889906a624bac4178be59f",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.44042322039604187,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "a1fa58eeab3907bb341064e1fe88eced.jpeg",
+      "source_sha256": "01535f00a7cd6c62213e6bb0867a068185545634e27005630b5f893d96689b84",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "a6ead36351209e2cbe46f4b82d0abafbc9f055a2f1cac06558703d7f44b83a3a",
+      "id": "a6ead36351209e2cbe46f4b8",
+      "aliases": [],
+      "input": "inputs/a6ead36351209e2cbe46f4b8.png",
+      "input_sha256": "532a5199eee2c8ecda2ad6072d1d5785e6f48d86f23da26daf4595668ead7d03",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/a6ead36351209e2cbe46f4b8/depth.npy",
+          "png": "results/a6ead36351209e2cbe46f4b8/depth.png",
+          "npy_sha256": "54ca043a127784b0868d19798e26f645443dea6e1701a9f15dd8581423f4d78b",
+          "png_sha256": "aac7eaf4ecb44029454d6eb793917ea612d40cb18d83b1076eb0c2379c6e893b",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6312423944473267,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/a6ead36351209e2cbe46f4b8/normals.npy",
+          "png": "results/a6ead36351209e2cbe46f4b8/normals.png",
+          "npy_sha256": "c2d9a1c1664e0a6c7a9333a5f4f97129131b2d6faf7d0adf4461782dfcdbfb99",
+          "png_sha256": "fd09757cb0a901ad0dd968a6a046089f95a978d26a78b5cdd4f6bd64eb3245ae",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5265477895736694,
+            "warnings": [],
+            "median_normal_length": 0.9989591836929321,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/a6ead36351209e2cbe46f4b8/albedo.npy",
+          "png": "results/a6ead36351209e2cbe46f4b8/albedo.png",
+          "npy_sha256": "efe858d5ef8c3f005f8e0f840dd85c2bcbe1aa2a82406400a11dbedf70f41b36",
+          "png_sha256": "75394b482dc055dbb6ae79370138b11254f6e46f6af453a43a603ed25a083e00",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.12338359653949738,
+            "maximum": 0.9335508346557617,
+            "std": 0.1706702709197998,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/a6ead36351209e2cbe46f4b8/depth_seethrough.npy",
+          "png": "results/a6ead36351209e2cbe46f4b8/depth_seethrough.png",
+          "npy_sha256": "fd89b2e5a9b6026e06c7573faa9daf877b0b4b98aa4429e36de8de4fc045e260",
+          "png_sha256": "f77042855f62446ec1daab4827f74a33878ee4868c114f9a19732f86650e00e6",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6066479682922363,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "a40dadd2d6f86d5b4b85593d231f240b.jpeg",
+      "source_sha256": "9bcf6859a01bedd2884d56d9eb7d85bf6b4022e9e67ac14eec52c742cbb5e421",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "006a4d68d91c2ef93053d776d8b4a2e81b9255fee41d65f43b9f3cd8d68de10d",
+      "id": "006a4d68d91c2ef93053d776",
+      "aliases": [],
+      "input": "inputs/006a4d68d91c2ef93053d776.png",
+      "input_sha256": "22c647ead403e6d0fc385f03b35a381afbe763ff5c4448f6df312f1a482e3c5c",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/006a4d68d91c2ef93053d776/depth.npy",
+          "png": "results/006a4d68d91c2ef93053d776/depth.png",
+          "npy_sha256": "42f77a15c5e0c8ac9c29708eeec1b65aff1d3cc4a17a793ae0ac6c560829f32b",
+          "png_sha256": "94b4698fde8f091aa0c02d2433b8aceec762ac351a9a991ddbad62a67969a936",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4842303991317749,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/006a4d68d91c2ef93053d776/normals.npy",
+          "png": "results/006a4d68d91c2ef93053d776/normals.png",
+          "npy_sha256": "40fec866dbb6ab8f0993a7e6494988560206c6f48e5e54c39dd50cec948f5b32",
+          "png_sha256": "dbfba0d2185b3413a27c57fcf7f84174cc8eec1292de28603b24724f029782d4",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5493753552436829,
+            "warnings": [],
+            "median_normal_length": 1.0000474452972412,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/006a4d68d91c2ef93053d776/albedo.npy",
+          "png": "results/006a4d68d91c2ef93053d776/albedo.png",
+          "npy_sha256": "0115c9e36faafd1156a5bcce28ea338f443025d672d0cff3d13a82ecd12dc96d",
+          "png_sha256": "d5196a87e8d6c01dfdf0a23b3f8174437522e4e3d68da9034dece221c69c2cb5",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9804544448852539,
+            "std": 0.272306889295578,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/006a4d68d91c2ef93053d776/depth_seethrough.npy",
+          "png": "results/006a4d68d91c2ef93053d776/depth_seethrough.png",
+          "npy_sha256": "4ab7161c7abf9fe43d251067b820f458c6c6f5b30028adfb4b1ef81928ef6ff3",
+          "png_sha256": "f700d5ab6f24572bc4c21f892ce56b58dd5fe7f71855bbca036a1a8dcfa3aaaf",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4716816544532776,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+      "source_sha256": "f54b88c6c7dabc730a4b28025e92a9049e1bed9554b782b8c62e8f90c7d2e8c9",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "1b00509a92987d6a3b860a303f3ac581fc8f0e5cd23ed687db5fbb1aca0d6706",
+      "id": "1b00509a92987d6a3b860a30",
+      "aliases": [],
+      "input": "inputs/1b00509a92987d6a3b860a30.png",
+      "input_sha256": "b7d1a571308a4d274a3851c1eb5e8f28eab4debe3789b2d9e07d6375c258d0c7",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/1b00509a92987d6a3b860a30/depth.npy",
+          "png": "results/1b00509a92987d6a3b860a30/depth.png",
+          "npy_sha256": "f8aa3ca4799084bf0377a9f269bc354e3412b7c97a11aea1e0b2c4687664fcac",
+          "png_sha256": "33d316dac3a8c5fa9a72c22142e2be6eff7c594e199f3b4e0eab2ff50cd964fe",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6150810718536377,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/1b00509a92987d6a3b860a30/normals.npy",
+          "png": "results/1b00509a92987d6a3b860a30/normals.png",
+          "npy_sha256": "2afc8bd5c99e3d83801d34b3062032a307a11df153a5b3c4b327576a683e3aa3",
+          "png_sha256": "10f1fa71674c7c546da2931b347e5fbd72501901f15ee5478ff7d3018c38fc56",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5165259838104248,
+            "warnings": [],
+            "median_normal_length": 0.9993876218795776,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/1b00509a92987d6a3b860a30/albedo.npy",
+          "png": "results/1b00509a92987d6a3b860a30/albedo.png",
+          "npy_sha256": "f8cc5cc5672e11b8cf7e015cef714370d2bd40ae6d08e9d2bf81ca8752a6fbda",
+          "png_sha256": "0a117208cabf4ba60c9366e1f9dfe27bf1b38ea5323fc399ea1af181cc61cb57",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9296875,
+            "std": 0.1689758449792862,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/1b00509a92987d6a3b860a30/depth_seethrough.npy",
+          "png": "results/1b00509a92987d6a3b860a30/depth_seethrough.png",
+          "npy_sha256": "bae1cdbb0e5d82f7834b70b74ee7c9154e4d62cc4342d14db8fdad3bbc62e4b1",
+          "png_sha256": "0703f33d8673c0c288a5201a6b657baf0464ad704775da2c7d90322603e26d93",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6222314834594727,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "bd31bdb708cc878cc82d2d19ad072c68.jpeg",
+      "source_sha256": "344d3a06edc37eeab289742edda9951666234d2de6d3e172b9b0fa540dcf56c0",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "c8581148bf151200e5d69f0b6f4442b458d76e9769da4c54ccabde1ecc61322a",
+      "id": "c8581148bf151200e5d69f0b",
+      "aliases": [],
+      "input": "inputs/c8581148bf151200e5d69f0b.png",
+      "input_sha256": "f75cfe5be4260a4bb44b43ce2fec20d5c171c7324ad302720bb93060ef701a4b",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/c8581148bf151200e5d69f0b/depth.npy",
+          "png": "results/c8581148bf151200e5d69f0b/depth.png",
+          "npy_sha256": "294047e4b0a41fe2183bcd20f44aa554cb0dfa1a209559d2d020f1330b110b1e",
+          "png_sha256": "acb91ae14d27ed477519bb455e18ae4042b88a0e43f097efc3d86bab8f4d9462",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.47741028666496277,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/c8581148bf151200e5d69f0b/normals.npy",
+          "png": "results/c8581148bf151200e5d69f0b/normals.png",
+          "npy_sha256": "1a7d00091ca6fa2e5b41e2ebd953fe3a4e02f4d7eba34c6ba7eb5980ac1b4c4b",
+          "png_sha256": "6b7eda789439226ba599a47c93763a5fba1f6fee5478680fd2e97f13059fdb77",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -0.996565580368042,
+            "maximum": 1.0,
+            "std": 0.47418251633644104,
+            "warnings": [],
+            "median_normal_length": 0.9997358918190002,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/c8581148bf151200e5d69f0b/albedo.npy",
+          "png": "results/c8581148bf151200e5d69f0b/albedo.png",
+          "npy_sha256": "1e795d25eb5ecd227c123ad2c76f835d445f93402a74a263dfe0694c6da92673",
+          "png_sha256": "4442940589599319805002efd191f506d2b1cd2db1328d0fbc1acb53e2973337",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.953125,
+            "std": 0.18831834197044373,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/c8581148bf151200e5d69f0b/depth_seethrough.npy",
+          "png": "results/c8581148bf151200e5d69f0b/depth_seethrough.png",
+          "npy_sha256": "306f9d2fdef625a1dc55fbd2518c74cab641175dd42d48359e053614be14be59",
+          "png_sha256": "5eff991b75331793903081127fc149a480dfdbd3092ac09341f0e7e599734045",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4689141511917114,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "d234ecc31aca67d6789df113f1b380c8.jpeg",
+      "source_sha256": "71b718e6f3bf2f441598877ba31d40abb058ce800b89d02a29c28ab352adfeac",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "582ac2218907e17d1b5d810f4cf621cbfebb8d73fba696bb599c93089d4fdd98",
+      "id": "582ac2218907e17d1b5d810f",
+      "aliases": [],
+      "input": "inputs/582ac2218907e17d1b5d810f.png",
+      "input_sha256": "6901aae1e0e925e85ad958b554986a7edbffecccb0172d49a1314548b629494c",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/582ac2218907e17d1b5d810f/depth.npy",
+          "png": "results/582ac2218907e17d1b5d810f/depth.png",
+          "npy_sha256": "2723af707d37b69f401ed80e4c4945788d70a65b4e5e7e2c0c2d386decdcd82b",
+          "png_sha256": "140a1d60c1d4026258834becfc892c0a847b9b599ecaa3d1b192169105866791",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.653568685054779,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/582ac2218907e17d1b5d810f/normals.npy",
+          "png": "results/582ac2218907e17d1b5d810f/normals.png",
+          "npy_sha256": "d2a23bd0bc6d694b1d2163baed0358f1f3a667443e285834ec903004a75c76b9",
+          "png_sha256": "69e7ceb0166ffdffdf3e9d163e20efd8f3d43a2e635912d5c4ae6ec9012d3ad8",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5338384509086609,
+            "warnings": [],
+            "median_normal_length": 0.9993861317634583,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/582ac2218907e17d1b5d810f/albedo.npy",
+          "png": "results/582ac2218907e17d1b5d810f/albedo.png",
+          "npy_sha256": "b19de4ea713b04fc5f28179ffd0c6456c46e4e295792858a7c76b1c21937635a",
+          "png_sha256": "81957260b9daa88f6f20e7e6d0a96cf088e9c3ab83029811c13f614f9b7d74ee",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0634172260761261,
+            "maximum": 0.90625,
+            "std": 0.15528878569602966,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/582ac2218907e17d1b5d810f/depth_seethrough.npy",
+          "png": "results/582ac2218907e17d1b5d810f/depth_seethrough.png",
+          "npy_sha256": "ed6b527d7170958b5c03d2e7641017dd33ea8c2b251b62d5e2f8b87ecb700dad",
+          "png_sha256": "815cb739543166589e3c6d2e478a86a42dd7eb18b38859aa3f43ea45d4464208",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.6229264140129089,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "dd85ffc2fbe1c92a140814bbf153dea7.jpeg",
+      "source_sha256": "684540debc2a20e53be4116abfbab628894726c0977260ab34f2d9023b9c36c5",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "a99332fc2d9a99c240e5e8eb0f209a2efa5724b3ca1b1e00e557c7bac9a6e6ec",
+      "id": "a99332fc2d9a99c240e5e8eb",
+      "aliases": [],
+      "input": "inputs/a99332fc2d9a99c240e5e8eb.png",
+      "input_sha256": "067887cfc451c778952425c91106c91978e9d9c093ed28cedde8963dffb7bc6b",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/a99332fc2d9a99c240e5e8eb/depth.npy",
+          "png": "results/a99332fc2d9a99c240e5e8eb/depth.png",
+          "npy_sha256": "d0e2aea2895dd61ff185c07dcac111ccb7b355cfe936b6c8d67b1b2eb8d3b657",
+          "png_sha256": "31a7f359f57bcb12af22af998872d6037477d32c990bff67585433a139daa902",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.44968125224113464,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/a99332fc2d9a99c240e5e8eb/normals.npy",
+          "png": "results/a99332fc2d9a99c240e5e8eb/normals.png",
+          "npy_sha256": "84024e7c62cacf3f912e4b683215fc3a7f16d610a3c328fdced44827cba8e508",
+          "png_sha256": "215ca1ad12359b310d78a83fdb1bc72e80bc7a17fa28f2af368f0864f2a742af",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5588139891624451,
+            "warnings": [],
+            "median_normal_length": 0.9997245073318481,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/a99332fc2d9a99c240e5e8eb/albedo.npy",
+          "png": "results/a99332fc2d9a99c240e5e8eb/albedo.png",
+          "npy_sha256": "3f285b24c6b9b97f919719b76850650f23f9baeb575f3315b480d9bebaf8a5ae",
+          "png_sha256": "eaef97d55001222d6cb58a081955fbbb2b5a2928eb1b02d4569710d3c9271d50",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.98046875,
+            "std": 0.30323612689971924,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/a99332fc2d9a99c240e5e8eb/depth_seethrough.npy",
+          "png": "results/a99332fc2d9a99c240e5e8eb/depth_seethrough.png",
+          "npy_sha256": "39e94505f17519de2af59f92877cd8a32a2ea1b65393592b0f323f55ab7456a2",
+          "png_sha256": "2467d504e6651b6e3fb4449f7cdf219205115107f3c449f88f5e57bc21c41d5a",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4414460062980652,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "e5ccf137f38f3fea774a3f2d86ba7e07.jpeg",
+      "source_sha256": "ee69470b89e4741dacf269aafe9a59db5ec78d4691f6c2c9d7e3a03a29713422",
+      "original_size": [
+        1024,
+        682
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        682
+      ],
+      "pixel_sha256": "67edfedbd9e45b377083998208588279142902c9b0a741f724c41b98b550cb45",
+      "id": "67edfedbd9e45b3770839982",
+      "aliases": [],
+      "input": "inputs/67edfedbd9e45b3770839982.png",
+      "input_sha256": "1ec3c61f5c49ece9706b7800d2b581b04b1c264f57152b02ac1002595c7a64d8",
+      "input_size": [
+        1024,
+        682
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/67edfedbd9e45b3770839982/depth.npy",
+          "png": "results/67edfedbd9e45b3770839982/depth.png",
+          "npy_sha256": "05f67e0301dd530716627e832dde4a33852ca6ec900ed02ab89655ebc977c800",
+          "png_sha256": "8b134f2ad73433c7808e633a4d21d54bf2bf953fd04f0f6a3785dbfdafefa651",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.47547242045402527,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/67edfedbd9e45b3770839982/normals.npy",
+          "png": "results/67edfedbd9e45b3770839982/normals.png",
+          "npy_sha256": "0e80343c5fbf4c894a1dc158bcf32ff8e5a78e1b053e904c9674083b25c29d77",
+          "png_sha256": "c420ee1b8ad88c4d2f7e34536a2030a850e207ff77ef9b7773e44495bcd4778c",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5553461909294128,
+            "warnings": [],
+            "median_normal_length": 1.000063419342041,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/67edfedbd9e45b3770839982/albedo.npy",
+          "png": "results/67edfedbd9e45b3770839982/albedo.png",
+          "npy_sha256": "d4a6a6d7862f3e48e20c2a3ee2115b95b52cc482609fc729ea1d64b5874a24c1",
+          "png_sha256": "fa27a99bb9613873c6f203f5f11215329c2ae1fad08037f50d2f3d7bae650fa6",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9609375,
+            "std": 0.3315569758415222,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/67edfedbd9e45b3770839982/depth_seethrough.npy",
+          "png": "results/67edfedbd9e45b3770839982/depth_seethrough.png",
+          "npy_sha256": "744e97cfb1e4c5e53934be6005f50f17081f3be361fc40bc4856cf3e53459459",
+          "png_sha256": "03ffd677f710d38ff256f8f4a3653bb10f396c67a276c962382c151a7e695d4c",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              682,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4721018671989441,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "eb8c0c2684a60d28116c4548e7edc336.jpeg",
+      "source_sha256": "50fb49ecb5817a8bd1efdb96047da4462ce56fda3cee17c52b31e4de537c0325",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "07daa638d23e45f88baf3195c0ec8f028f5ae446cd6752ec0dc44b61785fb871",
+      "id": "07daa638d23e45f88baf3195",
+      "aliases": [],
+      "input": "inputs/07daa638d23e45f88baf3195.png",
+      "input_sha256": "1180ddb9d7d602aacb49c41d05754fcb8f5cf6705c7525f821b10630d026bdc4",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/07daa638d23e45f88baf3195/depth.npy",
+          "png": "results/07daa638d23e45f88baf3195/depth.png",
+          "npy_sha256": "d776987f0123cf3dbcd8440b99eff9d67cbcafc2a6d83c9807c2fe47956edbaa",
+          "png_sha256": "1a11568b06bbaa41e659ee6de2d67d8b971e08d6d446a4c0839757413c60233a",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.442793607711792,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/07daa638d23e45f88baf3195/normals.npy",
+          "png": "results/07daa638d23e45f88baf3195/normals.png",
+          "npy_sha256": "09cc6efd95329de74610bf632fe5159b4bc25e1566d74ca53be8c9f3e45ddc6a",
+          "png_sha256": "0a7c100fd94c9fcff8e6b64c536adac58c429ee988626a8deeeb5bb11c7cde20",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.4985939562320709,
+            "warnings": [],
+            "median_normal_length": 0.9996639490127563,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/07daa638d23e45f88baf3195/albedo.npy",
+          "png": "results/07daa638d23e45f88baf3195/albedo.png",
+          "npy_sha256": "6ce4b9b01a44a7e7b2c4cd11cb139e4e7ec08f16b9cbeb8eb3e43249a163e93a",
+          "png_sha256": "2a4a577507e134e4c16c670afbcd9f25b08d8c0ead8ae0465433fee0d94d7c0a",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.9453125,
+            "std": 0.24048930406570435,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/07daa638d23e45f88baf3195/depth_seethrough.npy",
+          "png": "results/07daa638d23e45f88baf3195/depth_seethrough.png",
+          "npy_sha256": "71f0e0e0cb479ff04f78f071bd332a0236f60dd8f5514d525b3b4d35bdae2eb6",
+          "png_sha256": "87ddc7dbc4d1932eef906ee77a2d8fd9e492c9e72164641a65b607792301afa0",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.46394094824790955,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    },
+    {
+      "source": "f27956ac9a67057d086fe7f403a8f073.jpeg",
+      "source_sha256": "0245eb6c7e590ec68ed9e1b2d7bb7f7472d1390aebe712e46a9a60af1800058f",
+      "original_size": [
+        1024,
+        683
+      ],
+      "exif_orientation": 1,
+      "oriented_size": [
+        1024,
+        683
+      ],
+      "pixel_sha256": "12e2d2dad7fc52c551ccdaa9a52462ea58f41113cdc4856fcbe4e18e7fa0afbb",
+      "id": "12e2d2dad7fc52c551ccdaa9",
+      "aliases": [],
+      "input": "inputs/12e2d2dad7fc52c551ccdaa9.png",
+      "input_sha256": "50b87e83953fa674061a434756024cb83fddcb7e4a346e21e0c3c5f8bcae6367",
+      "input_size": [
+        1024,
+        683
+      ],
+      "transform": {
+        "exif_transposed": true,
+        "rgb_conversion": true,
+        "crop": null,
+        "scale_xy": [
+          1.0,
+          1.0
+        ]
+      },
+      "outputs": {
+        "depth": {
+          "npy": "results/12e2d2dad7fc52c551ccdaa9/depth.npy",
+          "png": "results/12e2d2dad7fc52c551ccdaa9/depth.png",
+          "npy_sha256": "0221bee398a94dd90615d54b1a9c5803e874df7e20032d37fa5dd79e9cd23a1f",
+          "png_sha256": "953f345b9961529b0f69ca0827580445421aa23adb93bc33ebd80a344521983e",
+          "encoding": "affine-invariant log depth; not metres",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5469526052474976,
+            "warnings": []
+          },
+          "attempt": "attempts/depth-df6683951da0"
+        },
+        "normals": {
+          "npy": "results/12e2d2dad7fc52c551ccdaa9/normals.npy",
+          "png": "results/12e2d2dad7fc52c551ccdaa9/normals.png",
+          "npy_sha256": "178094bc5440b749f4a8f15a0fc819ef79b26f2e54657a7e50bb21232bc9f7e5",
+          "png_sha256": "5f42c7c30e8d4fadd9a4912d111bd34900069d693b04671f110ff14ce863166a",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.5748406052589417,
+            "warnings": [],
+            "median_normal_length": 1.0001838207244873,
+            "zero_normal_fraction": 0.0
+          },
+          "attempt": "attempts/normals-544edf1e7339"
+        },
+        "albedo": {
+          "npy": "results/12e2d2dad7fc52c551ccdaa9/albedo.npy",
+          "png": "results/12e2d2dad7fc52c551ccdaa9/albedo.png",
+          "npy_sha256": "89a249dd8043927b39e5aca2088628698f7eda883e2e9097c91822eac32a76e4",
+          "png_sha256": "ed117021f1d4815c50f7e1cf8fba579b82397564e2cad8b162ec155009bbef81",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "stats": {
+            "shape": [
+              3,
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": 0.0,
+            "maximum": 0.96875,
+            "std": 0.22535619139671326,
+            "warnings": []
+          },
+          "attempt": "attempts/albedo-c915a8f3b7b3"
+        },
+        "depth_seethrough": {
+          "npy": "results/12e2d2dad7fc52c551ccdaa9/depth_seethrough.npy",
+          "png": "results/12e2d2dad7fc52c551ccdaa9/depth_seethrough.png",
+          "npy_sha256": "5e48a0225c037ec4aec5954b606843b3acd1be5d42877c95c19a72d42255be41",
+          "png_sha256": "d6ba550f9ab4c4d553c69852c077453d298dc1140450995a41f341e9efc8bab9",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "stats": {
+            "shape": [
+              683,
+              1024
+            ],
+            "dtype": "float32",
+            "minimum": -1.0,
+            "maximum": 1.0,
+            "std": 0.539908230304718,
+            "warnings": []
+          },
+          "attempt": "attempts/depth_seethrough-35511ed850d9"
+        }
+      }
+    }
+  ],
+  "skipped": [],
+  "tasks": {
+    "depth": {
+      "modality": "depth",
+      "checkpoint": "depth/Log-stage2",
+      "preview": "depth_spectral",
+      "encoding": "affine-invariant log depth; not metres"
+    },
+    "normals": {
+      "modality": "normals",
+      "checkpoint": "normals",
+      "preview": "normals",
+      "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream"
+    },
+    "albedo": {
+      "modality": "albedo",
+      "checkpoint": "albedo",
+      "preview": "albedo",
+      "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB"
+    },
+    "depth_seethrough": {
+      "modality": "depth",
+      "checkpoint": "depth/Log-layered",
+      "preview": "depth_spectral",
+      "encoding": "see-through affine-invariant log depth; separate from exterior surface depth"
+    }
+  },
+  "attempts": [
+    {
+      "modality": "depth",
+      "command": [
+        "/usr/bin/python3",
+        "/root/marigold-v2/scripts/infer.py",
+        "--modality",
+        "depth",
+        "--checkpoint",
+        "/root/marigold-v2/assets/checkpoints/Marigold-V2/depth/Log-stage2",
+        "--image_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/depth-df6683951da0/inputs",
+        "--output_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/depth-df6683951da0/outputs",
+        "--seed",
+        "2025"
+      ],
+      "directory": "attempts/depth-df6683951da0",
+      "status": "complete",
+      "started_at": "2026-09-10T11:11:24.205149+00:00",
+      "returncode": 0,
+      "finished_at": "2026-09-10T11:12:28.913645+00:00",
+      "temporary_images_removed": true
+    },
+    {
+      "modality": "normals",
+      "command": [
+        "/usr/bin/python3",
+        "/root/marigold-v2/scripts/infer.py",
+        "--modality",
+        "normals",
+        "--checkpoint",
+        "/root/marigold-v2/assets/checkpoints/Marigold-V2/normals",
+        "--image_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/normals-544edf1e7339/inputs",
+        "--output_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/normals-544edf1e7339/outputs",
+        "--seed",
+        "2025"
+      ],
+      "directory": "attempts/normals-544edf1e7339",
+      "status": "complete",
+      "started_at": "2026-09-10T11:12:30.059213+00:00",
+      "returncode": 0,
+      "finished_at": "2026-09-10T11:13:34.607989+00:00",
+      "temporary_images_removed": true
+    },
+    {
+      "modality": "albedo",
+      "command": [
+        "/usr/bin/python3",
+        "/root/marigold-v2/scripts/infer.py",
+        "--modality",
+        "albedo",
+        "--checkpoint",
+        "/root/marigold-v2/assets/checkpoints/Marigold-V2/albedo",
+        "--image_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/albedo-c915a8f3b7b3/inputs",
+        "--output_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/albedo-c915a8f3b7b3/outputs",
+        "--seed",
+        "2025"
+      ],
+      "directory": "attempts/albedo-c915a8f3b7b3",
+      "status": "complete",
+      "started_at": "2026-09-10T11:13:38.166664+00:00",
+      "returncode": 0,
+      "finished_at": "2026-09-10T11:14:42.344592+00:00",
+      "temporary_images_removed": true
+    },
+    {
+      "modality": "depth_seethrough",
+      "command": [
+        "/usr/bin/python3",
+        "/root/marigold-v2/scripts/infer.py",
+        "--modality",
+        "depth",
+        "--checkpoint",
+        "/root/marigold-v2/assets/checkpoints/Marigold-V2/depth/Log-layered",
+        "--image_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/depth_seethrough-35511ed850d9/inputs",
+        "--output_dir",
+        "/content/marigold-results/broom-road-run-03/attempts/depth_seethrough-35511ed850d9/outputs",
+        "--seed",
+        "2025"
+      ],
+      "directory": "attempts/depth_seethrough-35511ed850d9",
+      "status": "complete",
+      "started_at": "2026-09-10T11:14:44.721084+00:00",
+      "returncode": 0,
+      "finished_at": "2026-09-10T11:15:48.257493+00:00",
+      "temporary_images_removed": true
+    }
+  ],
+  "environment": {
+    "upstream_commit": "cc6a7031abcd59fd9e1ceff7fdd0d9687d389bc5",
+    "asset_lock_sha256": "5a996124c40c4448cd12a9cc00a32d659f69955a784fd7ab79720a088d40d1f2",
+    "python": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "packages": "absl-py==1.4.0\naccelerate==1.14.0\naccess==1.1.10.post3\naffine==3.0.1\naiofiles==25.1.0\naiohappyeyeballs==2.7.1\naiohttp==3.14.3\naiosignal==1.4.0\naiosqlite==0.22.1\nalabaster==1.0.0\nalbucore==0.0.24\nalbumentations==2.0.8\nale-py==0.12.1\naltair==5.5.0\nannotated-doc==0.0.5\nannotated-types==0.8.0\nantlr4-python3-runtime==4.9.3\nanyio==4.14.2\nanywidget==0.9.21\napsw==3.53.4.0\nargon2-cffi==25.1.0\nargon2-cffi-bindings==26.1.0\narray_record==0.8.3\narrow==1.4.0\narviz==0.22.0\nastropy==7.2.2\nastropy-iers-data==0.2026.8.31.0.57.9\nastunparse==1.6.3\natpublic==5.1\nattrs==26.1.0\naudioop-lts==0.2.2\naudioread==3.1.0\nAuthlib==1.8.0\nautograd==1.9.1\nbabel==2.18.0\nbackcall==0.2.0\nbeartype==0.22.9\nbeautifulsoup4==4.13.5\nbetterproto==2.0.0b7\nbigframes==2.48.0\nbigquery-magics==0.14.0\nbitsandbytes==0.49.2\nbleach==6.4.0\nblinker==1.9.0\nblis==1.3.3\nblobfile==3.3.0\nblosc2==4.12.0\nbokeh==3.8.2\nBottleneck==1.4.2\nbqplot==0.12.47\nbranca==0.8.2\nbrotli==1.2.0\nCacheControl==0.14.4\ncachetools==6.2.6\ncatalogue==2.0.10\ncertifi==2026.7.22\ncffi==2.1.1\nchardet==5.2.0\ncharset-normalizer==3.4.9\nclarabel==0.11.1\nclick==8.5.0\ncligj==0.7.2\ncloudpathlib==0.25.0\ncloudpickle==3.1.2\ncmake==3.31.10\ncmdstanpy==1.3.0\ncolorcet==3.2.1\ncolorlover==0.3.0\ncommunity==1.0.0b1\nconfection==1.3.3\ncons==0.4.7\ncontourpy==1.3.3\ncramjam==2.12.1\ncryptography==50.0.1\ncucim-cu12 @ https://pypi.nvidia.com/cucim-cu12/cucim_cu12-26.2.1-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl\ncuda-bindings==12.9.7\ncuda-core==0.3.2\ncuda-pathfinder==1.8.0\ncuda-python==12.9.7\ncuda-toolkit==12.8.1\ncudf-cu12==26.2.1\ncudf-polars-cu12==26.2.1\ncufflinks==0.17.3\ncuml-cu12==26.2.0\ncupy-cuda12x==14.0.1\ncurl_cffi==0.16.2\ncuvs-cu12 @ https://pypi.nvidia.com/cuvs-cu12/cuvs_cu12-26.2.0-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl\ncvxopt==1.3.2\ncvxpy==1.6.7\ncycler==0.12.1\ncyipopt==1.5.0\ncymem==2.0.13\nCython==3.0.12\ndask==2026.1.1\ndask-cuda==26.2.0\ndask-cudf-cu12==26.2.1\ndataproc-spark-connect==1.1.0\ndatasets==4.8.5\ndb-dtypes==1.7.1\ndbus-python==1.3.2\ndebugpy==1.8.15\ndecorator==4.4.2\ndefusedxml==0.7.1\ndeprecation==2.1.0\ndiffusers==0.38.0\ndill==0.4.1\ndistributed==2026.1.1\ndistributed-ucxx-cu12==0.48.0\ndistro==1.9.0\ndlib==19.24.6\ndm-tree==0.1.10\ndocstring_parser==0.18.0\ndocutils==0.21.2\ndopamine_rl==4.1.2\nduckdb==1.3.2\nearthengine-api==1.7.39\neasydict==1.13\neditdistance==0.8.1\neerepr==0.1.2\neinops==0.8.2\nen_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85\nentrypoints==0.4\nesda==2.9.0\net_xmlfile==2.0.0\netils==1.14.0\netuples==0.3.10\nFarama-Notifications==0.0.6\nfastai==2.8.8\nfastapi==0.141.1\nfastcore==2.2.19\nfastdownload==0.0.7\nfastjsonschema==2.22.2\nfastprogress==1.1.6\nfasttransform==0.0.2\nfilelock==3.32.5\nfirebase-admin==6.9.0\nFlask==3.1.3\nflatbuffers==25.12.19\nflax==0.11.2\nfolium==0.20.0\nfonttools==4.64.0\nformulaic==1.2.2\nfqdn==1.5.1\nfrozendict==2.4.7\nfrozenlist==1.8.0\nfsspec==2025.12.0\nfuture==1.0.0\ngast==0.7.0\ngcsfs==2025.12.0\nGDAL==3.8.4\ngdown==5.2.2\ngeemap==0.38.4\ngeocoder==1.38.1\ngeographiclib==2.1\ngeopandas==1.1.4\ngeopy==2.4.1\ngiddy==2.3.9\ngin-config==0.5.0\nglob2==0.7\ngoogle==3.0.0\ngoogle-adk==2.7.1\ngoogle-ai-generativelanguage==0.6.15\ngoogle-api-core==2.30.3\ngoogle-api-python-client==2.200.0\ngoogle-auth==2.49.0\ngoogle-auth-httplib2==0.4.2\ngoogle-auth-oauthlib==1.4.1\ngoogle-cloud-bigquery==3.44.0\ngoogle-cloud-bigquery-connection==1.22.0\ngoogle-cloud-bigquery-storage==2.39.0\ngoogle-cloud-core==2.7.0\ngoogle-cloud-dataproc==5.28.0\ngoogle-cloud-datastore==2.25.0\ngoogle-cloud-firestore==2.27.0\ngoogle-cloud-functions==1.24.0\ngoogle-cloud-language==2.21.0\ngoogle-cloud-monitoring==2.31.0\ngoogle-cloud-resource-manager==1.18.0\ngoogle-cloud-spanner==3.68.0\ngoogle-cloud-storage==3.13.1\ngoogle-cloud-storage-control==1.12.0\ngoogle-cloud-translate==3.27.0\ngoogle-colab @ file:///colabtools/dist/google_colab-1.0.0.tar.gz\ngoogle-crc32c==1.8.0\ngoogle-genai==2.12.1\ngoogle-generativeai==0.8.6\ngoogle-pasta==0.2.0\ngoogle-resumable-media==2.10.2\ngoogleapis-common-protos==1.75.0\ngoogledrivedownloader==1.1.0\ngradio==6.26.0\ngradio_client==2.6.1\ngrain==0.2.18\ngraphviz==0.21\ngreenlet==3.5.5\ngroovy==0.1.2\ngrpc-google-iam-v1==0.14.4\ngrpc-interceptor==0.15.4\ngrpcio==1.83.1\ngrpcio-status==1.71.2\ngrpclib==0.4.9\ngspread==6.2.1\ngspread-dataframe==4.0.0\ngym==0.25.2\ngym-notices==0.1.0\ngymnasium==1.3.0\nh11==0.16.0\nh2==4.4.1\nh5netcdf==1.8.1\nh5py==3.16.0\nhdbscan==0.8.44\nhf-gradio==0.4.1\nhf-xet==1.6.0\nhighspy==1.15.1\nholidays==0.103\nholoviews==1.23.2\nhpack==4.2.0\nhtml5lib==1.1\nhttpcore==1.0.9\nhttpcore2==2.12.0\nhttpimport==1.4.1\nhttplib2==0.32.0\nhttptools==0.8.0\nhttpx==0.28.1\nhttpx2==2.12.0\nhuggingface_hub==1.29.0\nhumanize==4.16.0\nhyperframe==6.1.0\nhyperopt==0.3.0\nibis-framework==9.5.0\nidna==3.19\nImageIO==2.37.4\nimageio-ffmpeg==0.6.0\nimagesize==2.0.1\nimbalanced-learn==0.14.2\nimmutabledict==4.3.1\nimportlib_metadata==9.0.1\nimutils==0.5.4\ninequality==1.1.2\ninflect==7.5.0\niniconfig==2.3.0\nintel-cmplr-lib-ur==2025.3.3\nintel-openmp==2025.3.3\ninterface_meta==2.0.1\nipyevents==2.0.4\nipyfilechooser==0.6.0\nipykernel==6.17.1\nipyleaflet==0.20.0\nipyparallel==8.8.0\nipython==7.34.0\nipython-genutils==0.2.0\nipython-sql==0.5.0\nipywidgets==7.7.1\nisoduration==20.11.0\nitsdangerous==2.2.0\njaraco.classes==3.4.0\njaraco.context==6.1.2\njaraco.functools==4.6.0\njax==0.11.1\njax-cuda12-pjrt==0.11.1\njax-cuda12-plugin==0.11.1\njaxlib==0.11.1\njeepney==0.9.0\njieba==0.42.1\nJinja2==3.1.6\njiter==0.16.0\njoblib==1.6.0\njoserfc==1.7.5\njsonpatch==1.33\njsonpickle==4.1.2\njsonpointer==3.1.1\njsonschema==4.26.0\njsonschema-specifications==2025.9.1\njupyter-console==6.6.3\njupyter-events==0.12.1\njupyter-leaflet==0.20.0\njupyter_client==7.4.9\njupyter_core==5.9.1\njupyter_kernel_gateway @ git+https://github.com/googlecolab/kernel_gateway@b134e9945df25c2dcb98ade9129399be10788671\njupyter_server==2.20.0\njupyter_server_terminals==0.5.4\njupyterlab_pygments==0.3.0\njupyterlab_widgets==3.0.17\njupytext==1.19.5\nkaggle==2.0.2\nkagglehub==1.0.2\nkagglesdk==0.1.37\nkeras==3.13.2\nkeras-hub==0.26.0\nkeras-nlp==0.26.0\nkeyring==25.7.0\nkeyrings.google-artifactregistry-auth==1.1.2\nkiwisolver==1.5.1\nlangchain==1.3.18\nlangchain-core==1.6.1\nlangchain-protocol==0.0.19\nlanggraph==1.2.11\nlanggraph-checkpoint==4.2.0\nlanggraph-prebuilt==1.1.0\nlanggraph-sdk==0.4.4\nlangsmith==0.12.1\nlark==1.3.1\nlaunchpadlib==1.11.0\nlazr.restfulclient==0.14.6\nlazr.uri==1.0.6\nlazy-loader==0.5\nlibclang==18.1.1\nlibcudf-cu12==26.2.1\nlibcugraph-cu12==26.2.0\nlibcuml-cu12==26.2.0\nlibcuvs-cu12==26.2.0\nlibkvikio-cu12==26.2.0\nlibpysal==4.14.1\nlibraft-cu12==26.2.0\nlibrmm-cu12==26.2.0\nlibrosa==0.11.0\nlibucx-cu12==1.19.0\nlibucxx-cu12==0.48.0\nlightgbm==4.6.0\nlinkify-it-py==2.2.0\nllvmlite==0.44.0\nlocket==1.0.0\nlogical-unification==0.4.7\nlxml==6.1.2\nMako==1.3.2.dev0\nmapclassify==2.10.0\nMarkdown==3.10.3\nmarkdown-it-py==4.2.0\nMarkupSafe==3.0.3\nmatplotlib==3.10.0\nmatplotlib-inline==0.2.2\nmatplotlib-venn==1.1.2\nmdit-py-plugins==0.6.1\nmdurl==0.1.2\nmgwr==2.2.1\nminiKanren==1.0.5\nmissingno==0.5.2\nmistune==3.3.4\nmizani==0.13.5\nmkl==2025.3.1\nml_dtypes==0.6.0\nmlxtend==0.23.4\nmmh3==5.3.0\nmomepy==0.11.0\nmore-itertools==10.8.0\nmoviepy==1.0.3\nmpmath==1.3.0\nmsgpack==1.2.2\nmultidict==6.7.1\nmultipledispatch==1.0.0\nmultiprocess==0.70.19\nmultitasking==0.0.13\nmurmurhash==1.0.15\nmusic21==9.9.2\nnamex==0.1.0\nnarwhals==2.25.0\nnatsort==8.4.0\nnbclassic==1.3.3\nnbclient==0.10.4\nnbconvert==7.17.1\nnbformat==5.11.1\nndindex==1.10.1\nnest-asyncio==1.6.0\nnetworkx==3.6.1\nnh3==0.3.7\nnibabel==5.4.2\nnltk==3.9.1\nnotebook==6.5.7\nnotebook_shim==0.2.4\nnumba==0.61.2\nnumba-cuda==0.22.2\nnumexpr==2.14.2\nnumpy==2.1.3\nnvidia-cublas-cu12==12.8.4.1\nnvidia-cuda-cccl-cu12==12.9.27\nnvidia-cuda-cupti-cu12==12.8.90\nnvidia-cuda-nvcc-cu12==12.8.93\nnvidia-cuda-nvrtc-cu12==12.8.93\nnvidia-cuda-runtime-cu12==12.8.90\nnvidia-cudnn-cu12==9.19.0.56\nnvidia-cufft-cu12==11.3.3.83\nnvidia-cufile-cu12==1.13.1.3\nnvidia-curand-cu12==10.3.9.90\nnvidia-cusolver-cu12==11.7.3.90\nnvidia-cusparse-cu12==12.5.8.93\nnvidia-cusparselt-cu12==0.7.1\nnvidia-libnvcomp-cu12==5.1.0.21\nnvidia-ml-py==13.610.43\nnvidia-nccl-cu12==2.28.9\nnvidia-nccl-cu13==2.31.2\nnvidia-nvimgcodec-cu12==0.7.0.11\nnvidia-nvjitlink-cu12==12.8.93\nnvidia-nvshmem-cu12==3.4.5\nnvidia-nvtx-cu12==12.8.90\nnvtx==0.2.16\nnx-cugraph-cu12 @ https://pypi.nvidia.com/nx-cugraph-cu12/nx_cugraph_cu12-26.2.0-py3-none-any.whl\noauth2client==4.1.3\noauthlib==3.3.1\nomegaconf==2.3.1\nonemkl-license==2025.3.1\nopenai==2.54.0\nopencv-contrib-python==4.14.0.94\nopencv-python==5.0.0.93\nopencv-python-headless==5.0.0.93\nopenpyxl==3.1.5\nopentelemetry-api==1.42.1\nopentelemetry-resourcedetector-gcp==1.14.0\nopentelemetry-sdk==1.42.1\nopentelemetry-semantic-conventions==0.63b1\nopt_einsum==3.4.0\noptax==0.2.8\noptree==0.20.0\norbax-checkpoint==0.12.4\norjson==3.12.0\normsgpack==1.12.2\nosqp==1.1.3\npackaging==26.3\npandas==2.2.3\npandas-datareader==0.11.1\npandas-gbq==0.30.0\npandas-stubs==2.2.3.250527\npandocfilters==1.5.1\npanel==1.9.4\npanel-material-ui==0.14.2\nparam==2.4.1\nparso==0.8.7\nparsy==2.2\npartd==1.4.2\npatsy==1.0.3\npeewee==4.4.0\npeft==0.20.0\npexpect==4.9.0\npickleshare==0.7.5\npillow==11.3.0\nplatformdirs==4.11.7\nplotly==5.24.1\nplotnine==0.14.5\npluggy==1.6.0\nplum-dispatch==2.9.0\npointpats==2.5.5\npolars==1.35.2\npolars-runtime-32==1.35.2\npooch==1.9.0\nportpicker==1.5.2\npreshed==3.0.13\nprettytable==3.18.0\nproglog==0.1.12\nprogressbar2==4.5.0\nprometheus_client==0.26.0\npromise==2.3\nprompt_toolkit==3.0.53\npropcache==0.5.2\nprophet==1.4.0\nproto-plus==1.28.2\nprotobuf==5.29.6\npsutil==5.9.5\npsycopg2==2.9.12\npsygnal==0.15.1\nptyprocess==0.7.0\nPuLP==3.3.2\npy-cpuinfo==9.0.0\npy4j==0.10.9.9\npyarrow==23.0.1\npyasn1==0.6.4\npyasn1_modules==0.4.2\npycairo==1.29.1\npycocotools==2.0.11\npycparser==3.0\npycryptodomex==3.23.0\npydantic==2.13.5\npydantic_core==2.46.5\npydata-google-auth==1.9.1\npydot==4.0.1\npydotplus==2.0.2\nPyDrive2==1.21.1\npydub==0.25.1\npyerfa==2.0.1.5\npygame==2.6.1\npygit2==1.20.0\nPygments==2.21.0\nPyGObject==3.48.2\npyiceberg==0.12.0\nPyJWT==2.13.0\npylibcudf-cu12==26.2.1\npylibcugraph-cu12==26.2.0\npylibraft-cu12==26.2.0\npymc==5.28.5\npynndescent==0.6.0\npyogrio==0.13.0\npyomo==6.10.1\nPyOpenGL==3.1.10\npyOpenSSL==26.4.0\npyparsing==3.3.2\npyperclip==1.11.0\npyproj==3.7.2\npyroaring==1.1.0\npysal==25.7\npyshp==3.1.6\nPySocks==1.7.1\npyspark==4.0.4\npytensor==2.38.3\npytest==8.4.2\npython-apt==0.0.0\npython-box==7.4.1\npython-dateutil==2.9.0.post0\npython-dotenv==1.2.3\npython-fasthtml==0.14.12\npython-json-logger==4.2.0\npython-louvain==0.16\npython-multipart==0.0.32\npython-slugify==8.0.4\npython-snappy==0.7.3\npython-utils==4.0.1\npytz==2025.2\npyviz_comms==3.0.6\nPyWavelets==1.9.0\nPyYAML==6.0.3\npyzmq==26.2.1\nquantecon==0.11.4\nraft-dask-cu12==26.2.0\nrapids-dask-dependency==26.2.0\nrapids-logger==0.2.3\nrasterio==1.5.1\nrasterstats==0.21.0\nratelim==0.1.6\nreferencing==0.37.0\nregex==2025.11.3\nrequests==2.32.4\nrequests-oauthlib==2.0.0\nrequests-toolbelt==1.0.0\nrequirements-parser==0.9.0\nrfc3339-validator==0.1.4\nrfc3986-validator==0.1.1\nrfc3987-syntax==1.1.0\nrich==13.9.4\nrmm-cu12==26.2.0\nroman-numerals==4.1.0\nroman-numerals-py==4.1.0\nrpds-py==2026.6.3\nrpy2==3.5.17\nrsa==4.9.1\nrtree==1.4.1\nsafehttpx==0.1.7\nsafetensors==0.8.0\nscikit-image==0.25.2\nscikit-learn==1.6.1\nscipy==1.16.3\nscooby==0.11.2\nscs==3.2.11\nseaborn==0.13.2\nSecretStorage==3.5.0\nsegregation==2.5.4\nsemantic-version==2.10.0\nSend2Trash==2.1.0\nsentence-transformers==5.7.0\nsentencepiece==0.2.2\nsentry-sdk==2.68.1\nsetuptools==80.10.2\nshap==0.52.0\nshapely==2.1.2\nshellingham==1.5.4\nsimple-parsing==0.1.9\nsimplejson==4.1.2\nsimsimd==6.5.16\nsix==1.17.0\nsklearn-compat==0.1.6\nsklearn-pandas==2.2.0\nslicer==0.0.8\nsmart_open==8.0.1\nsniffio==1.3.1\nsnowballstemmer==3.1.1\nsortedcontainers==2.4.0\nsoundfile==0.14.0\nsoupsieve==2.9.2\nsoxr==1.1.0\nspacy==3.8.16\nspacy-legacy==3.0.12\nspacy-loggers==1.0.5\nspaghetti==1.7.6\nspanner-graph-notebook==1.1.10\nspglm==1.1.0\nSphinx==8.2.3\nsphinxcontrib-applehelp==2.0.0\nsphinxcontrib-devhelp==2.0.0\nsphinxcontrib-htmlhelp==2.1.0\nsphinxcontrib-jsmath==1.0.1\nsphinxcontrib-qthelp==2.0.0\nsphinxcontrib-serializinghtml==2.0.0\nspint==1.1.0\nsplot==1.1.7\nspopt==0.7.0\nspreg==1.9.0\nSQLAlchemy==2.0.52\nsqlglot==25.20.2\nsqlparse==0.6.0\nsrsly==2.5.3\nstandard-aifc==3.13.0\nstandard-chunk==3.13.0\nstandard-sunau==3.13.0\nstanio==0.5.1\nstarlette==1.6.0\nstatsmodels==0.15.0\nstrictyaml==1.7.3\nstringzilla==5.1.2\nstumpy==1.14.1\nsympy==1.14.0\ntables==3.10.2\ntabulate==0.9.0\ntbb==2022.3.1\ntblib==3.2.2\ntcmlib==1.5.0\ntenacity==9.1.4\ntensorboard==2.20.0\ntensorboard-data-server==0.7.2\ntensorflow==2.20.0\ntensorflow-datasets==4.9.10\ntensorflow-hub==0.16.1\ntensorflow-metadata==1.21.0\ntensorflow-probability==0.25.0\ntensorflow-text==2.20.1\ntensorstore==0.1.85\ntermcolor==3.3.0\nterminado==0.18.1\ntext-unidecode==1.3\ntextblob==0.19.0\ntf-slim==1.1.0\ntf_keras==2.20.1\nthinc==8.3.13\nthreadpoolctl==3.6.0\ntifffile==2026.8.23\ntiktoken==0.14.0\ntimm==1.0.29\ntinycss2==1.5.1\ntobler==0.14.0\ntokenizers==0.23.1\ntoml==0.10.2\ntomlkit==0.14.0\ntoolz==0.12.1\ntorch==2.11.0+cu128\ntorchao==0.10.0\ntorchaudio==2.11.0+cu128\ntorchcodec==0.11.0+cu128\ntorchdata==0.11.0\ntorchsummary==1.5.1\ntorchtune==0.6.1\ntorchvision==0.26.0+cu128\ntornado==6.5.7\ntqdm==4.67.3\ntraitlets==5.7.1\ntraittypes==0.2.3\ntransformers==5.16.1\ntreelite==4.7.1\ntreescope==0.1.10\ntriton==3.6.0\ntruststore==0.10.4\ntsfresh==0.21.2\ntweepy==4.17.0\ntypeguard==4.6.0\ntyper==0.27.2\ntypes-pytz==2026.3.1.20260727\ntypes-setuptools==84.0.0.20260812\ntyping-inspection==0.4.4\ntyping_extensions==4.16.0\ntzdata==2026.3\ntzlocal==5.4.4\nucxx-cu12==0.48.0\numap-learn==0.5.12\numf==1.0.3\nuri-template==1.3.0\nuritemplate==4.2.0\nurllib3==2.5.0\nuuid_utils==0.17.0\nuvicorn==0.52.4\nuvloop==0.22.1\nvega-datasets==0.9.0\nwadllib==1.3.6\nwandb==0.28.1\nwasabi==1.1.3\nwatchdog==6.0.0\nwatchfiles==1.2.0\nwcwidth==0.8.3\nweasel==1.0.0\nwebcolors==25.10.0\nwebencodings==0.6.1\nwebsocket-client==1.9.2\nwebsockets==15.0.1\nWerkzeug==3.1.8\nwheel==0.48.0\nwidgetsnbextension==3.6.10\nwordcloud==1.9.6\nwrapt==2.4.0\nxarray==2025.12.0\nxarray-einstats==0.11.0\nxgboost==3.4.1\nxlrd==2.0.2\nxxhash==4.0.1\nxyzservices==2026.3.0\nyarl==1.24.5\nydf==0.15.0\nydf_tf==2.20.0\nyellowbrick==1.5\nyfinance==0.2.66\nzict==3.0.0\nzipp==4.1.0\nzstandard==0.25.0\n",
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "gpu": "NVIDIA A100-SXM4-40GB",
+    "helper_sha256": "7b1e64012f1703905242b6f5e7e41f09a8a8a452ec7dd5f06ffb507f15b9bbd8"
+  }
+}

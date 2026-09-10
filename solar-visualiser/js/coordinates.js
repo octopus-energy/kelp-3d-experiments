@@ -7,17 +7,20 @@ window.SolarViz = window.SolarViz || {};
 
 window.SolarViz.coordinates = (function () {
 
-  // DSM grid headers are fixed for this site's heightmap export.
-  const DSM_META = {
-    ncols: 400, nrows: 400, cellsize: 0.25,
-    xll: 485562, yll: 106428, nodata: -9999,
-  };
-
-  function decodeDSM(b64) {
+  function decodeDSM(b64, meta) {
+    if (!meta || !Number.isInteger(meta.ncols) || !Number.isInteger(meta.nrows) ||
+        meta.ncols < 2 || meta.nrows < 2 || !Number.isFinite(meta.cellsize) || !(meta.cellsize > 0) ||
+        !Number.isFinite(meta.xll) || !Number.isFinite(meta.yll)) {
+      throw new Error('Invalid or missing property DSM metadata.');
+    }
     const bin = atob(b64);
+    if (bin.length !== meta.ncols * meta.nrows * 4) throw new Error('DSM size does not match its metadata.');
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return Object.assign({ grid: new Float32Array(bytes.buffer) }, DSM_META);
+    const view = new DataView(bytes.buffer);
+    const grid = new Float32Array(meta.ncols * meta.nrows);
+    for (let i = 0; i < grid.length; i++) grid[i] = view.getFloat32(i * 4, true);
+    return Object.assign({}, meta, { grid });
   }
 
   // Builds the lon/lat <-> local-metres <-> scene coordinate helpers for
@@ -42,11 +45,12 @@ window.SolarViz.coordinates = (function () {
     }
 
     function sampleDSM(localEast, localNorth) {
-      const col = localEast / dsm.cellsize;
-      const rowFromNorth = (dsm.nrows * dsm.cellsize - localNorth) / dsm.cellsize;
+      const col = localEast / dsm.cellsize - 0.5;
+      const rowFromNorth = (dsm.nrows * dsm.cellsize - localNorth) / dsm.cellsize - 0.5;
       const c = Math.max(0, Math.min(dsm.ncols - 1, Math.round(col)));
       const r = Math.max(0, Math.min(dsm.nrows - 1, Math.round(rowFromNorth)));
-      return dsm.grid[r * dsm.ncols + c];
+      const value = dsm.grid[r * dsm.ncols + c];
+      return Number.isFinite(value) && value !== dsm.nodata ? value : siteData.property_details.altitude;
     }
 
     function lonLatZToScene(lon, lat, z) {
@@ -61,6 +65,7 @@ window.SolarViz.coordinates = (function () {
 
     return {
       WIDTH, HEIGHT,
+      groundY: siteData.property_details.altitude,
       PROP_LOCAL_X, PROP_LOCAL_Y,
       lonLatToLocal, sampleDSM, lonLatZToScene, lonLatToSceneXZ,
     };

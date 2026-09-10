@@ -6,7 +6,10 @@ window.SolarViz = window.SolarViz || {};
 window.SolarViz.setupUIControls = function ({ terrainMesh, matTextured, matSolid, roofGroup, panelGroup, obstructionGroup, rejectedGroup, markerLine, scaffoldRoot, buildingRoot }) {
   const $ = id => document.getElementById(id);
 
-  $('t-terrain').addEventListener('change', e => terrainMesh.visible = e.target.checked);
+  ['t-terrain', 'bm-terrain'].forEach(id => $(id).addEventListener('change', e => {
+    terrainMesh.visible = e.target.checked;
+    $('t-terrain').checked = $('bm-terrain').checked = e.target.checked;
+  }));
   $('t-image').addEventListener('change', e => {
     terrainMesh.material = e.target.checked ? matTextured : matSolid;
   });

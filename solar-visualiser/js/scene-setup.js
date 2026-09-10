@@ -9,7 +9,8 @@ window.SolarViz.createSceneSetup = function (canvasWrapEl, coords) {
   scene.fog = new THREE.Fog(0x0b0d10, 80, 180);
 
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 500);
-  camera.position.set(45, 70, 80);
+  const target = new THREE.Vector3(coords.PROP_LOCAL_X, coords.groundY + 3, coords.HEIGHT - coords.PROP_LOCAL_Y);
+  camera.position.copy(target).add(new THREE.Vector3(-5, 38, 30));
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -22,14 +23,16 @@ window.SolarViz.createSceneSetup = function (canvasWrapEl, coords) {
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
-  controls.target.set(coords.WIDTH / 2, 32, coords.HEIGHT / 2);
+  controls.target.copy(target);
   controls.maxDistance = 200;
   controls.minDistance = 10;
   controls.maxPolarAngle = Math.PI / 2.1;
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.55));
   const sun = new THREE.DirectionalLight(0xfff4d6, 1.1);
-  sun.position.set(40, 80, 30);
+  sun.position.copy(target).add(new THREE.Vector3(-10, 48, -20));
+  sun.target.position.copy(target);
+  scene.add(sun.target);
   sun.castShadow = true;
   sun.shadow.mapSize.width = 2048;
   sun.shadow.mapSize.height = 2048;

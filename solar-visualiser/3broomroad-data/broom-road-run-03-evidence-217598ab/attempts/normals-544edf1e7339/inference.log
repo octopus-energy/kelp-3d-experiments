@@ -1,0 +1,34 @@
+22 images under /content/marigold-results/broom-road-run-03/attempts/normals-544edf1e7339/inputs
+Modality: normals; checkpoint: /root/marigold-v2/assets/checkpoints/Marigold-V2/normals; resolution: native
+2026-09-10 11:12:32,798 - INFO - Started at 2026-09-10 11:12:32.798036
+Flax classes are deprecated and will be removed in Diffusers v1.0.0. We recommend migrating to PyTorch classes or pinning your version of Diffusers.
+Flax classes are deprecated and will be removed in Diffusers v1.0.0. We recommend migrating to PyTorch classes or pinning your version of Diffusers.
+2026-09-10 11:12:44,180 - INFO - Loaded Qwen-Image-Edit VAE.
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:03<00:12,  3.03s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:06<00:09,  3.03s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:09<00:06,  3.04s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:12<00:03,  3.05s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:12<00:00,  2.08s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:12<00:00,  2.51s/it]
+2026-09-10 11:12:57,975 - INFO - [Qwen-Image-Edit] dequantized modules to bf16: ['proj_out']
+2026-09-10 11:13:07,070 - INFO - [Qwen-Image-Edit] quantization=4bit; trainable params: 851779584 / 21282180672
+2026-09-10 11:13:07,091 - INFO - Config saved to /content/marigold-results/broom-road-run-03/attempts/normals-544edf1e7339/outputs/config.yaml
+2026-09-10 11:13:07,091 - INFO - device = cuda
+2026-09-10 11:13:07,092 - INFO - distributed eval context: process_index=0 num_processes=1 is_main_process=True
+Loading checkpoint from: /root/marigold-v2/assets/checkpoints/Marigold-V2/normals
+[eval] Loading Diffuser and VAE weights from checkpoint.
+[load] Loading trainables from /root/marigold-v2/assets/checkpoints/Marigold-V2/normals/trainables.safetensors
+[load] VAE: missing=86 unexpected=0
+[load] Diffuser: missing=1933 unexpected=0
+2026-09-10 11:13:07,993 - INFO - Froze all network components for inference after checkpoint loading.
+
+Evaluating on 1 dataset(s)...
+
+evaluating on images:   0%|          | 0/22 [00:00<?, ?it/s]/usr/local/lib/python3.13/dist-packages/diffusers/models/transformers/transformer_qwenimage.py:901: FutureWarning: Passing `txt_seq_lens` is deprecated and will be removed in version 0.39.0. Please use `encoder_hidden_states_mask` instead. The mask-based approach is more flexible and supports variable-length sequences.
+  deprecate(
+/usr/local/lib/python3.13/dist-packages/bitsandbytes/backends/cuda/ops.py:468: FutureWarning: _check_is_size will be removed in a future PyTorch release along with guard_size_oblivious.     Use _check(i >= 0) instead.
+  torch._check_is_size(blocksize)
+evaluating on images:   5%|▍         | 1/22 [00:01<00:35,  1.70s/it]evaluating on images:   9%|▉         | 2/22 [00:02<00:26,  1.33s/it]evaluating on images:  14%|█▎        | 3/22 [00:03<00:23,  1.21s/it]evaluating on images:  18%|█▊        | 4/22 [00:04<00:20,  1.16s/it]evaluating on images:  23%|██▎       | 5/22 [00:06<00:19,  1.13s/it]evaluating on images:  27%|██▋       | 6/22 [00:07<00:17,  1.12s/it]evaluating on images:  32%|███▏      | 7/22 [00:08<00:16,  1.11s/it]evaluating on images:  36%|███▋      | 8/22 [00:09<00:15,  1.10s/it]evaluating on images:  41%|████      | 9/22 [00:10<00:14,  1.09s/it]evaluating on images:  45%|████▌     | 10/22 [00:11<00:13,  1.09s/it]evaluating on images:  50%|█████     | 11/22 [00:12<00:11,  1.08s/it]evaluating on images:  55%|█████▍    | 12/22 [00:13<00:10,  1.08s/it]evaluating on images:  59%|█████▉    | 13/22 [00:14<00:09,  1.08s/it]evaluating on images:  64%|██████▎   | 14/22 [00:15<00:08,  1.08s/it]evaluating on images:  68%|██████▊   | 15/22 [00:16<00:07,  1.08s/it]evaluating on images:  73%|███████▎  | 16/22 [00:17<00:06,  1.07s/it]evaluating on images:  77%|███████▋  | 17/22 [00:18<00:05,  1.08s/it]evaluating on images:  82%|████████▏ | 18/22 [00:20<00:04,  1.08s/it]evaluating on images:  86%|████████▋ | 19/22 [00:21<00:03,  1.08s/it]evaluating on images:  91%|█████████ | 20/22 [00:22<00:02,  1.08s/it]evaluating on images:  95%|█████████▌| 21/22 [00:23<00:01,  1.08s/it]evaluating on images: 100%|██████████| 22/22 [00:24<00:00,  1.08s/it]evaluating on images: 100%|██████████| 22/22 [00:24<00:00,  1.11s/it]
+
+============================================================
+  Results for: images
+============================================================
+============================================================
+
+
+Evaluation complete. Results saved to: /content/marigold-results/broom-road-run-03/attempts/normals-544edf1e7339/outputs

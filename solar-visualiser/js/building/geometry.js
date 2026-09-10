@@ -461,6 +461,26 @@
       if (!pointInPolygon(poly, mx, mz) && !onEdge) return null;
     }
 
+    // A segment can leave and re-enter a concave outline while its midpoint
+    // remains inside. Check every interval separated by a boundary crossing.
+    for (let i = 0; i < path.length - 1; i++) {
+      const a = path[i], b = path[i + 1], dx = b[0] - a[0], dz = b[1] - a[1];
+      const cuts = [0, 1];
+      for (let j = 0; j < poly.length; j++) {
+        const c = poly[j], d = poly[(j + 1) % poly.length];
+        const vx = d[0] - c[0], vz = d[1] - c[1], den = dx * vz - dz * vx;
+        if (Math.abs(den) < 1e-12) continue;
+        const t = ((c[0] - a[0]) * vz - (c[1] - a[1]) * vx) / den;
+        const u = ((c[0] - a[0]) * dz - (c[1] - a[1]) * dx) / den;
+        if (t > 0 && t < 1 && u >= 0 && u <= 1) cuts.push(t);
+      }
+      cuts.sort((a, b) => a - b);
+      for (let j = 1; j < cuts.length; j++) {
+        const t = (cuts[j - 1] + cuts[j]) / 2, q = [a[0] + t * dx, a[1] + t * dz];
+        if (!pointInPolygon(poly, ...q) && locate(q).d > 1e-5) return null;
+      }
+    }
+
     // Build boundary ring with both endpoints inserted as vertices.
     // Entries: { p, isA, isB }
     const ring = [];

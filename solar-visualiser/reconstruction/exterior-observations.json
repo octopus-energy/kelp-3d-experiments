@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "imageSize": [1024, 683],
+  "package": "broom-road-run-03-evidence-217598ab",
+  "method": "Assistant review of original pixels and raw normals. Rectangles exclude glass, ivy and fascia. Frame corners are approximate, not survey points. Roof edge annotations refer to the underside of the fascia. Previously inspected check features are diagnostic, not an untouched benchmark.",
+  "retiredCorrespondences": {
+    "source": "rear-observations.json",
+    "landmarks": ["wing-low", "wing-high"],
+    "reason": "The visible junctions do not establish the complete rear wing end-face corners. Neighbouring volumes and occlusion make their previous assignment unverified. They are excluded rather than moved to favour a fit. Upper-wing geometry remains unchanged and unvalidated."
+  },
+  "assumptions": {
+    "fasciaDepthM": 0.15,
+    "headBelowFasciaM": 0.08,
+    "nominalDoorLowSideHeightM": 2.05,
+    "nominalDoorHeightSigmaM": 0.2,
+    "normalSigmaDeg": 15,
+    "note": "These are explicit construction/scale priors, not observed measurements. Normals share the source photo and have systematic error; one patch per view contributes one vector."
+  },
+  "photos": [
+    {
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "normalBox": [560,220,592,270],
+      "normalSurface": "Visible lower rear extension brick facade",
+      "points": [
+        {"landmark":"door-left-bottom","pixels":[601,290],"use":"fit","sigmaPx":3},
+        {"landmark":"door-right-bottom","pixels":[691,290],"use":"fit","sigmaPx":4},
+        {"landmark":"door-left-top","pixels":[601,184],"use":"fit","sigmaPx":4},
+        {"landmark":"door-right-top","pixels":[694,159],"use":"fit","sigmaPx":5,"note":"Partly obscured by ivy; approximate outer frame corner"},
+        {"landmark":"extension-low","pixels":[550,200],"use":"fit","sigmaPx":4}
+      ],
+      "eavePixels": [[554,198],[615,180],[685,159]],
+      "eaveUse": "fit",
+      "mainEavePixels": [[435,119],[580,112]],
+      "mainEaveUse": "fit-line-only",
+      "mainEaveNote": "Visible horizontal eave segment behind rear volumes; occluded endpoints are not assigned to house corners. Attribution remains provisional."
+    },
+    {
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "normalBox": [465,394,478,418],
+      "normalSurface": "Visible lower rear extension brick facade",
+      "points": [
+        {"landmark":"door-left-bottom","pixels":[492,432],"use":"fit","sigmaPx":3},
+        {"landmark":"door-right-bottom","pixels":[531,431],"use":"fit","sigmaPx":4},
+        {"landmark":"door-left-top","pixels":[492,374],"use":"fit","sigmaPx":4},
+        {"landmark":"door-right-top","pixels":[531,364],"use":"check","sigmaPx":5,"note":"Partly obscured outer frame; diagnostic check only"},
+        {"landmark":"extension-low","pixels":[459,383],"use":"check","sigmaPx":5}
+      ],
+      "eavePixels": [[461,381],[495,372],[528,363]],
+      "eaveUse": "check",
+      "mainEavePixels": [[395,316],[468,312]],
+      "mainEaveUse": "fit-line-only",
+      "mainEaveNote": "Same provisional main eave, using segment-to-line distance; does not establish hidden corners."
+    }
+  ]
+}

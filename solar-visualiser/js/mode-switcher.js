@@ -48,6 +48,7 @@ window.SolarViz.setupModeSwitcher = function ({ groups, building, photoMatch, fa
 
   let initial = 'solar';
   try { initial = localStorage.getItem(KEY) || 'solar'; } catch (e) { /* private mode */ }
+  initial=new URLSearchParams(location.search).get('mode')||initial;
   if (!['solar', 'ashp', 'evc'].includes(initial)) initial = 'solar';
   setMode(initial);
 

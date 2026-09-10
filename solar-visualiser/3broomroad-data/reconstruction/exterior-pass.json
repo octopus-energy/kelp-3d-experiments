@@ -1,0 +1,2113 @@
+{
+  "parameters": {
+    "width": 5.180610610542199,
+    "length": 7.488201374362006,
+    "eave": 5.855153462552096,
+    "ridge": 7.304931089178188,
+    "bay_left": 1.6767692309183944,
+    "bay_right": 4.852342579619844,
+    "bay_chamfer": 0.7168071425044159,
+    "bay_depth": 0.8688179027354498,
+    "bay_rise": 0.45,
+    "door_x": 0.8828057677335408,
+    "door_width": 0.8628289136276369,
+    "door_bottom": 0.23473206075923814,
+    "door_height": 2.201872614649227,
+    "window_width": 0.8460726537338794,
+    "window_lower_sill": 0.8581393091501235,
+    "window_lower_height": 1.6949260998517495,
+    "window_upper_sill": 3.544546774225557,
+    "window_upper_height": 1.4957823635250735,
+    "wing_width": 3.336825579126892,
+    "wing_end": 12.496705351236383,
+    "wing_eave": 4.068682200477544,
+    "wing_rise": 1.350581004968472,
+    "extension_end": 15.976709538067661,
+    "extension_low": 2.2143339345736295,
+    "extension_rise": 0.9028821741252573,
+    "anchor_x": 3.329148154959907,
+    "anchor_z": 3.713530146166461,
+    "bearing": 18.03348150265103,
+    "rear_door_left": 0.7793062270570277,
+    "rear_door_right": 2.383110001131861,
+    "rear_door_bottom": 0.29296873107653054,
+    "rear_head_gap": 0.22999999999999998
+  },
+  "photos": [
+    {
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "camera": [
+        2.1572145500216258,
+        1.1427079979944954,
+        25.63334374453863,
+        2.9411895663475596,
+        -0.08116460934915656,
+        -0.008239375326309637,
+        68.4991374573922,
+        -54.132826527001086
+      ],
+      "landmarks": {
+        "door-left-bottom": [
+          2.383110001131861,
+          0.29296873107653054,
+          15.976709538067661
+        ],
+        "door-right-bottom": [
+          0.7793062270570277,
+          0.29296873107653054,
+          15.976709538067661
+        ],
+        "door-left-top": [
+          2.383110001131861,
+          2.2423914128978613,
+          15.976709538067661
+        ],
+        "door-right-top": [
+          0.7793062270570277,
+          2.676350516863335,
+          15.976709538067661
+        ],
+        "extension-low": [
+          3.336825579126892,
+          2.0643339345736296,
+          15.976709538067661
+        ],
+        "extension-high": [
+          0.75,
+          2.7642802301112117,
+          15.976709538067661
+        ],
+        "main-eave-left": [
+          5.180610610542199,
+          5.855153462552096,
+          7.488201374362006
+        ],
+        "main-eave-right": [
+          0,
+          5.855153462552096,
+          7.488201374362006
+        ]
+      },
+      "points": [
+        {
+          "landmark": "door-left-bottom",
+          "pixels": [
+            601,
+            290
+          ],
+          "use": "fit",
+          "sigmaPx": 3,
+          "px": [
+            0.5869140625,
+            0.424597364568082
+          ],
+          "projectedPx": [
+            601.4005236210477,
+            290.6264692986351
+          ],
+          "errorPx": 0.7435609949086
+        },
+        {
+          "landmark": "door-right-bottom",
+          "pixels": [
+            691,
+            290
+          ],
+          "use": "fit",
+          "sigmaPx": 4,
+          "px": [
+            0.6748046875,
+            0.424597364568082
+          ],
+          "projectedPx": [
+            689.9213849494092,
+            291.4418611747091
+          ],
+          "errorPx": 1.8006593443776326
+        },
+        {
+          "landmark": "door-left-top",
+          "pixels": [
+            601,
+            184
+          ],
+          "use": "fit",
+          "sigmaPx": 4,
+          "px": [
+            0.5869140625,
+            0.26939970717423134
+          ],
+          "projectedPx": [
+            602.0503198223593,
+            186.8755504974933
+          ],
+          "errorPx": 3.0613660991254714
+        },
+        {
+          "landmark": "door-right-top",
+          "pixels": [
+            694,
+            159
+          ],
+          "use": "fit",
+          "sigmaPx": 5,
+          "note": "Partly obscured by ivy; approximate outer frame corner",
+          "px": [
+            0.677734375,
+            0.232796486090776
+          ],
+          "projectedPx": [
+            692.6402338693972,
+            159.6507552092286
+          ],
+          "errorPx": 1.5074635227005193
+        },
+        {
+          "landmark": "extension-low",
+          "pixels": [
+            550,
+            200
+          ],
+          "use": "fit",
+          "sigmaPx": 4,
+          "px": [
+            0.537109375,
+            0.29282576866764276
+          ],
+          "projectedPx": [
+            551.3354438813137,
+            197.8872992742501
+          ],
+          "errorPx": 2.4993828671739
+        }
+      ],
+      "poseRmsePx": 2.0826224050227515,
+      "checkRmsePx": null,
+      "checkThresholdPx": 10,
+      "boundHits": [],
+      "normal": {
+        "normal": [
+          -0.25231016490300134,
+          -0.16157202076162908,
+          0.9540618757678266
+        ],
+        "pixels": 1600,
+        "medianDeviationDeg": 2.581762052352576,
+        "p90DeviationDeg": 6.1560251582211825,
+        "box": [
+          560,
+          220,
+          592,
+          270
+        ],
+        "sourceSha256": "f54b88c6c7dabc730a4b28025e92a9049e1bed9554b782b8c62e8f90c7d2e8c9",
+        "arraySha256": "2afc8bd5c99e3d83801d34b3062032a307a11df153a5b3c4b327576a683e3aa3"
+      },
+      "normalErrorDeg": 5.702779633442042,
+      "checkEdges": [
+        {
+          "id": "extension-fascia",
+          "pixels": [
+            [
+              554,
+              198
+            ],
+            [
+              615,
+              180
+            ],
+            [
+              685,
+              159
+            ]
+          ],
+          "use": "fit",
+          "meanDistancePx": 1.2172921084672088,
+          "projectedSegmentPx": [
+            [
+              551.3354438813137,
+              197.8872992742501
+            ],
+            [
+              694.4561430517648,
+              154.6083113411082
+            ]
+          ]
+        }
+      ],
+      "mainEaveMeanDistancePx": 0.9375831965505034,
+      "overlayEdges": [
+        {
+          "id": "extension-fascia",
+          "ring": [
+            [
+              3.336825579126892,
+              2.0643339345736296,
+              15.976709538067661
+            ],
+            [
+              0.75,
+              2.7642802301112117,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-0",
+          "ring": [
+            [
+              2.383110001131861,
+              2.2423914128978613,
+              15.976709538067661
+            ],
+            [
+              0.7793062270570277,
+              2.676350516863335,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-1",
+          "ring": [
+            [
+              0.7793062270570277,
+              2.676350516863335,
+              15.976709538067661
+            ],
+            [
+              0.7793062270570277,
+              0.29296873107653054,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-2",
+          "ring": [
+            [
+              0.7793062270570277,
+              0.29296873107653054,
+              15.976709538067661
+            ],
+            [
+              2.383110001131861,
+              0.29296873107653054,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-3",
+          "ring": [
+            [
+              2.383110001131861,
+              0.29296873107653054,
+              15.976709538067661
+            ],
+            [
+              2.383110001131861,
+              2.2423914128978613,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "wing-mono:0",
+          "ring": [
+            [
+              0.0,
+              5.419263205446016,
+              7.488201374362006
+            ],
+            [
+              3.336825579126892,
+              4.068682200477544,
+              7.488201374362006
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "wing-mono:1",
+          "ring": [
+            [
+              3.336825579126892,
+              4.068682200477544,
+              7.488201374362006
+            ],
+            [
+              3.336825579126892,
+              4.068682200477544,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "wing-mono:2",
+          "ring": [
+            [
+              3.336825579126892,
+              4.068682200477544,
+              12.496705351236383
+            ],
+            [
+              0.0,
+              5.419263205446016,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "wing-mono:3",
+          "ring": [
+            [
+              0.0,
+              5.419263205446016,
+              12.496705351236383
+            ],
+            [
+              0.0,
+              5.419263205446016,
+              7.488201374362006
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:0",
+          "ring": [
+            [
+              0.0,
+              3.1172161086988868,
+              12.496705351236383
+            ],
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:1",
+          "ring": [
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              12.496705351236383
+            ],
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              15.976709538067661
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:2",
+          "ring": [
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              15.976709538067661
+            ],
+            [
+              0.75,
+              2.9142802301112116,
+              15.976709538067661
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:3",
+          "ring": [
+            [
+              0.75,
+              2.9142802301112116,
+              15.976709538067661
+            ],
+            [
+              0.75,
+              2.9142802301112116,
+              14.776709538067662
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:4",
+          "ring": [
+            [
+              0.75,
+              2.9142802301112116,
+              14.776709538067662
+            ],
+            [
+              0.0,
+              3.1172161086988868,
+              14.776709538067662
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:5",
+          "ring": [
+            [
+              0.0,
+              3.1172161086988868,
+              14.776709538067662
+            ],
+            [
+              0.0,
+              3.1172161086988868,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        }
+      ],
+      "status": "diagnostic-pass"
+    },
+    {
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "camera": [
+        2.4885378072828512,
+        1.432159251979359,
+        35.657355920918974,
+        3.1858383298277855,
+        0.028610349089973685,
+        -0.0018575156458269587,
+        64.35235169892302,
+        42.198514023435415
+      ],
+      "landmarks": {
+        "door-left-bottom": [
+          2.383110001131861,
+          0.29296873107653054,
+          15.976709538067661
+        ],
+        "door-right-bottom": [
+          0.7793062270570277,
+          0.29296873107653054,
+          15.976709538067661
+        ],
+        "door-left-top": [
+          2.383110001131861,
+          2.2423914128978613,
+          15.976709538067661
+        ],
+        "door-right-top": [
+          0.7793062270570277,
+          2.676350516863335,
+          15.976709538067661
+        ],
+        "extension-low": [
+          3.336825579126892,
+          2.0643339345736296,
+          15.976709538067661
+        ],
+        "extension-high": [
+          0.75,
+          2.7642802301112117,
+          15.976709538067661
+        ],
+        "main-eave-left": [
+          5.180610610542199,
+          5.855153462552096,
+          7.488201374362006
+        ],
+        "main-eave-right": [
+          0,
+          5.855153462552096,
+          7.488201374362006
+        ]
+      },
+      "points": [
+        {
+          "landmark": "door-left-bottom",
+          "pixels": [
+            492,
+            432
+          ],
+          "use": "fit",
+          "sigmaPx": 3,
+          "px": [
+            0.48046875,
+            0.6325036603221084
+          ],
+          "projectedPx": [
+            490.92448698263627,
+            430.79174172695525
+          ],
+          "errorPx": 1.617595841024549
+        },
+        {
+          "landmark": "door-right-bottom",
+          "pixels": [
+            531,
+            431
+          ],
+          "use": "fit",
+          "sigmaPx": 4,
+          "px": [
+            0.5185546875,
+            0.6310395314787701
+          ],
+          "projectedPx": [
+            535.1549191955017,
+            430.5961058815107
+          ],
+          "errorPx": 4.1745040400147095
+        },
+        {
+          "landmark": "door-left-top",
+          "pixels": [
+            492,
+            374
+          ],
+          "use": "fit",
+          "sigmaPx": 4,
+          "px": [
+            0.48046875,
+            0.5475841874084919
+          ],
+          "projectedPx": [
+            490.88437781972317,
+            376.91667847359844
+          ],
+          "errorPx": 3.122759383538562
+        },
+        {
+          "landmark": "door-right-top",
+          "pixels": [
+            531,
+            364
+          ],
+          "use": "check",
+          "sigmaPx": 5,
+          "note": "Partly obscured outer frame; diagnostic check only",
+          "px": [
+            0.5185546875,
+            0.5329428989751098
+          ],
+          "projectedPx": [
+            534.9535097786513,
+            365.00632864764714
+          ],
+          "errorPx": 4.07957558049449
+        },
+        {
+          "landmark": "extension-low",
+          "pixels": [
+            459,
+            383
+          ],
+          "use": "check",
+          "sigmaPx": 5,
+          "px": [
+            0.4482421875,
+            0.5607613469985359
+          ],
+          "projectedPx": [
+            464.50235324688845,
+            381.83641943245306
+          ],
+          "errorPx": 5.624038672583671
+        }
+      ],
+      "poseRmsePx": 3.1514402237959493,
+      "checkRmsePx": 4.912878377676556,
+      "checkThresholdPx": 10,
+      "boundHits": [],
+      "normal": {
+        "normal": [
+          0.06413119616151346,
+          -0.03119625961766582,
+          0.9974537498374352
+        ],
+        "pixels": 312,
+        "medianDeviationDeg": 0.9927643329882916,
+        "p90DeviationDeg": 3.363311560613938,
+        "box": [
+          465,
+          394,
+          478,
+          418
+        ],
+        "sourceSha256": "71b718e6f3bf2f441598877ba31d40abb058ce800b89d02a29c28ab352adfeac",
+        "arraySha256": "d2a23bd0bc6d694b1d2163baed0358f1f3a667443e285834ec903004a75c76b9"
+      },
+      "normalErrorDeg": 3.616280961843909,
+      "checkEdges": [
+        {
+          "id": "extension-fascia",
+          "pixels": [
+            [
+              461,
+              381
+            ],
+            [
+              495,
+              372
+            ],
+            [
+              528,
+              363
+            ]
+          ],
+          "use": "check",
+          "meanDistancePx": 1.6319579411206517,
+          "projectedSegmentPx": [
+            [
+              464.50235324688845,
+              381.83641943245306
+            ],
+            [
+              535.7484975454637,
+              362.5960981254372
+            ]
+          ]
+        }
+      ],
+      "mainEaveMeanDistancePx": 2.184632894625963,
+      "overlayEdges": [
+        {
+          "id": "extension-fascia",
+          "ring": [
+            [
+              3.336825579126892,
+              2.0643339345736296,
+              15.976709538067661
+            ],
+            [
+              0.75,
+              2.7642802301112117,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-0",
+          "ring": [
+            [
+              2.383110001131861,
+              2.2423914128978613,
+              15.976709538067661
+            ],
+            [
+              0.7793062270570277,
+              2.676350516863335,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-1",
+          "ring": [
+            [
+              0.7793062270570277,
+              2.676350516863335,
+              15.976709538067661
+            ],
+            [
+              0.7793062270570277,
+              0.29296873107653054,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-2",
+          "ring": [
+            [
+              0.7793062270570277,
+              0.29296873107653054,
+              15.976709538067661
+            ],
+            [
+              2.383110001131861,
+              0.29296873107653054,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "rear-frame-3",
+          "ring": [
+            [
+              2.383110001131861,
+              0.29296873107653054,
+              15.976709538067661
+            ],
+            [
+              2.383110001131861,
+              2.2423914128978613,
+              15.976709538067661
+            ]
+          ],
+          "status": "visible"
+        },
+        {
+          "id": "wing-mono:0",
+          "ring": [
+            [
+              0.0,
+              5.419263205446016,
+              7.488201374362006
+            ],
+            [
+              3.336825579126892,
+              4.068682200477544,
+              7.488201374362006
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "wing-mono:1",
+          "ring": [
+            [
+              3.336825579126892,
+              4.068682200477544,
+              7.488201374362006
+            ],
+            [
+              3.336825579126892,
+              4.068682200477544,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "wing-mono:2",
+          "ring": [
+            [
+              3.336825579126892,
+              4.068682200477544,
+              12.496705351236383
+            ],
+            [
+              0.0,
+              5.419263205446016,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "wing-mono:3",
+          "ring": [
+            [
+              0.0,
+              5.419263205446016,
+              12.496705351236383
+            ],
+            [
+              0.0,
+              5.419263205446016,
+              7.488201374362006
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:0",
+          "ring": [
+            [
+              0.0,
+              3.1172161086988868,
+              12.496705351236383
+            ],
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:1",
+          "ring": [
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              12.496705351236383
+            ],
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              15.976709538067661
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:2",
+          "ring": [
+            [
+              3.336825579126892,
+              2.2143339345736295,
+              15.976709538067661
+            ],
+            [
+              0.75,
+              2.9142802301112116,
+              15.976709538067661
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:3",
+          "ring": [
+            [
+              0.75,
+              2.9142802301112116,
+              15.976709538067661
+            ],
+            [
+              0.75,
+              2.9142802301112116,
+              14.776709538067662
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:4",
+          "ring": [
+            [
+              0.75,
+              2.9142802301112116,
+              14.776709538067662
+            ],
+            [
+              0.0,
+              3.1172161086988868,
+              14.776709538067662
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        },
+        {
+          "id": "rear-extension:5",
+          "ring": [
+            [
+              0.0,
+              3.1172161086988868,
+              14.776709538067662
+            ],
+            [
+              0.0,
+              3.1172161086988868,
+              12.496705351236383
+            ]
+          ],
+          "status": "unvalidated-or-occluded"
+        }
+      ],
+      "status": "diagnostic-pass"
+    }
+  ],
+  "cost": 3.411339438090323,
+  "seedCosts": [
+    3.4113394427263826,
+    3.41133943827425,
+    3.4113394395140246,
+    3.411339438090323,
+    3.4113394388679117,
+    3.411339444275022,
+    3.411339438170139,
+    3.4113394397897023,
+    3.4113394400507495
+  ],
+  "parameterBoundHits": [],
+  "reasons": [],
+  "status": "candidate-needs-review",
+  "normalConstraintsUsed": true,
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "stageId": "exterior-refined",
+  "baseStage": "rear-corrected",
+  "geometryApplied": false,
+  "observations": {
+    "schemaVersion": 1,
+    "propertyId": "3broomroad",
+    "imageSize": [
+      1024,
+      683
+    ],
+    "package": "broom-road-run-03-evidence-217598ab",
+    "method": "Assistant review of original pixels and raw normals. Rectangles exclude glass, ivy and fascia. Frame corners are approximate, not survey points. Roof edge annotations refer to the underside of the fascia. Previously inspected check features are diagnostic, not an untouched benchmark.",
+    "retiredCorrespondences": {
+      "source": "rear-observations.json",
+      "landmarks": [
+        "wing-low",
+        "wing-high"
+      ],
+      "reason": "The visible junctions do not establish the complete rear wing end-face corners. Neighbouring volumes and occlusion make their previous assignment unverified. They are excluded rather than moved to favour a fit. Upper-wing geometry remains unchanged and unvalidated."
+    },
+    "assumptions": {
+      "fasciaDepthM": 0.15,
+      "headBelowFasciaM": 0.08,
+      "nominalDoorLowSideHeightM": 2.05,
+      "nominalDoorHeightSigmaM": 0.2,
+      "normalSigmaDeg": 15,
+      "note": "These are explicit construction/scale priors, not observed measurements. Normals share the source photo and have systematic error; one patch per view contributes one vector."
+    },
+    "photos": [
+      {
+        "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+        "normalBox": [
+          560,
+          220,
+          592,
+          270
+        ],
+        "normalSurface": "Visible lower rear extension brick facade",
+        "points": [
+          {
+            "landmark": "door-left-bottom",
+            "pixels": [
+              601,
+              290
+            ],
+            "use": "fit",
+            "sigmaPx": 3
+          },
+          {
+            "landmark": "door-right-bottom",
+            "pixels": [
+              691,
+              290
+            ],
+            "use": "fit",
+            "sigmaPx": 4
+          },
+          {
+            "landmark": "door-left-top",
+            "pixels": [
+              601,
+              184
+            ],
+            "use": "fit",
+            "sigmaPx": 4
+          },
+          {
+            "landmark": "door-right-top",
+            "pixels": [
+              694,
+              159
+            ],
+            "use": "fit",
+            "sigmaPx": 5,
+            "note": "Partly obscured by ivy; approximate outer frame corner"
+          },
+          {
+            "landmark": "extension-low",
+            "pixels": [
+              550,
+              200
+            ],
+            "use": "fit",
+            "sigmaPx": 4
+          }
+        ],
+        "eavePixels": [
+          [
+            554,
+            198
+          ],
+          [
+            615,
+            180
+          ],
+          [
+            685,
+            159
+          ]
+        ],
+        "eaveUse": "fit",
+        "mainEavePixels": [
+          [
+            435,
+            119
+          ],
+          [
+            580,
+            112
+          ]
+        ],
+        "mainEaveUse": "fit-line-only",
+        "mainEaveNote": "Visible horizontal eave segment behind rear volumes; occluded endpoints are not assigned to house corners. Attribution remains provisional."
+      },
+      {
+        "imageId": "d234ecc31aca67d6789df113f1b380c8",
+        "normalBox": [
+          465,
+          394,
+          478,
+          418
+        ],
+        "normalSurface": "Visible lower rear extension brick facade",
+        "points": [
+          {
+            "landmark": "door-left-bottom",
+            "pixels": [
+              492,
+              432
+            ],
+            "use": "fit",
+            "sigmaPx": 3
+          },
+          {
+            "landmark": "door-right-bottom",
+            "pixels": [
+              531,
+              431
+            ],
+            "use": "fit",
+            "sigmaPx": 4
+          },
+          {
+            "landmark": "door-left-top",
+            "pixels": [
+              492,
+              374
+            ],
+            "use": "fit",
+            "sigmaPx": 4
+          },
+          {
+            "landmark": "door-right-top",
+            "pixels": [
+              531,
+              364
+            ],
+            "use": "check",
+            "sigmaPx": 5,
+            "note": "Partly obscured outer frame; diagnostic check only"
+          },
+          {
+            "landmark": "extension-low",
+            "pixels": [
+              459,
+              383
+            ],
+            "use": "check",
+            "sigmaPx": 5
+          }
+        ],
+        "eavePixels": [
+          [
+            461,
+            381
+          ],
+          [
+            495,
+            372
+          ],
+          [
+            528,
+            363
+          ]
+        ],
+        "eaveUse": "check",
+        "mainEavePixels": [
+          [
+            395,
+            316
+          ],
+          [
+            468,
+            312
+          ]
+        ],
+        "mainEaveUse": "fit-line-only",
+        "mainEaveNote": "Same provisional main eave, using segment-to-line distance; does not establish hidden corners."
+      }
+    ]
+  },
+  "annotationsSha256": "e28e6c96fd75883145313171c17704d2fbea416024ac65c3f583333a8c5fe77b",
+  "packageIntegrity": "integrity-passed",
+  "depthUsed": false,
+  "frontFitUnchanged": true,
+  "upperWingUnchanged": true,
+  "accuracyValidated": false,
+  "controlWithoutNormals": {
+    "cost": 2.421924749873953,
+    "parameters": {
+      "width": 5.180610610542199,
+      "length": 7.488201374362006,
+      "eave": 5.855153462552096,
+      "ridge": 7.304931089178188,
+      "bay_left": 1.6767692309183944,
+      "bay_right": 4.852342579619844,
+      "bay_chamfer": 0.7168071425044159,
+      "bay_depth": 0.8688179027354498,
+      "bay_rise": 0.45,
+      "door_x": 0.8828057677335408,
+      "door_width": 0.8628289136276369,
+      "door_bottom": 0.23473206075923814,
+      "door_height": 2.201872614649227,
+      "window_width": 0.8460726537338794,
+      "window_lower_sill": 0.8581393091501235,
+      "window_lower_height": 1.6949260998517495,
+      "window_upper_sill": 3.544546774225557,
+      "window_upper_height": 1.4957823635250735,
+      "wing_width": 3.336825579126892,
+      "wing_end": 12.496705351236383,
+      "wing_eave": 4.068682200477544,
+      "wing_rise": 1.350581004968472,
+      "extension_end": 15.976709538067661,
+      "extension_low": 2.1965883172405074,
+      "extension_rise": 0.9125738189810102,
+      "anchor_x": 3.329148154959907,
+      "anchor_z": 3.713530146166461,
+      "bearing": 18.03348150265103,
+      "rear_door_left": 0.7709475334355083,
+      "rear_door_right": 2.3996884903711093,
+      "rear_door_bottom": 0.2922452470219639,
+      "rear_head_gap": 0.22999999999999998
+    },
+    "photos": [
+      {
+        "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+        "camera": [
+          2.4493509052438203,
+          1.0303678961688056,
+          25.838343800102216,
+          2.974918108516163,
+          -0.07268125565558607,
+          -0.008180336158498773,
+          67.13193188354688,
+          -51.94868472633005
+        ],
+        "landmarks": {
+          "door-left-bottom": [
+            2.3996884903711093,
+            0.2922452470219639,
+            15.976709538067661
+          ],
+          "door-right-bottom": [
+            0.7709475334355083,
+            0.2922452470219639,
+            15.976709538067661
+          ],
+          "door-left-top": [
+            2.3996884903711093,
+            2.22288183684916,
+            15.976709538067661
+          ],
+          "door-right-top": [
+            0.7709475334355083,
+            2.6683190705179394,
+            15.976709538067661
+          ],
+          "extension-low": [
+            3.336825579126892,
+            2.0465883172405075,
+            15.976709538067661
+          ],
+          "extension-high": [
+            0.75,
+            2.754047919728714,
+            15.976709538067661
+          ],
+          "main-eave-left": [
+            5.180610610542199,
+            5.855153462552096,
+            7.488201374362006
+          ],
+          "main-eave-right": [
+            0,
+            5.855153462552096,
+            7.488201374362006
+          ]
+        },
+        "points": [
+          {
+            "landmark": "door-left-bottom",
+            "pixels": [
+              601,
+              290
+            ],
+            "use": "fit",
+            "sigmaPx": 3,
+            "px": [
+              0.5869140625,
+              0.424597364568082
+            ],
+            "projectedPx": [
+              601.0059680090382,
+              290.4378649123647
+            ],
+            "errorPx": 0.4379055818461787
+          },
+          {
+            "landmark": "door-right-bottom",
+            "pixels": [
+              691,
+              290
+            ],
+            "use": "fit",
+            "sigmaPx": 4,
+            "px": [
+              0.6748046875,
+              0.424597364568082
+            ],
+            "projectedPx": [
+              690.7854312312153,
+              290.8152019838755
+            ],
+            "errorPx": 0.8429673961977162
+          },
+          {
+            "landmark": "door-left-top",
+            "pixels": [
+              601,
+              184
+            ],
+            "use": "fit",
+            "sigmaPx": 4,
+            "px": [
+              0.5869140625,
+              0.26939970717423134
+            ],
+            "projectedPx": [
+              601.4611498417843,
+              187.27308756113703
+            ],
+            "errorPx": 3.3054139467618318
+          },
+          {
+            "landmark": "door-right-top",
+            "pixels": [
+              694,
+              159
+            ],
+            "use": "fit",
+            "sigmaPx": 5,
+            "note": "Partly obscured by ivy; approximate outer frame corner",
+            "px": [
+              0.677734375,
+              0.232796486090776
+            ],
+            "projectedPx": [
+              693.0290275748068,
+              159.73543957126074
+            ],
+            "errorPx": 1.218055340886318
+          },
+          {
+            "landmark": "extension-low",
+            "pixels": [
+              550,
+              200
+            ],
+            "use": "fit",
+            "sigmaPx": 4,
+            "px": [
+              0.537109375,
+              0.29282576866764276
+            ],
+            "projectedPx": [
+              551.3264538786746,
+              198.09324513840198
+            ],
+            "errorPx": 2.3227556897957324
+          }
+        ],
+        "poseRmsePx": 1.9342683111219168,
+        "checkRmsePx": null,
+        "checkThresholdPx": 10,
+        "boundHits": [],
+        "normal": {
+          "normal": [
+            -0.25231016490300134,
+            -0.16157202076162908,
+            0.9540618757678266
+          ],
+          "pixels": 1600,
+          "medianDeviationDeg": 2.581762052352576,
+          "p90DeviationDeg": 6.1560251582211825,
+          "box": [
+            560,
+            220,
+            592,
+            270
+          ],
+          "sourceSha256": "f54b88c6c7dabc730a4b28025e92a9049e1bed9554b782b8c62e8f90c7d2e8c9",
+          "arraySha256": "2afc8bd5c99e3d83801d34b3062032a307a11df153a5b3c4b327576a683e3aa3"
+        },
+        "normalErrorDeg": 7.317433655006529,
+        "checkEdges": [
+          {
+            "id": "extension-fascia",
+            "pixels": [
+              [
+                554,
+                198
+              ],
+              [
+                615,
+                180
+              ],
+              [
+                685,
+                159
+              ]
+            ],
+            "use": "fit",
+            "meanDistancePx": 1.0148590989932262,
+            "projectedSegmentPx": [
+              [
+                551.3264538786746,
+                198.09324513840198
+              ],
+              [
+                694.3232002010734,
+                154.8695311098308
+              ]
+            ]
+          }
+        ],
+        "mainEaveMeanDistancePx": 0.3259334803888547,
+        "overlayEdges": [
+          {
+            "id": "extension-fascia",
+            "ring": [
+              [
+                3.336825579126892,
+                2.0465883172405075,
+                15.976709538067661
+              ],
+              [
+                0.75,
+                2.754047919728714,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-0",
+            "ring": [
+              [
+                2.3996884903711093,
+                2.22288183684916,
+                15.976709538067661
+              ],
+              [
+                0.7709475334355083,
+                2.6683190705179394,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-1",
+            "ring": [
+              [
+                0.7709475334355083,
+                2.6683190705179394,
+                15.976709538067661
+              ],
+              [
+                0.7709475334355083,
+                0.2922452470219639,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-2",
+            "ring": [
+              [
+                0.7709475334355083,
+                0.2922452470219639,
+                15.976709538067661
+              ],
+              [
+                2.3996884903711093,
+                0.2922452470219639,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-3",
+            "ring": [
+              [
+                2.3996884903711093,
+                0.2922452470219639,
+                15.976709538067661
+              ],
+              [
+                2.3996884903711093,
+                2.22288183684916,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "wing-mono:0",
+            "ring": [
+              [
+                0.0,
+                5.419263205446016,
+                7.488201374362006
+              ],
+              [
+                3.336825579126892,
+                4.068682200477544,
+                7.488201374362006
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "wing-mono:1",
+            "ring": [
+              [
+                3.336825579126892,
+                4.068682200477544,
+                7.488201374362006
+              ],
+              [
+                3.336825579126892,
+                4.068682200477544,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "wing-mono:2",
+            "ring": [
+              [
+                3.336825579126892,
+                4.068682200477544,
+                12.496705351236383
+              ],
+              [
+                0.0,
+                5.419263205446016,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "wing-mono:3",
+            "ring": [
+              [
+                0.0,
+                5.419263205446016,
+                12.496705351236383
+              ],
+              [
+                0.0,
+                5.419263205446016,
+                7.488201374362006
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:0",
+            "ring": [
+              [
+                0.0,
+                3.1091621362215176,
+                12.496705351236383
+              ],
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:1",
+            "ring": [
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                12.496705351236383
+              ],
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                15.976709538067661
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:2",
+            "ring": [
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                15.976709538067661
+              ],
+              [
+                0.75,
+                2.904047919728714,
+                15.976709538067661
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:3",
+            "ring": [
+              [
+                0.75,
+                2.904047919728714,
+                15.976709538067661
+              ],
+              [
+                0.75,
+                2.904047919728714,
+                14.776709538067662
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:4",
+            "ring": [
+              [
+                0.75,
+                2.904047919728714,
+                14.776709538067662
+              ],
+              [
+                0.0,
+                3.1091621362215176,
+                14.776709538067662
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:5",
+            "ring": [
+              [
+                0.0,
+                3.1091621362215176,
+                14.776709538067662
+              ],
+              [
+                0.0,
+                3.1091621362215176,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          }
+        ],
+        "status": "diagnostic-pass"
+      },
+      {
+        "imageId": "d234ecc31aca67d6789df113f1b380c8",
+        "camera": [
+          -11.32556252900473,
+          1.4845088297382865,
+          34.54958835615278,
+          2.535034385595664,
+          0.04550644400838717,
+          0.0018688578946466294,
+          53.75669779955427,
+          23.776272190073218
+        ],
+        "landmarks": {
+          "door-left-bottom": [
+            2.3996884903711093,
+            0.2922452470219639,
+            15.976709538067661
+          ],
+          "door-right-bottom": [
+            0.7709475334355083,
+            0.2922452470219639,
+            15.976709538067661
+          ],
+          "door-left-top": [
+            2.3996884903711093,
+            2.22288183684916,
+            15.976709538067661
+          ],
+          "door-right-top": [
+            0.7709475334355083,
+            2.6683190705179394,
+            15.976709538067661
+          ],
+          "extension-low": [
+            3.336825579126892,
+            2.0465883172405075,
+            15.976709538067661
+          ],
+          "extension-high": [
+            0.75,
+            2.754047919728714,
+            15.976709538067661
+          ],
+          "main-eave-left": [
+            5.180610610542199,
+            5.855153462552096,
+            7.488201374362006
+          ],
+          "main-eave-right": [
+            0,
+            5.855153462552096,
+            7.488201374362006
+          ]
+        },
+        "points": [
+          {
+            "landmark": "door-left-bottom",
+            "pixels": [
+              492,
+              432
+            ],
+            "use": "fit",
+            "sigmaPx": 3,
+            "px": [
+              0.48046875,
+              0.6325036603221084
+            ],
+            "projectedPx": [
+              491.68316748688306,
+              430.87417324902844
+            ],
+            "errorPx": 1.169559196693849
+          },
+          {
+            "landmark": "door-right-bottom",
+            "pixels": [
+              531,
+              431
+            ],
+            "use": "fit",
+            "sigmaPx": 4,
+            "px": [
+              0.5185546875,
+              0.6310395314787701
+            ],
+            "projectedPx": [
+              531.6701746908954,
+              432.4173058497756
+            ],
+            "errorPx": 1.5677659226187879
+          },
+          {
+            "landmark": "door-left-top",
+            "pixels": [
+              492,
+              374
+            ],
+            "use": "fit",
+            "sigmaPx": 4,
+            "px": [
+              0.48046875,
+              0.5475841874084919
+            ],
+            "projectedPx": [
+              491.86559291149257,
+              374.35566768421603
+            ],
+            "errorPx": 0.3802167369233472
+          },
+          {
+            "landmark": "door-right-top",
+            "pixels": [
+              531,
+              364
+            ],
+            "use": "check",
+            "sigmaPx": 5,
+            "note": "Partly obscured outer frame; diagnostic check only",
+            "px": [
+              0.5185546875,
+              0.5329428989751098
+            ],
+            "projectedPx": [
+              531.7090567027731,
+              360.0069567178105
+            ],
+            "errorPx": 4.055509346701846
+          },
+          {
+            "landmark": "extension-low",
+            "pixels": [
+              459,
+              383
+            ],
+            "use": "check",
+            "sigmaPx": 5,
+            "px": [
+              0.4482421875,
+              0.5607613469985359
+            ],
+            "projectedPx": [
+              470.33877071411007,
+              379.8295759312166
+            ],
+            "errorPx": 11.773670204446924
+          }
+        ],
+        "poseRmsePx": 1.1504091257363673,
+        "checkRmsePx": 8.80529574018577,
+        "checkThresholdPx": 10,
+        "boundHits": [],
+        "normal": {
+          "normal": [
+            0.06413119616151346,
+            -0.03119625961766582,
+            0.9974537498374352
+          ],
+          "pixels": 312,
+          "medianDeviationDeg": 0.9927643329882916,
+          "p90DeviationDeg": 3.363311560613938,
+          "box": [
+            465,
+            394,
+            478,
+            418
+          ],
+          "sourceSha256": "71b718e6f3bf2f441598877ba31d40abb058ce800b89d02a29c28ab352adfeac",
+          "arraySha256": "d2a23bd0bc6d694b1d2163baed0358f1f3a667443e285834ec903004a75c76b9"
+        },
+        "normalErrorDeg": 38.65491507874553,
+        "checkEdges": [
+          {
+            "id": "extension-fascia",
+            "pixels": [
+              [
+                461,
+                381
+              ],
+              [
+                495,
+                372
+              ],
+              [
+                528,
+                363
+              ]
+            ],
+            "use": "check",
+            "meanDistancePx": 2.318769728700152,
+            "projectedSegmentPx": [
+              [
+                470.33877071411007,
+                379.8295759312166
+              ],
+              [
+                532.2439412557914,
+                357.38781584932315
+              ]
+            ]
+          }
+        ],
+        "mainEaveMeanDistancePx": 1.269840577367701,
+        "overlayEdges": [
+          {
+            "id": "extension-fascia",
+            "ring": [
+              [
+                3.336825579126892,
+                2.0465883172405075,
+                15.976709538067661
+              ],
+              [
+                0.75,
+                2.754047919728714,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-0",
+            "ring": [
+              [
+                2.3996884903711093,
+                2.22288183684916,
+                15.976709538067661
+              ],
+              [
+                0.7709475334355083,
+                2.6683190705179394,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-1",
+            "ring": [
+              [
+                0.7709475334355083,
+                2.6683190705179394,
+                15.976709538067661
+              ],
+              [
+                0.7709475334355083,
+                0.2922452470219639,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-2",
+            "ring": [
+              [
+                0.7709475334355083,
+                0.2922452470219639,
+                15.976709538067661
+              ],
+              [
+                2.3996884903711093,
+                0.2922452470219639,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "rear-frame-3",
+            "ring": [
+              [
+                2.3996884903711093,
+                0.2922452470219639,
+                15.976709538067661
+              ],
+              [
+                2.3996884903711093,
+                2.22288183684916,
+                15.976709538067661
+              ]
+            ],
+            "status": "visible"
+          },
+          {
+            "id": "wing-mono:0",
+            "ring": [
+              [
+                0.0,
+                5.419263205446016,
+                7.488201374362006
+              ],
+              [
+                3.336825579126892,
+                4.068682200477544,
+                7.488201374362006
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "wing-mono:1",
+            "ring": [
+              [
+                3.336825579126892,
+                4.068682200477544,
+                7.488201374362006
+              ],
+              [
+                3.336825579126892,
+                4.068682200477544,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "wing-mono:2",
+            "ring": [
+              [
+                3.336825579126892,
+                4.068682200477544,
+                12.496705351236383
+              ],
+              [
+                0.0,
+                5.419263205446016,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "wing-mono:3",
+            "ring": [
+              [
+                0.0,
+                5.419263205446016,
+                12.496705351236383
+              ],
+              [
+                0.0,
+                5.419263205446016,
+                7.488201374362006
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:0",
+            "ring": [
+              [
+                0.0,
+                3.1091621362215176,
+                12.496705351236383
+              ],
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:1",
+            "ring": [
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                12.496705351236383
+              ],
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                15.976709538067661
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:2",
+            "ring": [
+              [
+                3.336825579126892,
+                2.1965883172405074,
+                15.976709538067661
+              ],
+              [
+                0.75,
+                2.904047919728714,
+                15.976709538067661
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:3",
+            "ring": [
+              [
+                0.75,
+                2.904047919728714,
+                15.976709538067661
+              ],
+              [
+                0.75,
+                2.904047919728714,
+                14.776709538067662
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:4",
+            "ring": [
+              [
+                0.75,
+                2.904047919728714,
+                14.776709538067662
+              ],
+              [
+                0.0,
+                3.1091621362215176,
+                14.776709538067662
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          },
+          {
+            "id": "rear-extension:5",
+            "ring": [
+              [
+                0.0,
+                3.1091621362215176,
+                14.776709538067662
+              ],
+              [
+                0.0,
+                3.1091621362215176,
+                12.496705351236383
+              ]
+            ],
+            "status": "unvalidated-or-occluded"
+          }
+        ],
+        "status": "failed-check"
+      }
+    ],
+    "status": "rejected",
+    "reasons": [
+      "A camera bound or diagnostic photo check failed"
+    ],
+    "parameterBoundHits": [],
+    "seedCosts": [
+      2.421924749873953,
+      3.1147254463963066,
+      3.1147254489940037,
+      2.4219247501462093,
+      3.1147254387206766,
+      3.1147254507275317,
+      2.4219247500475714,
+      2.4219247501264576,
+      3.114725441477963
+    ]
+  },
+  "limitations": [
+    "Visible lower extension and frame checks improve; this does not validate the occluded upper wing or certify whole-exterior dimensions.",
+    "Old upper junctions were retired because full-width corner attribution was unverified. Upper-wing geometry remains the earlier hypothesis.",
+    "Main eave evidence constrains a line only; partially hidden endpoints and property attribution remain provisional.",
+    "Roof/fascia allowance, door height, camera priors and plan dimensions carry scale uncertainty. No site measurements were supplied.",
+    "Raw normals are weak correlated evidence from the photos, not independent metric observations. Depth and see-through depth are not fitted.",
+    "OS footprint narrows on a different rear side from the listing plan; source date/attribution discrepancy remains unresolved. Roof overhang is separate.",
+    "Front photo agreement is preserved. The unfitted extension side window follows the revised roof with an assumed 0.15 m head allowance. Its dimensions, other secondary openings, basement ground contact and hidden interfaces need survey review.",
+    "Photo checks have been inspected during development and are diagnostics, not an untouched benchmark. No interior geometry was changed."
+  ],
+  "candidateSelected": true
+}

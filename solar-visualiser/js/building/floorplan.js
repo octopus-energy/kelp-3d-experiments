@@ -336,7 +336,7 @@
   // transform. Returns { dividers, roomNames, roomTypes, failed }.
   // ------------------------------------------------------------------
   function mapPlan({ planFloor, transform, worldOutline, deriveRooms }) {
-    const planDividers = deriveDividers({ rooms: planFloor.rooms, planOutline: planFloor.outline });
+    const planDividers = planFloor.dividers || deriveDividers({ rooms: planFloor.rooms, planOutline: planFloor.outline });
     const world = planDividers.map((d) => applyToPoly(transform, d));
 
     // incremental replay: snap each polyline to the room containing its
@@ -362,21 +362,22 @@
 
     // name/type the derived rooms from the plan-room label points (rect
     // centre, or labelAt for rect-less leftover rooms like a hallway)
-    const roomNames = {}, roomTypes = {};
+    const roomNames = {}, roomTypes = {}, roomSources = {}, unassigned = [];
     (planFloor.rooms || []).forEach((pr) => {
-      const at = pr.rect
+      const at = pr.labelAt || (pr.rect
         ? [(pr.rect[0] + pr.rect[2]) / 2, (pr.rect[1] + pr.rect[3]) / 2]
-        : pr.labelAt;
+        : pr.labelAt);
       if (!at) return;
       const c = applyToPoint(transform, at);
       const hit = rooms.find((r) => G.pointInPolygon(r.poly, c[0], c[1]));
       if (hit && !roomNames[hit.id]) {
+        roomSources[hit.id] = pr.id || pr.label;
         if (pr.label) roomNames[hit.id] = pr.label;
         if (pr.type) roomTypes[hit.id] = pr.type;
-      }
+      } else unassigned.push(pr.id || pr.label);
     });
 
-    return { dividers, roomNames, roomTypes, failed };
+    return { dividers, roomNames, roomTypes, roomSources, unassigned, rooms, failed };
   }
 
   // ------------------------------------------------------------------

@@ -17,6 +17,8 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   const O = window.SolarViz.buildingOpenings;
   const FP = window.SolarViz.buildingFloorplan;
   const IMG = window.IMAGE_DATA || null;
+  const RE = window.SolarViz.roofEdit;
+  const roofBase = RE.baseFaces(siteData);
   const $ = (id) => document.getElementById(id);
 
   // ------------------------------------------------------------------
@@ -53,12 +55,15 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   } catch (e) { /* corrupted state — start fresh */ }
 
   let saveTimer = null;
+  function persistState() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* quota */ }
+  }
   function saveState() {
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => {
-      try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* quota */ }
-    }, 300);
+    saveTimer = setTimeout(persistState, 300);
   }
+  // An address switch reloads the page; flush edits still in the debounce.
+  window.addEventListener('pagehide', persistState);
 
   const floorState = (idx) => {
     if (!state.floors[idx]) state.floors[idx] = { dividers: [], roomNames: {}, roomTypes: {} };
@@ -102,6 +107,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   // Derived model
   // ------------------------------------------------------------------
   let solid = null;
+  let lowerSolid = null;
   let levels = [];
   let derivedRooms = {};       // levelIdx -> [{id, poly}]
   let shell = null;            // { group, roofMesh, wallMeshes, edgeLines }
@@ -112,6 +118,13 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   let placing = null;          // 'window' | 'radiator'
 
   function inputFaces() {
+    if (RE.changed(state.roofEdits)) {
+      return RE.stitch(RE.resolve(roofBase,state.roofEdits))
+        .map(f=>({id:f.id,active:f.active,ring:f.ring.map(p=>({
+          x:p.x+coords.PROP_LOCAL_X,y:p.y+siteData.property_details.altitude,
+          z:p.z+coords.HEIGHT-coords.PROP_LOCAL_Y,
+        }))}));
+    }
     return siteData.roof_faces
       .filter((rf) => state.settings.includeRejected || rf.solar_arrays[0].active)
       .map((rf) => ({
@@ -145,11 +158,14 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   }
 
   // -- full pipeline --------------------------------------------------
+  let skipOpeningRebind=false;
   function rebuildSolid() {
+    const replacingState=skipOpeningRebind;
     const oldSolid = solid;
     solid = S.buildSolid(inputFaces(), {
-      snapTol: state.settings.snapTol,
-      orthogonalize: state.settings.orthogonalize,
+      snapTol: RE.changed(state.roofEdits) ? 1e-5 : state.settings.snapTol,
+      orthogonalize: RE.changed(state.roofEdits) ? false : state.settings.orthogonalize,
+      preserveVertices: RE.changed(state.roofEdits),
       groundY: siteData.property_details.altitude,
       footprintOffsets: state.footprintOffsets,
       footprintDeleted: state.footprintDeleted,
@@ -163,15 +179,40 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     const wt = solid.watertight;
     $('bm-status').textContent = wt.closed ? 'watertight ✓' : `open (${wt.badEdges.length} edges)`;
     $('bm-status').style.color = wt.closed ? 'var(--good)' : 'var(--warn)';
+    const manualRoof=RE.changed(state.roofEdits);
+    $('bm-roof-summary').textContent=state.geometrySource ? state.geometrySource.label+' is the working ASHP geometry. Roof edits and room boundary review use this model; dimensions remain inferred.' : manualRoof ? 'Manual roof corrections applied. Recheck photo landmarks after changes.' : 'Correct roof faces and add missing sections before matching photos.';
+    ['bm-rejected','bm-ortho','bm-tol','bm-footprint-btn','bm-footprint-reset','bm-footprint-delete'].forEach(id=>$(id).disabled=manualRoof);
+    $('bm-ortho').checked=manualRoof ? false : state.settings.orthogonalize;
+    $('bm-rejected').checked=manualRoof ? true : state.settings.includeRejected;
+    $('bm-ortho').closest('label').hidden=manualRoof;
+    $('bm-tol').closest('.slider-row').hidden=manualRoof;
+    $('bm-ortho').closest('label').title=manualRoof ? 'Manual roof corners are preserved exactly; edit them in Edit roof geometry.' : '';
 
-    state.windows = O.rebindOpenings(state.windows, oldSolid, solid);
-    state.radiators = O.rebindOpenings(state.radiators, oldSolid, solid);
+
+    const propertyOrigin={x:coords.PROP_LOCAL_X,y:siteData.property_details.altitude,z:coords.HEIGHT-coords.PROP_LOCAL_Y};
+    lowerSolid=window.SolarViz.buildingProject.lowerGround(RE.resolve(roofBase,state.roofEdits),propertyOrigin,state.storeys.lowerGround);
+    const mainPanels=solid.wallPanels;
+    if(lowerSolid)solid.wallPanels=mainPanels.concat(lowerSolid.wallPanels);
+    $('bm-lower-controls').hidden=!(state.geometrySource&&window.SolarViz.currentProperty.id==='3broomroad');
+    $('bm-add-lower').textContent=lowerSolid?'Update lower-ground depth':'Add provisional lower ground';
+    if(lowerSolid)$('bm-lower-depth').value=state.storeys.lowerGround.depth;
+    $('bm-reveal-lower').disabled=!lowerSolid;
+    ['bm-storeys','bm-attic'].forEach(id=>{$(id).disabled=!!lowerSolid;$(id).title=lowerSolid?'Storey count is fixed while the lower-ground level has room assignments. Depth and floor heights remain editable.':'';});
+    if(!skipOpeningRebind){
+      const prior=JSON.parse(JSON.stringify(state.windows));
+      state.windows = O.rebindOpenings(state.windows, oldSolid, solid);
+      for(const w of prior.filter(w=>!state.windows.some(n=>n.id===w.id)))(state.unboundCandidateOpenings ||= []).push({...w,reason:'Wall could not be rebound after geometry change'});
+      state.radiators = O.rebindOpenings(state.radiators, oldSolid, solid);
+    }
+    skipOpeningRebind=false;
 
     disposeGroup(shellGroup);
-    shell = S.buildSolidMeshes(solid, mats);
+    shell = S.buildSolidMeshes({...solid,wallPanels:mainPanels}, mats);
+    if(lowerSolid){const below=S.buildSolidMeshes(lowerSolid,mats);shell.group.add(below.group);shell.wallMeshes.push(...below.wallMeshes);const edges=new THREE.Group();edges.add(shell.edgeLines,below.edgeLines);shell.group.add(edges);shell.edgeLines=edges;}
+    shell.edgeLines.visible=$('bm-edges').checked;
     shellGroup.add(shell.group);
 
-    rebuildFloors();
+    rebuildFloors({preserveOpeningHeights:!replacingState});
     applyTerrainFlatten();
     refreshFootprintHandles();
     syncFootprintButtons();
@@ -180,6 +221,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   // other modules (photo matching) react to the solid being re-derived
   const rebuildListeners = [];
+  const layoutListeners = [];
 
   // Programmatic window/door creation (facade editor): u/width/height in
   // wall metres, sill measured up from the wall bottom (ground) —
@@ -212,18 +254,34 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     });
   }
 
-  function rebuildFloors() {
+  function rebuildFloors(options={}) {
     if (!solid) return;
+    const previousLevels=levels;
+    const levelSolids=[];
+    if(state.storeys.upperFaceIds){const upper=inputFaces().filter(f=>state.storeys.upperFaceIds.includes(f.id));if(upper.length)levelSolids[1]=S.buildSolid(upper,{groundY:solid.groundY,snapTol:1e-5,preserveVertices:true,orthogonalize:false});}
     levels = F.computeFloors(solid, {
+      levelSolids,
       count: state.storeys.count,
       storeyHeight: storeyHeight(),
       slabT: state.storeys.slabT,
       includeAttic: state.storeys.includeAttic,
     });
+    if(lowerSolid)levels.push(F.makeLevel(lowerSolid,{idx:levels.length,kind:'lower-ground',name:'Lower ground · provisional',baseY:lowerSolid.groundY,slabTopY:lowerSolid.groundY+state.storeys.slabT,ceilingY:solid.groundY,isAttic:false,isTop:false}));
     if (selectedFloorIdx !== null && selectedFloorIdx >= levels.length) {
       selectedFloorIdx = null;
       wallBtn.disabled = true;
       $('bm-undo-wall').disabled = true;
+    }
+    if(options.preserveOpeningHeights!==false&&lowerSolid&&previousLevels.some(l=>l.kind==='lower-ground')){
+      const old=previousLevels.find(l=>l.kind==='lower-ground'),next=levels.find(l=>l.kind==='lower-ground');
+      for(const w of state.windows.filter(w=>w.levelIdx===old.idx)){w.sill+=old.slabTopY-next.slabTopY;w.levelIdx=next.idx;}
+    }
+    if(state.pendingCandidateOpenings){const imported=window.SolarViz.buildingProject.bindOpenings(state.pendingCandidateOpenings,solid,levels,{x:coords.PROP_LOCAL_X,y:siteData.property_details.altitude,z:coords.HEIGHT-coords.PROP_LOCAL_Y});state.windows=imported.bound;state.unboundCandidateOpenings=imported.unbound;delete state.pendingCandidateOpenings;}
+    if(lowerSolid){
+      const candidates=(state.unboundCandidateOpenings||[]).filter(o=>o.ring&&o.id==='basement-window');
+      const imported=window.SolarViz.buildingProject.bindOpenings(candidates,solid,levels,{x:coords.PROP_LOCAL_X,y:siteData.property_details.altitude,z:coords.HEIGHT-coords.PROP_LOCAL_Y});
+      state.windows.push(...imported.bound.filter(w=>!state.windows.some(old=>old.id===w.id)));
+      state.unboundCandidateOpenings=(state.unboundCandidateOpenings||[]).filter(o=>!imported.bound.some(w=>w.sourceId===o.id));
     }
     state.windows.forEach((w) => { w.levelIdx = Math.min(w.levelIdx, levels.length - 1); });
     state.radiators.forEach((r) => { r.levelIdx = Math.min(r.levelIdx, levels.length - 1); });
@@ -258,6 +316,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     refreshOpeningList();
     refreshWindowEditor();
     saveState();
+    layoutListeners.forEach(fn=>fn());
   }
 
   function rebuildRoomsForLevel(idx, opts) {
@@ -302,6 +361,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       refreshFloorList();
       refreshRoomList();
       saveState();
+      layoutListeners.forEach(fn=>fn());
     }
   }
 
@@ -322,12 +382,15 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     });
     fs.roomNames = names;
     fs.roomTypes = types;
+    fs.roomSources = {};
   }
 
   function rebuildOpenings(opts) {
     if (!solid) return;
     // sanitize: drop openings whose wall vanished; clamp the rest
-    state.windows = state.windows.filter((w) => O.clampWindow(w, solid, levels));
+    const retained=state.windows.filter((w)=>O.clampWindow(w,solid,levels));
+    for(const w of state.windows.filter(w=>!retained.includes(w)))if(w.sourceId)(state.unboundCandidateOpenings ||= []).push({...w,reason:'Opening no longer fits after geometry change; review required'});
+    state.windows=retained;
     state.radiators = state.radiators.filter((r) => O.wallById(solid, r.wallId));
     if (selectedWindowId && !state.windows.some((w) => w.id === selectedWindowId)) selectedWindowId = null;
 
@@ -344,6 +407,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       if (o.userData && o.userData.windowId === selectedWindowId && o.userData.type === 'building-window') o.material = mats.glassSel;
     });
     openingsGroup.add(openingMeshes.group);
+    applyTerrainFlatten(); // keep the DSM fringe clear of edited frontage openings
     updateVisibility(); // openings were recreated — re-apply the floor filter
     if (!(opts && opts.skipLists)) {
       refreshOpeningList();
@@ -381,12 +445,12 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     mats.edge.opacity = ghost ? 0.35 : 0.85;
 
     levelGroups.forEach((lg, i) => {
-      lg.group.position.y = sel === null ? gap * i : 0;
+      lg.group.position.y = sel === null ? gap * (levels[i].kind==='lower-ground'?-1:i) : 0;
       lg.group.visible = sel === null || i === sel;
-      lg.extGroup.visible = sel === i;
+      lg.extGroup.visible = sel === i && !fpPreview;
       // rooms (tints/labels/dividers): only on the floor being worked on
       // or in see-through views — labels would poke through a closed shell
-      lg.roomsGroup.visible = sel === i || (sel === null && ghost);
+      lg.roomsGroup.visible = !fpPreview && (sel === i || (sel === null && ghost));
       // floorplan underlay: only on the isolated floor, hidden while a
       // fresh import preview (which draws its own quad) is showing
       lg.fpGroup.visible = sel === i && !!(state.floors[i] && state.floors[i].floorplan) &&
@@ -397,7 +461,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       });
     });
 
-    openingsGroup.visible = sel !== null || !ghost;
+    openingsGroup.visible = !fpPreview && (sel !== null || !ghost);
     if (openingMeshes) {
       openingMeshes.group.children.forEach((c) => {
         if (c.userData && c.userData.levelIdx !== undefined) {
@@ -409,44 +473,40 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
 
   // ------------------------------------------------------------------
-  // Terrain flattening (the DSM contains the house — flatten it away
-  // under the footprint so the solid isn't buried in the terrain lump)
+  // Display cutout: remove the original house surface inside the footprint.
+  // Preserve neighbouring DSM geometry, elevation and smooth normals.
   // ------------------------------------------------------------------
-  let terrainOriginalY = null;
+  const terrainSolarGeometry=terrainMesh.geometry;
+  const terrainOriginalGeometry=terrainMesh.userData.rawDSMGeometry||terrainSolarGeometry;
+  let terrainCutGeometry=null,terrainCutKey=null;
   function applyTerrainFlatten() {
-    const on = modeActive && $('bm-flatten').checked && $('bm-show').checked && !!solid;
-    const pos = terrainMesh.geometry.attributes.position;
-    if (!terrainOriginalY) {
-      terrainOriginalY = new Float32Array(pos.count);
-      for (let i = 0; i < pos.count; i++) terrainOriginalY[i] = pos.getY(i);
-    }
-    const MARGIN = 0.8;
-    let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-    if (solid) {
-      solid.footprint.forEach(([x, z]) => {
-        minX = Math.min(minX, x - MARGIN); maxX = Math.max(maxX, x + MARGIN);
-        minZ = Math.min(minZ, z - MARGIN); maxZ = Math.max(maxZ, z + MARGIN);
-      });
-    }
-    for (let i = 0; i < pos.count; i++) {
-      let y = terrainOriginalY[i];
-      if (on) {
-        const x = pos.getX(i), z = pos.getZ(i);
-        if (x >= minX && x <= maxX && z >= minZ && z <= maxZ) {
-          let near = G.pointInPolygon(solid.footprint, x, z);
-          if (!near) {
-            for (let e = 0; e < solid.footprint.length && !near; e++) {
-              const a = solid.footprint[e], b = solid.footprint[(e + 1) % solid.footprint.length];
-              if (G.distPointToSegment(x, z, a[0], a[1], b[0], b[1]).d < MARGIN) near = true;
-            }
-          }
-          if (near) y = solid.groundY;
-        }
+    const on=modeActive && $('bm-show').checked && solid;
+    const masks=on&&$('bm-flatten').checked?solid.loops.map(l=>l.poly):[];
+    if(on&&($('bm-flatten').checked||(lowerSolid&&$('bm-reveal-lower').checked))){
+      const face=inputFaces().find(f=>f.id==='main-front'),report=window.BROOM_RECONSTRUCTION;
+      const stage=report&&state.geometrySource&&report.propertyId===state.geometrySource.propertyId?report.stages.find(s=>s.id===state.geometrySource.stageId):null;
+      if(face&&stage){
+        const main=lowerSolid||S.buildSolid(inputFaces().filter(f=>f.id.startsWith('main-')||f.id.startsWith('bay-')),{groundY:solid.groundY,snapTol:1e-5,preserveVertices:true,orthogonalize:false});
+        const bearing=stage.model.parameters.bearing,a=bearing*Math.PI/180,front=[Math.cos(a),Math.sin(a)];
+        // The visible facade includes any modelled lower-ground opening. Do not
+        // leave a DSM stump across its glazing; this is still display-only.
+        const openings=state.windows.map(w=>O.windowRect(w,solid,levels)).filter(r=>r&&r.wall.normal[0]*front[0]+r.wall.normal[1]*front[1]>.8);
+        const openingBaseY=openings.length?Math.min(...openings.flatMap(r=>r.ring.map(p=>p[1]))):undefined;
+        if(main)masks.push(window.SolarViz.terrainCutout.frontage({footprint:main.footprint,frontRing:face.ring,bearing,groundY:solid.groundY,openingBaseY,reveal:!!lowerSolid&&$('bm-reveal-lower').checked}));
       }
-      pos.setY(i, y);
     }
-    pos.needsUpdate = true;
-    terrainMesh.geometry.computeVertexNormals();
+    if(on&&selectedFloorIdx!==null&&levels[selectedFloorIdx]?.kind==='lower-ground')masks.push(lowerSolid.footprint);
+    if(!masks.length){terrainMesh.geometry=modeActive?terrainOriginalGeometry:terrainSolarGeometry;return;}
+    const key=JSON.stringify(masks);
+    if(key!==terrainCutKey){
+      const raw=terrainOriginalGeometry,result=window.SolarViz.terrainCutout.cut({positions:raw.attributes.position.array,uvs:raw.attributes.uv.array,indices:raw.index.array,normals:raw.attributes.normal.array},masks);
+      if(terrainCutGeometry)terrainCutGeometry.dispose();
+      terrainCutGeometry=new THREE.BufferGeometry();
+      terrainCutGeometry.setAttribute('position',new THREE.Float32BufferAttribute(result.positions,3));
+      terrainCutGeometry.setAttribute('uv',new THREE.Float32BufferAttribute(result.uvs,2));
+      terrainCutGeometry.setAttribute('normal',new THREE.Float32BufferAttribute(result.normals,3));terrainCutKey=key;
+    }
+    terrainMesh.geometry=terrainCutGeometry;
   }
 
   // ------------------------------------------------------------------
@@ -598,7 +658,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   function planFloorFor(idx) {
     if (!IMG || !IMG.floorplan || !FP) return null;
-    return IMG.floorplan.floors.find((f) => f.level === idx) || null;
+    return (state.geometrySource && window.SolarViz.planIntake.forLevel(window.RECONSTRUCTION_WORKFLOW,levels[idx])) || IMG.floorplan.floors.find((f) => f.level === idx) || null;
   }
 
   // Textured quad covering the plan floor's bbox (plus margin so wall
@@ -646,9 +706,12 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     p.mapped.dividers.forEach((d) => p.group.add(mkLine(d, fpLineOk)));
     p.mapped.failed.forEach((d) => p.group.add(mkLine(d, fpLineBad)));
     $('bm-fp-apply').textContent = `Apply ${p.mapped.dividers.length + 1} rooms`;
-    $('bm-fp-score').textContent =
-      'fit ' + Math.round((p.transform.score || 0) * 100) + '%' +
-      (p.mapped.failed.length ? ` · ${p.mapped.failed.length} wall(s) failed` : '');
+    const invalid=p.mapped.failed.length||p.mapped.unassigned.length||p.mapped.rooms.length!==p.planFloor.rooms.length;
+    $('bm-fp-apply').disabled=!!(p.planFloor.strict&&invalid);
+    const offset=Math.max(...FP.applyToPoly(p.transform,p.planFloor.outline).map(([x,z])=>Math.min(...lv.outline.map((a,i)=>G.distPointToSegment(x,z,...a,...lv.outline[(i+1)%lv.outline.length]).d))));
+    $('bm-fp-score').textContent = p.planFloor.strict
+      ? `${Object.keys(p.mapped.roomSources).length}/${p.planFloor.rooms.length} rooms assigned · ${p.mapped.failed.length} failed walls · ${(p.transform.scale*100).toFixed(2)} cm/px · largest plan corner offset ${offset.toFixed(2)} m. Front anchored to inferred shell width. Review the underlay: these are gross room envelopes, with wall thickness, door thresholds and stairs still provisional.`
+      : 'fit ' + Math.round((p.transform.score || 0) * 100) + '%' + (p.mapped.failed.length ? ` · ${p.mapped.failed.length} wall(s) failed` : '');
   }
 
   function fpStartPreview() {
@@ -657,9 +720,12 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     if (!planFloor) return;
     fpCancelPreview();
     const lv = levels[selectedFloorIdx];
-    const scale = FP.planScale(planFloor.rooms);
+    const report=window.BROOM_RECONSTRUCTION;
+    const stage=report?.stages?.find(s=>s.id===state.geometrySource?.stageId);
+    const seeded=planFloor.strict&&stage?window.SolarViz.planIntake.transform(planFloor,stage.model.parameters,{x:coords.PROP_LOCAL_X,z:coords.HEIGHT-coords.PROP_LOCAL_Y}):null;
+    const scale = seeded?.scale || FP.planScale(planFloor.rooms);
     if (!scale) { flash('Floorplan has no printed dimensions to scale from'); return; }
-    const transform = FP.fitTransform({
+    const transform = seeded || FP.fitTransform({
       planOutline: planFloor.outline, scale,
       worldOutline: lv.outline, axisAngle: solid.axisAngle,
     });
@@ -671,6 +737,10 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     $('bm-fp-preview').style.display = '';
     fpBtn.style.display = 'none';
     fpRefreshPreview();
+    terrainMesh.visible=false;
+    const [cx,cz]=G.polygonCentroid(lv.outline),span=Math.max(...lv.outline.map(p=>Math.hypot(p[0]-cx,p[1]-cz)))*2;
+    cameraAnimator.animateCamera(new THREE.Vector3(cx-Math.sin(transform.angle)*.01,lv.slabTopY+Math.max(15,span*1.5),cz+Math.cos(transform.angle)*.01),new THREE.Vector3(cx,lv.slabTopY,cz));
+    $('bm-fp-preview').scrollIntoView({block:'nearest'});
     updateVisibility();
   }
 
@@ -679,6 +749,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     disposeGroup(fpPreview.group);
     buildingRoot.remove(fpPreview.group);
     fpPreview = null;
+    terrainMesh.visible=$('bm-terrain').checked;
     $('bm-fp-preview').style.display = 'none';
     fpBtn.style.display = '';
     updateVisibility();
@@ -686,14 +757,15 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   function fpApply() {
     const p = fpPreview;
-    if (!p || !p.mapped) return;
+    if (!p || !p.mapped || $('bm-fp-apply').disabled) return;
     const fs = floorState(p.levelIdx);
     if (fs.dividers.length &&
         !confirm('Replace the existing walls on this floor with the floorplan layout?')) return;
     fs.dividers = p.mapped.dividers;
     fs.roomNames = p.mapped.roomNames;
     fs.roomTypes = p.mapped.roomTypes;
-    fs.floorplan = { transform: p.transform };
+    fs.roomSources = p.mapped.roomSources;
+    fs.floorplan = { transform: p.transform, source:p.planFloor.source||'Listing floorplan' };
     const failed = p.mapped.failed.length;
     fpCancelPreview();
     rebuildFloors();       // also rebuilds the persistent underlay quad
@@ -733,6 +805,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       fpPreview.transform.tz += dz;
       fpRefreshPreview();
     }));
+  [['bm-fp-smaller',.99],['bm-fp-larger',1.01]].forEach(([id,factor])=>$(id).addEventListener('click',()=>{if(!fpPreview)return;const p=fpPreview,T=p.transform,anchor=p.planFloor.anchor||G.polygonCentroid(p.planFloor.outline),before=FP.applyToPoint(T,anchor);T.scale*=factor;const after=FP.applyToPoint(T,anchor);T.tx+=before[0]-after[0];T.tz+=before[1]-after[1];fpRefreshPreview();}));
   $('bm-fp-underlay').addEventListener('change', updateVisibility);
 
   // ------------------------------------------------------------------
@@ -1104,7 +1177,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   function refreshFloorList() {
     const list = $('bm-floor-list');
     list.innerHTML = '';
-    levels.forEach((lv) => {
+    [...levels].sort((a,b)=>a.baseY-b.baseY).forEach((lv) => {
       const rooms = derivedRooms[lv.idx] || [];
       const item = document.createElement('div');
       item.className = 'array-item bm-floor-item' + (selectedFloorIdx === lv.idx ? ' selected' : '');
@@ -1122,6 +1195,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     if (idx !== null && editingFootprint) setFootprintEdit(false);
     selectedWall = null;
     selectedFloorIdx = idx;
+    applyTerrainFlatten();
     refreshWallSelection();
     wallBtn.disabled = idx === null;
     $('bm-undo-wall').disabled = idx === null;
@@ -1146,7 +1220,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     const list = $('bm-room-list');
     list.innerHTML = '';
     if (selectedFloorIdx === null) {
-      list.innerHTML = '<div class="scaffold-empty">Select a floor to partition it into rooms.</div>';
+      list.innerHTML = '<div class="scaffold-empty">Select a floor to see its rooms.</div>';
       return;
     }
     const fs = floorState(selectedFloorIdx);
@@ -1163,11 +1237,12 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
           `<option value="${t.key}"${t.key === typeKey ? ' selected' : ''}>${t.label}</option>`))
         .join('');
       item.innerHTML = `
-        <div class="name"><span>${name}</span><button class="scaffold-del bm-rename" title="Rename">✎</button></div>
+        <div class="name"><span class="bm-room-name"></span><button class="scaffold-del bm-rename" title="Rename">✎</button></div>
         <div class="bm-room-foot">
           <select class="bm-type-select">${options}</select>
           <span class="meta">${area.toFixed(1)} m²</span>
         </div>`;
+      item.querySelector('.bm-room-name').textContent=name;
       item.querySelector('.bm-rename').addEventListener('click', (e) => {
         e.stopPropagation();
         const next = prompt('Room name', name);
@@ -1293,6 +1368,14 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     rebuildSolid();
   });
   $('bm-flatten').addEventListener('change', applyTerrainFlatten);
+  $('bm-reveal-lower').addEventListener('change',applyTerrainFlatten);
+  $('bm-add-lower').addEventListener('click',()=>{
+    const depth=Number($('bm-lower-depth').value);
+    if(!Number.isFinite(depth)||depth<1.8||depth>4){flash('Use a lower-ground depth between 1.8 and 4 m');return;}
+    state.storeys.lowerGround={enabled:true,depth,faceIds:inputFaces().filter(f=>f.id.startsWith('main-')||f.id.startsWith('bay-')).map(f=>f.id),source:'Listing-plan extent under main house; assumed depth. Requires survey.'};
+    $('bm-reveal-lower').checked=true;rebuildSolid();saveState();
+    flash('Provisional lower ground added. Cutaway is display only; confirm depth, ground contact and stair voids on site.');
+  });
   $('bm-tol').addEventListener('change', (e) => {
     state.settings.snapTol = parseFloat(e.target.value) / 100;
     $('v-bm-tol').textContent = state.settings.snapTol.toFixed(2) + ' m';
@@ -1334,7 +1417,8 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
   // Export / import
   // ------------------------------------------------------------------
   $('bm-export').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const exported = Object.assign({}, state, { propertyKey: STORE_KEY });
+    const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'building-model-' + addr.postcode.replace(/\s+/g, '') + '.json';
@@ -1350,9 +1434,18 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
       try {
         const data = JSON.parse(reader.result);
         if (data.version !== 1) throw new Error('unsupported version');
-        state = data;
+        if(data.roofEdits) {
+          const roofCheck=RE.validate(RE.resolve(roofBase,data.roofEdits));
+          if(roofCheck.errors.length) throw new Error(roofCheck.errors.join(' '));
+        }
+        if (data.propertyKey && data.propertyKey !== STORE_KEY) throw new Error('this model belongs to a different property');
+        if(data.geometryPrep&&data.geometryPrep.propertyId!==window.SolarViz.currentProperty.id)throw new Error("geometry evidence belongs to another property");
+        data.geometryPrep=window.SolarViz.geometryPrep.preserveHistory(state.geometryPrep,data.geometryPrep);
+        Object.keys(state).forEach(key=>delete state[key]);
+        Object.assign(state,data);
         saveState();
         syncControlsFromState();
+        skipOpeningRebind=true;
         rebuildSolid();
         flash('Model imported');
       } catch (err) {
@@ -1380,6 +1473,7 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
 
   function flash(msg) {
     const el = document.createElement('div');
+    document.querySelectorAll('.bm-flash').forEach(n=>n.remove());
     el.className = 'bm-flash';
     el.textContent = msg;
     document.body.appendChild(el);
@@ -1409,7 +1503,49 @@ window.SolarViz.setupBuilding = function ({ scene, siteData, coords, terrainMesh
     applyTerrainFlatten();
   }
 
+  function applyRoofEdits(edits) {
+    const faces=RE.resolve(roofBase,edits),result=RE.validate(faces);
+    if(result.errors.length)return result;
+    if(state.storeys.lowerGround?.enabled){try{window.SolarViz.buildingProject.lowerGround(faces,{x:coords.PROP_LOCAL_X,y:siteData.property_details.altitude,z:coords.HEIGHT-coords.PROP_LOCAL_Y},state.storeys.lowerGround);}catch(e){result.errors.push(e.message);return result;}}
+    const changed=JSON.stringify(state.roofEdits || null)!==JSON.stringify(RE.changed(edits)?edits:null);
+    if(!changed)return result;
+    // Retain manual floor spacing when a low extension changes the eave minimum.
+    if(!state.storeys.storeyHeight)state.storeys.storeyHeight=storeyHeight();
+    state.roofEdits=RE.changed(edits)?edits:null;
+    state.footprintOffsets=null;state.footprintDeleted=null;
+    RE.invalidateMatches(state);
+    if(editingFootprint)setFootprintEdit(false);
+    selectFloor(null);
+    rebuildSolid();saveState();
+    flash('Roof updated. Review photo matches against the new landmarks.');
+    return result;
+  }
+
   return {
+    roofBase,
+    updateRoomLayout(level,dividers){const check=R.deriveRooms(levels[level].outline,dividers);if(check.failed.length)throw Error('Some room dividers do not fit this floor');const fs=floorState(level);remapRoomMeta(fs,derivedRooms[level]||[],check.rooms);fs.dividers=JSON.parse(JSON.stringify(dividers));rebuildRoomsForLevel(level);},
+    renameRoom(level,id,name){floorState(level).roomNames[id]=name;rebuildRoomsForLevel(level);},
+    get lowerSolid(){return lowerSolid;},
+    addLayoutListener:fn=>layoutListeners.push(fn),
+    get roomsByLevel(){return Object.fromEntries(levels.map(l=>[l.idx,(derivedRooms[l.idx]||[]).map(r=>({...r,sourceRoomId:floorState(l.idx).roomSources?.[r.id],name:R.roomDisplayName(r.id,floorState(l.idx).roomNames,floorState(l.idx).roomTypes)}))]));},
+    get origin(){return {x:coords.PROP_LOCAL_X,y:siteData.property_details.altitude,z:coords.HEIGHT-coords.PROP_LOCAL_Y};},
+    replaceWorkingState(next){next={...next,geometryPrep:window.SolarViz.geometryPrep.preserveHistory(state.geometryPrep,next.geometryPrep)};selectFloor(null);setPlacing(null);Object.keys(state).forEach(k=>delete state[k]);Object.assign(state,next);syncControlsFromState();skipOpeningRebind=true;rebuildSolid();saveState();},
+    getRoofFaces:()=>{
+      const faces=RE.resolve(roofBase,state.roofEdits);
+      if(RE.changed(state.roofEdits))return faces;
+      // Start from the visible model, including footprint corrections and
+      // regularisation settings. Applying roofs must not discard those edits.
+      return faces.map(f=>{
+        const current=solid.faces.find(face=>face.id===f.id);
+        if(!current)return f;
+        return Object.assign({},f,{ring:current.ids.map((id,i)=>{
+          const c=solid.clusters[id];
+          return {id:f.id+':'+i,x:c.x-coords.PROP_LOCAL_X,y:c.y-solid.groundY,z:c.z-(coords.HEIGHT-coords.PROP_LOCAL_Y)};
+        })});
+      });
+    },
+    applyRoofEdits,
+    prepareRoofEdit:()=>{setPlacing(null);fpCancelPreview();if(editingFootprint)setFootprintEdit(false);selectFloor(null);},
     root: buildingRoot,
     setActive,
     save: saveState,

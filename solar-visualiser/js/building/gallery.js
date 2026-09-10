@@ -27,7 +27,7 @@ window.SolarViz.setupGallery = function ({ container, imageData }) {
     return;
   }
   const base = imageData.basePath || '';
-  const all = imageData.images;
+  const all = imageData.images.concat(imageData.floorplan ? [imageData.floorplan] : []);
   const primaries = all.filter((im) => !im.duplicateOf);
   const dupsOf = (im) => all.filter((d) => d.duplicateOf === im.id);
 
@@ -35,6 +35,7 @@ window.SolarViz.setupGallery = function ({ container, imageData }) {
     { key: 'all', label: 'All' },
     { key: 'exterior', label: 'Exterior' },
     { key: 'interior', label: 'Interior' },
+    { key: 'floorplan', label: 'Floorplan' },
   ];
   let filter = 'all';
 
@@ -61,7 +62,7 @@ window.SolarViz.setupGallery = function ({ container, imageData }) {
     if (im.kind === 'exterior') return 'Exterior · ' + (im.side || '?');
     if (im.room && im.room.label) return im.room.label;
     if (im.room) return im.room.type.charAt(0).toUpperCase() + im.room.type.slice(1) + ' (guess)';
-    return im.kind;
+    return im.caption || im.kind;
   }
 
   function renderGrid() {

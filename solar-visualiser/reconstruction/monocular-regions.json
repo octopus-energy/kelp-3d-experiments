@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "method": "Assistant-selected rectangular patches from original RGB and normal previews. Bounds are [x0,y0,x1,y1] in native input pixels, upper limits exclusive. Hypothesis checks, not measured surfaces. Selection is visible in the HTML report.",
+  "views": [
+    {"source":"655c2e755834a41b23f260899a2fe835.jpeg","label":"Front facade","regions":[{"id":"wall","label":"Main front brick wall","box":[230,190,370,230]},{"id":"bay","label":"Central bay brick band","box":[490,308,570,338]}],"cameraCheck":{"role":"front","localNormal":[0,0,-1],"regions":["wall","bay"]}},
+    {"source":"b3c87cfb9faa2d98b3231da431fae97b.jpeg","label":"Rear facade","regions":[{"id":"wall","label":"Lower extension front brick wall","box":[560,220,592,270]},{"id":"wing","label":"Upper rear wing end wall","box":[550,137,575,162]}],"cameraCheck":{"role":"rear","localNormal":[0,0,1],"regions":["wall","wing"]}},
+    {"source":"665a47dfe68e005497291515decd24d8.jpeg","label":"Rear living area","regions":[{"id":"ceiling","label":"Ceiling away from rooflight","box":[560,85,760,145]},{"id":"floor","label":"Visible floor between furniture","box":[450,550,485,600]}],"planePair":["ceiling","floor"]},
+    {"source":"08968f54527a305a14c70973df11894c.jpeg","label":"Kitchen","regions":[{"id":"ceiling","label":"Kitchen ceiling","box":[310,30,520,100]},{"id":"floor","label":"Kitchen floor","box":[350,555,480,655]}],"planePair":["ceiling","floor"]},
+    {"source":"a40dadd2d6f86d5b4b85593d231f240b.jpeg","label":"Front living room","regions":[{"id":"ceiling","label":"Ceiling away from chandelier","box":[330,45,450,90]},{"id":"floor","label":"Visible carpet below table","box":[520,640,620,680]}],"planePair":["ceiling","floor"]},
+    {"source":"35f17817024aeb5a833ac4f0ed4d592a.jpeg","label":"Lower ground room","regions":[{"id":"ceiling","label":"Lower-ground ceiling","box":[480,45,780,110]},{"id":"floor","label":"Visible floor","box":[480,570,670,640]}],"planePair":["ceiling","floor"]}
+  ]
+}

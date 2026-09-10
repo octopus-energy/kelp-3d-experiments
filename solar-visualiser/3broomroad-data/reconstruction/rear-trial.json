@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "status": "rejected",
+  "baseStage": "rear-corrected",
+  "geometryApplied": false,
+  "parameters": {
+    "width": 5.180610610542199,
+    "length": 7.488201374362006,
+    "eave": 5.855153462552096,
+    "ridge": 7.304931089178188,
+    "bay_left": 1.6767692309183944,
+    "bay_right": 4.852342579619844,
+    "bay_chamfer": 0.7168071425044159,
+    "bay_depth": 0.8688179027354498,
+    "bay_rise": 0.45,
+    "door_x": 0.8828057677335408,
+    "door_width": 0.8628289136276369,
+    "door_bottom": 0.23473206075923814,
+    "door_height": 2.201872614649227,
+    "window_width": 0.8460726537338794,
+    "window_lower_sill": 0.8581393091501235,
+    "window_lower_height": 1.6949260998517495,
+    "window_upper_sill": 3.544546774225557,
+    "window_upper_height": 1.4957823635250735,
+    "wing_width": 3.336825579126892,
+    "wing_end": 12.496705351236383,
+    "wing_eave": 4.777030346782018,
+    "wing_rise": 0.7065059724497686,
+    "extension_end": 15.976709538067661,
+    "extension_low": 2.0000000000000004,
+    "extension_rise": 0.8724339763936547,
+    "anchor_x": 3.329148154959907,
+    "anchor_z": 3.713530146166461,
+    "bearing": 18.03348150265103
+  },
+  "photos": [
+    {
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "camera": [
+        5.53273349674986,
+        1.308866994266711,
+        20.622005567519405,
+        3.4195690329544726,
+        0.2631634538744669,
+        -0.04372526007665287,
+        99.99999999999999,
+        -179.99999999999997
+      ],
+      "points": [
+        {
+          "landmark": "wing-low",
+          "px": [
+            0.4990234375,
+            0.1815519765739385
+          ],
+          "sigmaPx": 5,
+          "use": "fit",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            506.64812867810593,
+            124.8989048802083
+          ],
+          "errorPx": 4.443738739618511
+        },
+        {
+          "landmark": "wing-high",
+          "px": [
+            0.5703125,
+            0.16398243045387995
+          ],
+          "sigmaPx": 5,
+          "use": "fit",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            597.6460368526126,
+            112.20046032231761
+          ],
+          "errorPx": 13.647509154555829
+        },
+        {
+          "landmark": "door-left",
+          "px": [
+            0.5849609375,
+            0.43045387994143486
+          ],
+          "sigmaPx": 5,
+          "use": "fit",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            594.9729901943476,
+            301.51961309631565
+          ],
+          "errorPx": 8.530028668949607
+        },
+        {
+          "landmark": "door-right",
+          "px": [
+            0.6748046875,
+            0.43045387994143486
+          ],
+          "sigmaPx": 5,
+          "use": "fit",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            688.7161634208535,
+            290.9323193303346
+          ],
+          "errorPx": 3.82447044847862
+        },
+        {
+          "landmark": "extension-low",
+          "px": [
+            0.537109375,
+            0.29428989751098095
+          ],
+          "sigmaPx": 5,
+          "use": "fit",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            560.8186034991464,
+            196.18306887703295
+          ],
+          "errorPx": 11.84250848068736
+        }
+      ],
+      "boundHits": [
+        "fov",
+        "imageShift"
+      ],
+      "eaveUse": "fit"
+    },
+    {
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "camera": [
+        18.222043604048896,
+        0.9874694544496114,
+        28.40614537726632,
+        4.065787076080577,
+        0.022370150414065107,
+        -0.036723011197347964,
+        64.68788049640843,
+        58.8582537501551
+      ],
+      "points": [
+        {
+          "landmark": "wing-low",
+          "px": [
+            0.40625,
+            0.4685212298682284
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            415.6610864345623,
+            321.02868444110857
+          ],
+          "errorPx": 1.0830762134847778
+        },
+        {
+          "landmark": "wing-high",
+          "px": [
+            0.4580078125,
+            0.46266471449487556
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            470.5112568458588,
+            313.7678873717018
+          ],
+          "errorPx": 2.695593448493903
+        },
+        {
+          "landmark": "door-left",
+          "px": [
+            0.48046875,
+            0.6325036603221084
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            494.5539169581984,
+            433.2731925967915
+          ],
+          "errorPx": 2.853683797812566
+        },
+        {
+          "landmark": "door-right",
+          "px": [
+            0.517578125,
+            0.6310395314787701
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            525.4454639855333,
+            430.66929833778937
+          ],
+          "errorPx": 4.566526239546152
+        },
+        {
+          "landmark": "extension-low",
+          "px": [
+            0.4482421875,
+            0.5607613469985359
+          ],
+          "sigmaPx": 5,
+          "use": "check",
+          "attribution": "target house; assistant interpretation, needs review",
+          "projectedPx": [
+            484.9344006119298,
+            385.2348059259926
+          ],
+          "errorPx": 26.030510802266555
+        }
+      ],
+      "boundHits": [],
+      "eaveUse": "not-used"
+    }
+  ],
+  "cost": 12.103757803937619,
+  "reasons": [
+    "Geometry bounds reached: extension_low",
+    "Camera bounds reached",
+    "Withheld far-photo extension corner exceeds 10 px prototype threshold",
+    "rear-door extends above the proposed roof",
+    "extension-side-window extends above the proposed roof"
+  ],
+  "withheldCornerPx": 26.030510802266555,
+  "method": "Rear height/rise refinement with weak DSM and height priors; front geometry/poses frozen. Near-photo corner/eave promoted to fitting evidence for this trial, far-photo corner withheld. Diagnostic check inspected during development, not an untouched benchmark."
+}

@@ -73,6 +73,7 @@
 
     // -- 3. re-derive cluster positions from incident planes ---------
     clusters.forEach((c) => {
+      if (cfg.preserveVertices) return;
       const planes = distinctPlanes([...c.faceIds].map((fi) => faces[fi].plane), c);
       if (planes.length >= 3) {
         const p = G.intersectPlanes(planes);
@@ -120,6 +121,41 @@
       return true;
     });
 
+    // Roof sections that meet only at a vertex are separate shells. Sharing
+    // that vertex would also share the vertical edge down to ground, giving
+    // four incident wall triangles. Keep coincident vertices independent
+    // across edge-connected components instead of inventing a connecting roof.
+    const components = G.createDSU(keptFaces.length);
+    const owners = new Map();
+    keptFaces.forEach((f, fi) => {
+      f.ids.forEach((a, i) => {
+        const b = f.ids[(i + 1) % f.ids.length];
+        const key = a < b ? a + '|' + b : b + '|' + a;
+        if (owners.has(key)) components.union(fi, owners.get(key));
+        else owners.set(key, fi);
+      });
+    });
+    const clusterComponents = new Map();
+    let splitContacts = 0;
+    keptFaces.forEach((f, fi) => {
+      const component = components.find(fi);
+      f.ids = f.ids.map(id => {
+        if (!clusterComponents.has(id)) clusterComponents.set(id, new Map());
+        const copies = clusterComponents.get(id);
+        if (!copies.has(component)) {
+          let copy = id;
+          if (copies.size) {
+            copy = clusters.length;
+            clusters.push(Object.assign({}, clusters[id], { faceIds: new Set(clusters[id].faceIds) }));
+            splitContacts++;
+          }
+          copies.set(component, copy);
+        }
+        return copies.get(component);
+      });
+    });
+    if (splitContacts) warnings.push('Point-touching roof sections modelled as separate closed shells');
+
     // -- 5. edge classification --------------------------------------
     const edgeFaces = new Map(); // "a|b" (a<b) -> [faceIdx]
     keptFaces.forEach((f, ki) => {
@@ -146,7 +182,7 @@
       group.forEach((g) => { clusters[g.id].y = mean; });
       group = [];
     };
-    sorted.forEach((g) => {
+    (cfg.preserveVertices ? [] : sorted).forEach((g) => {
       if (group.length && g.y - group[group.length - 1].y > cfg.eaveTol) flushGroup();
       group.push(g);
     });
@@ -158,6 +194,7 @@
     if (!chained.loops.length) return null;
 
     chained.loops.forEach((loop) => {
+      if (cfg.preserveVertices) return;
       if (loop.length < 4) return;
       let poly = loop.map((id) => [clusters[id].x, clusters[id].z]);
       poly = G.straightenCollinear(poly, cfg.straightenDeg);
@@ -218,7 +255,7 @@
     // interior vertices exactly onto the chord and treat the run as ONE
     // wall panel with a stepped top profile — so a window can span what
     // would otherwise be a seam between quads, on a single plane.
-    const COLL_TOL = 0.12;
+    const COLL_TOL = cfg.preserveVertices ? 1e-8 : 0.12;
     const loopRuns = loops.map((loop) => {
       const n = loop.ids.length;
       const runs = [];
@@ -231,16 +268,22 @@
         const a = P(s), b = P(e);
         const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
         if (len < 1e-6) return false;
+        let previousU = 0;
         for (let k = s + 1; k < e; k++) {
           const p = P(k);
           if (Math.abs((p[0] - a[0]) * (b[1] - a[1]) - (p[1] - a[1]) * (b[0] - a[0])) / len > COLL_TOL) return false;
+          const u = ((p[0] - a[0]) * (b[0] - a[0]) + (p[1] - a[1]) * (b[1] - a[1])) / len;
+          if (u < previousU || u > len) return false;
+          previousU = u;
         }
         return true;
       };
       let i = 0;
       while (i < n) {
         let e = i + 1;
-        while (e - i < n - 1 && runOk(i, e + 1)) e++;
+        // Stop at the seam. The last + first merge below owns any wrap;
+        // extending here would emit the first edges twice on long runs.
+        while (e < n && e - i < n - 1 && runOk(i, e + 1)) e++;
         runs.push([i, e]);
         i = e;
       }
@@ -253,6 +296,7 @@
         }
       }
       runs.forEach(([s, e]) => {
+        if (cfg.preserveVertices) return;
         const a = P(s), b = P(e);
         const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
         if (len < 1e-6) return;
@@ -424,7 +468,7 @@
   // ==================================================================
 
   // Geometry for one wall panel in wall-local (u = along wall, v = world
-  // y) space, with optional rectangular holes, transformed into place.
+  // y) space, with optional rectangular or polygonal holes, transformed into place.
   // Used both here and by openings.js when windows punch holes.
   function wallGeometry(panel, holes) {
     const shape = new THREE.Shape();
@@ -435,10 +479,9 @@
     shape.closePath();
     (holes || []).forEach((h) => {
       const path = new THREE.Path();
-      path.moveTo(h.u0, h.v0);
-      path.lineTo(h.u1, h.v0);
-      path.lineTo(h.u1, h.v1);
-      path.lineTo(h.u0, h.v1);
+      const ring = h.ring || [[h.u0,h.v0],[h.u1,h.v0],[h.u1,h.v1],[h.u0,h.v1]];
+      path.moveTo(ring[0][0], ring[0][1]);
+      for (let i=1;i<ring.length;i++) path.lineTo(ring[i][0],ring[i][1]);
       path.closePath();
       shape.holes.push(path);
     });

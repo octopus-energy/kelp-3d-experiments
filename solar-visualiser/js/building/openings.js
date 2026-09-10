@@ -27,10 +27,8 @@
   const wallById = (solid, id) => solid.wallPanels.find((w) => w.id === id);
 
   function levelOfY(levels, y) {
-    for (let i = levels.length - 1; i >= 0; i--) {
-      if (y >= levels[i].baseY) return levels[i];
-    }
-    return levels[0];
+    const ordered=[...levels].sort((a,b)=>b.baseY-a.baseY);
+    return ordered.find(l=>y>=l.baseY)||ordered[ordered.length-1];
   }
 
   // Absolute opening rectangle in wall-local (u, v) coords.
@@ -42,7 +40,7 @@
     const v1 = v0 + win.height;
     const u0 = win.u - win.width / 2;
     const u1 = win.u + win.width / 2;
-    return { u0, u1, v0, v1, wall: w, level: lv };
+    return { u0, u1, v0, v1, ring:(win.profile||[[0,0],[1,0],[1,1],[0,1]]).map(p=>[u0+p[0]*win.width,v0+p[1]*win.height]), wall: w, level: lv };
   }
 
   // Lowest wall-top over a u-range. Stepped/gable top profiles mean the
@@ -67,6 +65,11 @@
     const w = wallById(solid, win.wallId);
     const lv = levels[Math.min(win.levelIdx, levels.length - 1)];
     if (!w || !lv) return null;
+    if(win.profile){
+      if(!Number.isFinite(win.width)||!Number.isFinite(win.height)||win.width<=0||win.height<=0||!Array.isArray(win.profile)||win.profile.length<3||win.profile.some(p=>!Array.isArray(p)||p.length!==2||p.some(v=>!Number.isFinite(v)||v<0||v>1)))return null;
+      const r=windowRect(win,solid,levels);
+      return r.ring.every(([u,y])=>u>=-.01&&u<=w.len+.01&&y>=w.bottom&&y<panelTopMin(w,u,u)+.001)?win:null;
+    }
     if (w.len < 0.4 + 2 * EDGE_MARGIN) return null; // wall too short
     win.levelIdx = lv.idx;
     win.width = Math.max(0.4, Math.min(win.width, w.len - 2 * EDGE_MARGIN));
@@ -135,6 +138,7 @@
       const om = [(ow.a2[0] + ow.b2[0]) / 2, (ow.a2[1] + ow.b2[1]) / 2];
       let best = null, bd = Infinity;
       newSolid.wallPanels.forEach((nw) => {
+        if(nw.levelBand!==ow.levelBand)return;
         const nm = [(nw.a2[0] + nw.b2[0]) / 2, (nw.a2[1] + nw.b2[1]) / 2];
         const d = Math.hypot(nm[0] - om[0], nm[1] - om[1]);
         const align = Math.abs(nw.dir[0] * ow.dir[0] + nw.dir[1] * ow.dir[1]);
@@ -143,6 +147,7 @@
       if (!best || bd > 1.5) return false;
       // keep the same world position along the wall
       const worldU = [ow.a2[0] + ow.dir[0] * item.u, ow.a2[1] + ow.dir[1] * item.u];
+      if(item.profile&&ow.dir[0]*best.dir[0]+ow.dir[1]*best.dir[1]<0)item.profile=item.profile.map(([x,y])=>[1-x,y]);
       item.wallId = best.id;
       item.u = (worldU[0] - best.a2[0]) * best.dir[0] + (worldU[1] - best.a2[1]) * best.dir[1];
       return true;
@@ -191,6 +196,13 @@
       const r = windowRect(win, solid, levels);
       if (!r) return;
       const w = r.wall;
+      if(win.profile){
+        const shape=new THREE.Shape();r.ring.forEach(([u,y],i)=>i?shape.lineTo(u,y):shape.moveTo(u,y));shape.closePath();
+        const geometry=new THREE.ShapeGeometry(shape),pos=geometry.attributes.position;
+        for(let i=0;i<pos.count;i++){const u=pos.getX(i),y=pos.getY(i);pos.setXYZ(i,w.a2[0]+w.dir[0]*u-w.normal[0]*.025,y,w.a2[1]+w.dir[1]*u-w.normal[1]*.025);}geometry.computeVertexNormals();
+        const glass=new THREE.Mesh(geometry,mats.glass);glass.userData={type:'building-window',windowId:win.id,levelIdx:win.levelIdx};group.add(glass);selectables.push(glass);
+        const pts=r.ring.map(([u,y])=>new THREE.Vector3(w.a2[0]+w.dir[0]*u,y,w.a2[1]+w.dir[1]*u));pts.push(pts[0]);const frame=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mats.edge);frame.userData={windowId:win.id,levelIdx:win.levelIdx};group.add(frame);return;
+      }
       const q = wallQuat(w);
       const centreAt = (off) => new THREE.Vector3(
         w.a2[0] + w.dir[0] * win.u + w.normal[0] * off,

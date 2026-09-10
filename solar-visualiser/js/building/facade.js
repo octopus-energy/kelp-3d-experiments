@@ -140,7 +140,7 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
 
   function acceptedMatches() {
     return Object.entries(state.photoMatches || {})
-      .filter(([, m]) => m && m.pose)
+      .filter(([, m]) => m && m.pose && !m.roofNeedsReview)
       .map(([imageId, m]) => ({ imageId, pose: m.pose }))
       .sort((a, b) => (a.pose.rmse || 1e9) - (b.pose.rmse || 1e9));
   }
@@ -189,7 +189,7 @@ window.SolarViz.setupFacade = function ({ renderer, view, building, photoMatch, 
     active = on;
     if (!on) { clearMats(); return; }
     const matches = acceptedMatches();
-    if (!matches.length) { texToggle.checked = false; active = false; return; }
+    if (!matches.length) { clearMats(); texToggle.checked = false; active = false; return; }
     let pending = matches.length;
     matches.forEach((m) => ensurePhoto(m.imageId, () => {
       pending--;

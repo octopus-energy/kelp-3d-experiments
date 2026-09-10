@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "imageSize": [
+    1024,
+    683
+  ],
+  "method": "Assistant manual annotations of original images. Roof/wall junctions and door sill identify pose; lower roof corner and visible eave segment withheld. Needs visual review; pixels are not surveyed points.",
+  "photos": [
+    {
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "points": [
+        {
+          "landmark": "wing-low",
+          "px": [
+            0.4990234375,
+            0.1815519765739385
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "wing-high",
+          "px": [
+            0.5703125,
+            0.16398243045387995
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "door-left",
+          "px": [
+            0.5849609375,
+            0.43045387994143486
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "door-right",
+          "px": [
+            0.6748046875,
+            0.43045387994143486
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "extension-low",
+          "px": [
+            0.537109375,
+            0.29428989751098095
+          ],
+          "sigmaPx": 5,
+          "use": "check",
+          "attribution": "target house; assistant interpretation, needs review"
+        }
+      ],
+      "verticals": [
+        {
+          "landmark": "wing-low",
+          "start": [
+            511,
+            128
+          ],
+          "end": [
+            513,
+            178
+          ]
+        }
+      ],
+      "checkEdges": [
+        {
+          "id": "extension-front-eave",
+          "pixels": [
+            [
+              554,
+              198
+            ],
+            [
+              615,
+              180
+            ],
+            [
+              685,
+              159
+            ]
+          ],
+          "use": "check",
+          "note": "Visible portion only; ivy obscures high end. Point-to-line distance, not full silhouette coverage."
+        }
+      ]
+    },
+    {
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "points": [
+        {
+          "landmark": "wing-low",
+          "px": [
+            0.40625,
+            0.4685212298682284
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "wing-high",
+          "px": [
+            0.4580078125,
+            0.46266471449487556
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "door-left",
+          "px": [
+            0.48046875,
+            0.6325036603221084
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "door-right",
+          "px": [
+            0.517578125,
+            0.6310395314787701
+          ],
+          "sigmaPx": 5,
+          "use": "pose",
+          "attribution": "target house; assistant interpretation, needs review"
+        },
+        {
+          "landmark": "extension-low",
+          "px": [
+            0.4482421875,
+            0.5607613469985359
+          ],
+          "sigmaPx": 5,
+          "use": "check",
+          "attribution": "target house; assistant interpretation, needs review"
+        }
+      ],
+      "verticals": [
+        {
+          "landmark": "wing-low",
+          "start": [
+            417,
+            322
+          ],
+          "end": [
+            418,
+            352
+          ]
+        }
+      ],
+      "checkEdges": [
+        {
+          "id": "extension-front-eave",
+          "pixels": [
+            [
+              461,
+              381
+            ],
+            [
+              495,
+              372
+            ],
+            [
+              528,
+              363
+            ]
+          ],
+          "use": "check",
+          "note": "Visible portion only; ivy obscures high end. Point-to-line distance, not full silhouette coverage."
+        }
+      ]
+    }
+  ]
+}

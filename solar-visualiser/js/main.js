@@ -4,7 +4,7 @@
 //
 // Run inside a function so errors are caught and shown to the user.
 // =====================================================================
-(function () {
+(async function () {
   function showError(msg) {
     document.getElementById('loader').style.display = 'none';
     const b = document.createElement('div');
@@ -17,6 +17,7 @@
   window.addEventListener('error', (e) => showError('JS error: ' + e.message));
 
   try {
+    await window.SolarViz.propertyReady;
     if (typeof THREE === 'undefined') {
       showError('THREE.js failed to load.');
       return;
@@ -32,7 +33,7 @@
     setStatus('Decoding DSM');
 
     const { coordinates } = window.SolarViz;
-    const dsm = coordinates.decodeDSM(window.__DSM_B64__);
+    const dsm = coordinates.decodeDSM(window.__DSM_B64__, window.__DSM_META__);
     const coords = coordinates.createCoordinateSystem(SITE_DATA, dsm);
 
     setStatus('Creating scene');
@@ -83,7 +84,7 @@
     );
     const markerGeom = new THREE.BufferGeometry().setFromPoints([
       markerPos,
-      new THREE.Vector3(coords.PROP_LOCAL_X, 50, coords.HEIGHT - coords.PROP_LOCAL_Y),
+      new THREE.Vector3(coords.PROP_LOCAL_X, SITE_DATA.property_details.altitude + 22, coords.HEIGHT - coords.PROP_LOCAL_Y),
     ]);
     const markerLine = new THREE.Line(markerGeom, new THREE.LineDashedMaterial({
       color: 0xf5b942, dashSize: 0.8, gapSize: 0.4, transparent: true, opacity: 0.4,
@@ -111,6 +112,11 @@
     } catch (e) {
       console.error('Building model init failed:', e);
     }
+
+    if(building)window.SolarViz.setupProject({building});
+    const geometryPrep=building?window.SolarViz.setupGeometryPrep({building}):null;
+    const buildingWorkspace=building?window.SolarViz.setupBuildingWorkspace({building}):null;
+    if (building) window.SolarViz.setupRoofEditor({building,siteData:SITE_DATA,planDraw,dsm});
 
     try {
       window.SolarViz.setupGallery({
@@ -183,7 +189,7 @@
     setStatus('Ready');
     setTimeout(() => document.getElementById('loader').classList.add('hidden'), 300);
     // Expose handles for inspection / external integrations
-    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, panelGroup, roofGroup, coords, scaffolding, building, planDraw };
+    window.__SOLAR_VIZ__ = { scene, camera, view, controls, renderer, terrainMesh, panelGroup, roofGroup, coords, scaffolding, building, geometryPrep, buildingWorkspace, planDraw };
     animate();
 
   } catch (e) {

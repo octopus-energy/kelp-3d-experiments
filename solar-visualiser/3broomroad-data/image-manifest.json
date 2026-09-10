@@ -1,0 +1,190 @@
+{
+  "images": [
+    {
+      "id": "08968f54527a305a14c70973df11894c",
+      "file": "photos/08968f54527a305a14c70973df11894c.jpeg",
+      "kind": "interior",
+      "caption": "Kitchen",
+      "room": {
+        "label": "Kitchen"
+      }
+    },
+    {
+      "id": "0fd2882fa08c1065b617894a2342c16d",
+      "file": "photos/0fd2882fa08c1065b617894a2342c16d.jpeg",
+      "kind": "interior",
+      "caption": "Bathroom",
+      "room": {
+        "label": "Bathroom"
+      }
+    },
+    {
+      "id": "35f17817024aeb5a833ac4f0ed4d592a",
+      "file": "photos/35f17817024aeb5a833ac4f0ed4d592a.jpeg",
+      "kind": "interior",
+      "caption": "Lower ground room",
+      "room": {
+        "label": "Lower ground room"
+      }
+    },
+    {
+      "id": "3e5497efae3158eb89c5af10b89fa4f9",
+      "file": "photos/3e5497efae3158eb89c5af10b89fa4f9.jpeg",
+      "kind": "garden",
+      "caption": "Rear garden"
+    },
+    {
+      "id": "4319b0211a370eba9015b36e035cc7a1",
+      "file": "photos/4319b0211a370eba9015b36e035cc7a1.jpeg",
+      "kind": "exterior",
+      "caption": "Front",
+      "side": "front"
+    },
+    {
+      "id": "4632731e6e024a0324b73e5f606932e7",
+      "file": "photos/4632731e6e024a0324b73e5f606932e7.jpeg",
+      "kind": "interior",
+      "caption": "Bathroom",
+      "room": {
+        "label": "Bathroom"
+      }
+    },
+    {
+      "id": "655c2e755834a41b23f260899a2fe835",
+      "file": "photos/655c2e755834a41b23f260899a2fe835.jpeg",
+      "kind": "exterior",
+      "caption": "Front",
+      "side": "front"
+    },
+    {
+      "id": "665a47dfe68e005497291515decd24d8",
+      "file": "photos/665a47dfe68e005497291515decd24d8.jpeg",
+      "kind": "interior",
+      "caption": "Living area",
+      "room": {
+        "label": "Living area"
+      }
+    },
+    {
+      "id": "76e4aee1a9ecc380a4783862c4f59f42",
+      "file": "photos/76e4aee1a9ecc380a4783862c4f59f42.jpeg",
+      "kind": "interior",
+      "caption": "Bedroom",
+      "room": {
+        "label": "Bedroom"
+      }
+    },
+    {
+      "id": "80c683d944553f0ea65667c4d3965e6c",
+      "file": "photos/80c683d944553f0ea65667c4d3965e6c.jpeg",
+      "kind": "interior",
+      "caption": "Hallway",
+      "room": {
+        "label": "Hallway"
+      }
+    },
+    {
+      "id": "88a6310f77aee7b99e0c2e18136d4b78",
+      "file": "photos/88a6310f77aee7b99e0c2e18136d4b78.jpeg",
+      "kind": "exterior",
+      "caption": "Front",
+      "side": "front"
+    },
+    {
+      "id": "892cd7bd9167b815665c02cd81ed99bc",
+      "file": "photos/892cd7bd9167b815665c02cd81ed99bc.jpeg",
+      "kind": "interior",
+      "caption": "Bedroom",
+      "room": {
+        "label": "Bedroom"
+      }
+    },
+    {
+      "id": "8d1cee4f0ff1f1632f03ce295d77e9eb",
+      "file": "photos/8d1cee4f0ff1f1632f03ce295d77e9eb.jpeg",
+      "kind": "interior",
+      "caption": "Bedroom",
+      "room": {
+        "label": "Bedroom"
+      }
+    },
+    {
+      "id": "a1fa58eeab3907bb341064e1fe88eced",
+      "file": "photos/a1fa58eeab3907bb341064e1fe88eced.jpeg",
+      "kind": "garden",
+      "caption": "Rear garden"
+    },
+    {
+      "id": "a40dadd2d6f86d5b4b85593d231f240b",
+      "file": "photos/a40dadd2d6f86d5b4b85593d231f240b.jpeg",
+      "kind": "interior",
+      "caption": "Living room",
+      "room": {
+        "label": "Living room"
+      }
+    },
+    {
+      "id": "b3c87cfb9faa2d98b3231da431fae97b",
+      "file": "photos/b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+      "kind": "exterior",
+      "caption": "Rear",
+      "side": "rear"
+    },
+    {
+      "id": "bd31bdb708cc878cc82d2d19ad072c68",
+      "file": "photos/bd31bdb708cc878cc82d2d19ad072c68.jpeg",
+      "kind": "exterior",
+      "caption": "Front",
+      "side": "front"
+    },
+    {
+      "id": "d234ecc31aca67d6789df113f1b380c8",
+      "file": "photos/d234ecc31aca67d6789df113f1b380c8.jpeg",
+      "kind": "exterior",
+      "caption": "Rear",
+      "side": "rear"
+    },
+    {
+      "id": "dd85ffc2fbe1c92a140814bbf153dea7",
+      "file": "photos/dd85ffc2fbe1c92a140814bbf153dea7.jpeg",
+      "kind": "interior",
+      "caption": "Dining room",
+      "room": {
+        "label": "Dining room"
+      }
+    },
+    {
+      "id": "e5ccf137f38f3fea774a3f2d86ba7e07",
+      "file": "photos/e5ccf137f38f3fea774a3f2d86ba7e07.jpeg",
+      "kind": "interior",
+      "caption": "Kitchen",
+      "room": {
+        "label": "Kitchen"
+      }
+    },
+    {
+      "id": "eb8c0c2684a60d28116c4548e7edc336",
+      "file": "photos/eb8c0c2684a60d28116c4548e7edc336.jpeg",
+      "kind": "exterior",
+      "caption": "Front entrance",
+      "side": "front entrance"
+    },
+    {
+      "id": "f27956ac9a67057d086fe7f403a8f073",
+      "file": "photos/f27956ac9a67057d086fe7f403a8f073.jpeg",
+      "kind": "interior",
+      "caption": "Bedroom",
+      "room": {
+        "label": "Bedroom"
+      }
+    }
+  ],
+  "floorplan": {
+    "id": "broom-floorplan",
+    "file": "floorplan.png",
+    "kind": "floorplan",
+    "caption": "3 Broom Road \u2014 lower ground, ground and first floors",
+    "floors": []
+  },
+  "notes": "Photo labels are visual suggestions. Floorplan is available for reference; room boundaries and photo correspondences have not been annotated. The solar survey models two storeys and does not model the lower ground floor."
+}

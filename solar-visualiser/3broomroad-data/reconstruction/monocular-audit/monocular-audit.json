@@ -1,0 +1,1917 @@
+{
+  "schemaVersion": 1,
+  "status": "integrity-passed",
+  "propertyId": "3broomroad",
+  "manifestSha256": "bfa879f69557a649d94b1f64e7ef21793af336d8f386d6e6c61bde184f6ac9ee",
+  "assetLockVerified": true,
+  "modelWeightsLocallyVerified": false,
+  "upstreamCommit": "cc6a7031abcd59fd9e1ceff7fdd0d9687d389bc5",
+  "tasks": {
+    "depth": {
+      "modality": "depth",
+      "checkpoint": "depth/Log-stage2",
+      "preview": "depth_spectral",
+      "encoding": "affine-invariant log depth; not metres"
+    },
+    "normals": {
+      "modality": "normals",
+      "checkpoint": "normals",
+      "preview": "normals",
+      "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream"
+    },
+    "albedo": {
+      "modality": "albedo",
+      "checkpoint": "albedo",
+      "preview": "albedo",
+      "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB"
+    },
+    "depth_seethrough": {
+      "modality": "depth",
+      "checkpoint": "depth/Log-layered",
+      "preview": "depth_spectral",
+      "encoding": "see-through affine-invariant log depth; separate from exterior surface depth"
+    }
+  },
+  "imageCount": 22,
+  "arrayCount": 88,
+  "issues": [],
+  "images": [
+    {
+      "source": "08968f54527a305a14c70973df11894c.jpeg",
+      "id": "b9633662a47232c257aba686",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "ec152786091cfcbf3e248e26fedb3e04ae7e0eeea8670c516e485073322be21a"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "16d2b29c2f79e48d48ab439208a9c93e94cf9ca7dc21f374009bb5d8edcba6aa",
+          "lengthPercentiles": [
+            0.9283159577846527,
+            1.0000499486923218,
+            1.0020233392715454
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.97265625
+          ],
+          "npySha256": "312838207b51190155baae25b17a16923b0df68ae56f97ebd560606b9351a7cb"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "a6db826a0c43fe16478685f0f2f2b704bc2683394d4a87e749ada0a01ad5448e"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "0fd2882fa08c1065b617894a2342c16d.jpeg",
+      "id": "8031d022c00f6ed3c645a6ff",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "52905bb6c799a242ebe6703c5c9a821d08c8e2af20374e9b0897ed64733a6aa4"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "2c938b5df5942901b08245d76aaf3a42680422c24d9b5d09346de69ee3a54965",
+          "lengthPercentiles": [
+            0.9653663527965546,
+            0.9998994171619415,
+            1.0018808841705322
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.96875
+          ],
+          "npySha256": "87a1950ba486f90a08ff9fc5c07f484229835ad798a4bf5d3abf70e01e88981c"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "964e1d7216667e2f5fa321d187c7ba8d095308453497530c987cc1baa1e20e5a"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "35f17817024aeb5a833ac4f0ed4d592a.jpeg",
+      "id": "ecfe6757d965a444981c3300",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "d6729dc2e7ad07bb1fa5242fc00bb0f19205448c1eef4bdd1f33018604c69183"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "952482b02d75b040d966212a4f1224ca819b221ca86cbf668aa993f2b61ba687",
+          "lengthPercentiles": [
+            0.9634862440824509,
+            1.0000065565109253,
+            1.001882791519165
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9609231948852539
+          ],
+          "npySha256": "9d71c1a30664568f9ae526fe10491de32d8e7b351f52035e6dfad43d78c2d3e2"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "f0270f38c5da23e964eca62c872d6e81ffbc6ecaea9dbdcc125ba98a890c65b6"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "3e5497efae3158eb89c5af10b89fa4f9.jpeg",
+      "id": "d4dfacae61d36c337c9bde20",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "572e21abd7116cbf219b0534366578bcedd6d30bd5b6f640563e8eef52327067"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "6dd530b6b85fcbd808c23f1bee3816e995991967aa9dda7cfa2133e6015c3b9a",
+          "lengthPercentiles": [
+            0.894310752749443,
+            0.9994815587997437,
+            1.0017842161655426
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.15470151603221893,
+            0.8944883346557617
+          ],
+          "npySha256": "65f27f0217cce4e7461047ca661b3a0a3db2dea08c4590836fcc8b6fc42e0bcc"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "ee57ae60914dfbffaee491be85a80c364460f4265341d94c051fa76dc51693cf"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "4319b0211a370eba9015b36e035cc7a1.jpeg",
+      "id": "2132540c296e132077ac3d3c",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "30f9a2ad897261530838c1c2cc11aa3a4b9e8a74c1e2030a8f6b691c562d5bac"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -0.99609375,
+            1.0
+          ],
+          "npySha256": "5891e8f15d6cbf23bb3026cb850894aa7f72ae054ba7f5e4c423e93513c86f61",
+          "lengthPercentiles": [
+            0.9085689806938171,
+            0.9996770024299622,
+            1.0018210411071777
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9643089771270752
+          ],
+          "npySha256": "f2a2de7bb10c04aaae51f6bbb85fbad18a5cc6a2fb5ff257bf32ece03ad6efff"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "f886d5fe7e0624aff2a1053e4bfbe5379de45286fff5ca96972f4f773eabf92d"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "4632731e6e024a0324b73e5f606932e7.jpeg",
+      "id": "5ab93d15da69b13158611a75",
+      "size": [
+        1024,
+        682
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "227794ab6003749259cfd6de344ee213a4cc2a4fb320d14dcf616875cf2d0161"
+        },
+        "normals": {
+          "shape": [
+            3,
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "61c0644322fb5068f9d4aa3d10958f330685d0916933b5332e29383847c01991",
+          "lengthPercentiles": [
+            0.9678196716308594,
+            0.9999940991401672,
+            1.0017754232883453
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9604620933532715
+          ],
+          "npySha256": "23f437565303c34fe00ce5f360dcffdeecda5734c38fa2a3caeb3b83cdbcc693"
+        },
+        "depth_seethrough": {
+          "shape": [
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "25ac3bcc9259c22e38982f988d022f9f45c528967cac71a3d2af2cbbdbc11f7e"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "655c2e755834a41b23f260899a2fe835.jpeg",
+      "id": "27d100303395df2cd2e5d8a5",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "e64e2c868fd5027af4b64de0e0f3fc05ee0182417434e9ec77c7433a9d0cfc64"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "94101db9d3ca11487b59fa8e5f90d34bdcb87e03c018baf0aae9ea85471fa935",
+          "lengthPercentiles": [
+            0.8931659966707229,
+            0.9997124671936035,
+            1.0017880201339722
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.953125
+          ],
+          "npySha256": "cbfe446f04355a9ec01cc1463eee0b1eb1cc6a1d8661e289f8e0b6349425ce90"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "ee0d372e98c460eb29e2465cf86ba7e4efc14f5ea84ad06b55121910316d80e9"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "665a47dfe68e005497291515decd24d8.jpeg",
+      "id": "07eb27074fbce199102c7665",
+      "size": [
+        1024,
+        684
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            684,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "0900972fb443a6f4ee2b6494e7a193ae53a8efe5a5a59930b4ec84e51c9016a9"
+        },
+        "normals": {
+          "shape": [
+            3,
+            684,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "7dd45afbaa205cd4ab904991fb4ce077333a3b04258c299247e38e38aa650b82",
+          "lengthPercentiles": [
+            0.9461776852607727,
+            0.9999421834945679,
+            1.0018850564956665
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            684,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9673222899436951
+          ],
+          "npySha256": "8096c8d951c9133d81ff57288f04d21aff58a9a89aa531f19da12258064a3ac3"
+        },
+        "depth_seethrough": {
+          "shape": [
+            684,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "8cfe404dd4e51fbcff8971479560b43e90e09a500280c0ef3ec725e19f2cea8f"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "76e4aee1a9ecc380a4783862c4f59f42.jpeg",
+      "id": "b2ea3e5330146aae7d4776e5",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "7dceea3bfb3f60103fd9df1dda4f2c55826c8fd5c9a8548ebdd218db5e58a8d0"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "4a05317249e93208d0f74f0be1db247df40836102eca2c6afe977a229e27eb00",
+          "lengthPercentiles": [
+            0.9547949361801148,
+            0.9999432563781738,
+            1.0019121277332306
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9609375
+          ],
+          "npySha256": "b3fd529cecb75bb84ee7e1a13eb1cca2c8783de039a9fd7e60b737f6a2102ec2"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "f81bdf4a6e271bb49591dd51bb23b96e08efcc2c699c314285c5c7b049c47242"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "80c683d944553f0ea65667c4d3965e6c.jpeg",
+      "id": "33dc2303925589a30150a369",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "8a864f5cbfd497b968242a8c7a930a220b90d6699ed5c8380902dea8de17b1e1"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "cd855e6affc78e7d7ddb165833c233f0e3726fd241fe3cc52f0e775d84136c53",
+          "lengthPercentiles": [
+            0.9689863723516464,
+            1.0004698038101196,
+            1.0018659830093384
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9609375
+          ],
+          "npySha256": "254f76256d6f9ac1ad45113f603ec1cc0aaaa857cd79674e628a020cfcc4df2b"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "3544635f839f7a2f4b554c39f88fd239d34b66b01ac7d00b7ab3668e349718c2"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "88a6310f77aee7b99e0c2e18136d4b78.jpeg",
+      "id": "b5c73a656132a531ef383c5c",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "9ff0754e36937d4bef245e144b6511065e1be32ce9c3d2d241e45816c4cf05ca"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "0d58a2e7bb8de5f07d738e468a8ebd657670f2c7823a314c1ae74093d85f4b0e",
+          "lengthPercentiles": [
+            0.9182591736316681,
+            0.9996982216835022,
+            1.0018253326416016
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9609375
+          ],
+          "npySha256": "ed2f108158826da0b1137446cd1c5b8090171585ab4589569cb2a45bc2fb76ec"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "dd2171e7b1693a0dcd3db318dfc78471aec02a272d1a5be0c0d349f59098f196"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "892cd7bd9167b815665c02cd81ed99bc.jpeg",
+      "id": "be479781a47ab8bce92189e8",
+      "size": [
+        1024,
+        682
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "956fa7b1409d7ffe78852adaf3e6c0121e19be517c8f875373cccc529d1cbd5e"
+        },
+        "normals": {
+          "shape": [
+            3,
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "bdc2e26d54509edb427aa92a8d97b2c6b47e792c57b5b045ffc6db2c05efcf49",
+          "lengthPercentiles": [
+            0.9304377615451813,
+            1.0001147985458374,
+            1.001792073249817
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9531078338623047
+          ],
+          "npySha256": "c866b5d4f25fcc7733e0155ce2cac68dd8d7a4b9dd4f6c1c45a53e55af5ee627"
+        },
+        "depth_seethrough": {
+          "shape": [
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "efa034cce3a5ab3f9b4c42d216ca8f56e1957fe0a8789f474591907804e82845"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "8d1cee4f0ff1f1632f03ce295d77e9eb.jpeg",
+      "id": "afd69d54013e925c7a28f6d8",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "60178bac346c6977ea4b15677ae840f24764060395018b41e1362b3dab6fd334"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "6e1edf5cf56d24d6595bb3bfac28bfe59c496dd6d364b4ea2fedfc5da1131a51",
+          "lengthPercentiles": [
+            0.9405510324239731,
+            1.0000327229499817,
+            1.0018928050994873
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.953125
+          ],
+          "npySha256": "a4326d318f6ca8060c8baa63d98fa07aa11830f1a2c3b0a5ddc8f5c58d56533c"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "f5d60d7b40ff195a2f9711908c310fe643df6a695ea2dc1b9aabc3fda5e8b32a"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "a1fa58eeab3907bb341064e1fe88eced.jpeg",
+      "id": "a6ead36351209e2cbe46f4b8",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "54ca043a127784b0868d19798e26f645443dea6e1701a9f15dd8581423f4d78b"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "c2d9a1c1664e0a6c7a9333a5f4f97129131b2d6faf7d0adf4461782dfcdbfb99",
+          "lengthPercentiles": [
+            0.8793205833435058,
+            0.9989591836929321,
+            1.0017064809799194
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.12338359653949738,
+            0.9335508346557617
+          ],
+          "npySha256": "efe858d5ef8c3f005f8e0f840dd85c2bcbe1aa2a82406400a11dbedf70f41b36"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "fd89b2e5a9b6026e06c7573faa9daf877b0b4b98aa4429e36de8de4fc045e260"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "a40dadd2d6f86d5b4b85593d231f240b.jpeg",
+      "id": "006a4d68d91c2ef93053d776",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "42f77a15c5e0c8ac9c29708eeec1b65aff1d3cc4a17a793ae0ac6c560829f32b"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "40fec866dbb6ab8f0993a7e6494988560206c6f48e5e54c39dd50cec948f5b32",
+          "lengthPercentiles": [
+            0.9369168025255203,
+            1.0000474452972412,
+            1.00186026096344
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9804544448852539
+          ],
+          "npySha256": "0115c9e36faafd1156a5bcce28ea338f443025d672d0cff3d13a82ecd12dc96d"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "4ab7161c7abf9fe43d251067b820f458c6c6f5b30028adfb4b1ef81928ef6ff3"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+      "id": "1b00509a92987d6a3b860a30",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "f8aa3ca4799084bf0377a9f269bc354e3412b7c97a11aea1e0b2c4687664fcac"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "2afc8bd5c99e3d83801d34b3062032a307a11df153a5b3c4b327576a683e3aa3",
+          "lengthPercentiles": [
+            0.8894314485788345,
+            0.9993876218795776,
+            1.0017377138137817
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9296875
+          ],
+          "npySha256": "f8cc5cc5672e11b8cf7e015cef714370d2bd40ae6d08e9d2bf81ca8752a6fbda"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "bae1cdbb0e5d82f7834b70b74ee7c9154e4d62cc4342d14db8fdad3bbc62e4b1"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "bd31bdb708cc878cc82d2d19ad072c68.jpeg",
+      "id": "c8581148bf151200e5d69f0b",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "294047e4b0a41fe2183bcd20f44aa554cb0dfa1a209559d2d020f1330b110b1e"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -0.996565580368042,
+            1.0
+          ],
+          "npySha256": "1a7d00091ca6fa2e5b41e2ebd953fe3a4e02f4d7eba34c6ba7eb5980ac1b4c4b",
+          "lengthPercentiles": [
+            0.8891208392381668,
+            0.9997358918190002,
+            1.0017940998077393
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.953125
+          ],
+          "npySha256": "1e795d25eb5ecd227c123ad2c76f835d445f93402a74a263dfe0694c6da92673"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "306f9d2fdef625a1dc55fbd2518c74cab641175dd42d48359e053614be14be59"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "d234ecc31aca67d6789df113f1b380c8.jpeg",
+      "id": "582ac2218907e17d1b5d810f",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "2723af707d37b69f401ed80e4c4945788d70a65b4e5e7e2c0c2d386decdcd82b"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "d2a23bd0bc6d694b1d2163baed0358f1f3a667443e285834ec903004a75c76b9",
+          "lengthPercentiles": [
+            0.9086089462041855,
+            0.9993861317634583,
+            1.0017739641666412
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0634172260761261,
+            0.90625
+          ],
+          "npySha256": "b19de4ea713b04fc5f28179ffd0c6456c46e4e295792858a7c76b1c21937635a"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "ed6b527d7170958b5c03d2e7641017dd33ea8c2b251b62d5e2f8b87ecb700dad"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "dd85ffc2fbe1c92a140814bbf153dea7.jpeg",
+      "id": "a99332fc2d9a99c240e5e8eb",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "d0e2aea2895dd61ff185c07dcac111ccb7b355cfe936b6c8d67b1b2eb8d3b657"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "84024e7c62cacf3f912e4b683215fc3a7f16d610a3c328fdced44827cba8e508",
+          "lengthPercentiles": [
+            0.9310578548908234,
+            0.9997245073318481,
+            1.0018529891967773
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.98046875
+          ],
+          "npySha256": "3f285b24c6b9b97f919719b76850650f23f9baeb575f3315b480d9bebaf8a5ae"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "39e94505f17519de2af59f92877cd8a32a2ea1b65393592b0f323f55ab7456a2"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "e5ccf137f38f3fea774a3f2d86ba7e07.jpeg",
+      "id": "67edfedbd9e45b3770839982",
+      "size": [
+        1024,
+        682
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "05f67e0301dd530716627e832dde4a33852ca6ec900ed02ab89655ebc977c800"
+        },
+        "normals": {
+          "shape": [
+            3,
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "0e80343c5fbf4c894a1dc158bcf32ff8e5a78e1b053e904c9674083b25c29d77",
+          "lengthPercentiles": [
+            0.9309567308425903,
+            1.000063419342041,
+            1.0018410682678223
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9609375
+          ],
+          "npySha256": "d4a6a6d7862f3e48e20c2a3ee2115b95b52cc482609fc729ea1d64b5874a24c1"
+        },
+        "depth_seethrough": {
+          "shape": [
+            682,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "744e97cfb1e4c5e53934be6005f50f17081f3be361fc40bc4856cf3e53459459"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "eb8c0c2684a60d28116c4548e7edc336.jpeg",
+      "id": "07daa638d23e45f88baf3195",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "d776987f0123cf3dbcd8440b99eff9d67cbcafc2a6d83c9807c2fe47956edbaa"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "09cc6efd95329de74610bf632fe5159b4bc25e1566d74ca53be8c9f3e45ddc6a",
+          "lengthPercentiles": [
+            0.9006072062253953,
+            0.999663919210434,
+            1.0018950700759888
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.9453125
+          ],
+          "npySha256": "6ce4b9b01a44a7e7b2c4cd11cb139e4e7ec08f16b9cbeb8eb3e43249a163e93a"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "71f0e0e0cb479ff04f78f071bd332a0236f60dd8f5514d525b3b4d35bdae2eb6"
+        }
+      },
+      "errors": []
+    },
+    {
+      "source": "f27956ac9a67057d086fe7f403a8f073.jpeg",
+      "id": "12e2d2dad7fc52c551ccdaa9",
+      "size": [
+        1024,
+        683
+      ],
+      "outputs": {
+        "depth": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "affine-invariant log depth; not metres",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "0221bee398a94dd90615d54b1a9c5803e874df7e20032d37fa5dd79e9cd23a1f"
+        },
+        "normals": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "camera-space XYZ vectors, CHW; renormalize after interpolation if used downstream",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "178094bc5440b749f4a8f15a0fc819ef79b26f2e54657a7e50bb21232bc9f7e5",
+          "lengthPercentiles": [
+            0.9530921518802643,
+            1.0001838207244873,
+            1.0017732381820679
+          ]
+        },
+        "albedo": {
+          "shape": [
+            3,
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "sRGB via upstream gamma-2.2 conversion, CHW; not linear RGB",
+          "range": [
+            0.0,
+            0.96875
+          ],
+          "npySha256": "89a249dd8043927b39e5aca2088628698f7eda883e2e9097c91822eac32a76e4"
+        },
+        "depth_seethrough": {
+          "shape": [
+            683,
+            1024
+          ],
+          "dtype": "float32",
+          "encoding": "see-through affine-invariant log depth; separate from exterior surface depth",
+          "range": [
+            -1.0,
+            1.0
+          ],
+          "npySha256": "5e48a0225c037ec4aec5954b606843b3acd1be5d42877c95c19a72d42255be41"
+        }
+      },
+      "errors": []
+    }
+  ],
+  "geometryApplied": false,
+  "accuracyValidated": false,
+  "regionChecks": [
+    {
+      "source": "655c2e755834a41b23f260899a2fe835.jpeg",
+      "label": "Front facade",
+      "regions": [
+        {
+          "id": "wall",
+          "label": "Main front brick wall",
+          "box": [
+            230,
+            190,
+            370,
+            230
+          ],
+          "normal": [
+            -0.22346328337351362,
+            0.1362858141610853,
+            0.9651374709555002
+          ],
+          "pixels": 5600,
+          "medianDeviationDeg": 0.39050893837656064,
+          "p90DeviationDeg": 0.7913363365190992,
+          "candidateAngularDifferenceDeg": 4.497307342195279
+        },
+        {
+          "id": "bay",
+          "label": "Central bay brick band",
+          "box": [
+            490,
+            308,
+            570,
+            338
+          ],
+          "normal": [
+            -0.21406601954162827,
+            0.1458202485429422,
+            0.9658737983776544
+          ],
+          "pixels": 2400,
+          "medianDeviationDeg": 0.7724988641697079,
+          "p90DeviationDeg": 1.9451102183177809,
+          "candidateAngularDifferenceDeg": 4.9456853793857585
+        }
+      ],
+      "cameraCheck": {
+        "role": "front",
+        "localNormal": [
+          0,
+          0,
+          -1
+        ],
+        "regions": [
+          "wall",
+          "bay"
+        ]
+      },
+      "expectedCameraNormal": [
+        -0.20648149261080048,
+        0.060531399347582934,
+        0.9765763374679112
+      ],
+      "camera": [
+        4.494161604432566,
+        1.5467047759164916,
+        -6.894088503601307,
+        -0.20729313798033952,
+        0.06418816633804593,
+        -0.010863406756741679,
+        66.36818014076148,
+        60.28822793658567
+      ]
+    },
+    {
+      "source": "b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+      "label": "Rear facade",
+      "regions": [
+        {
+          "id": "wall",
+          "label": "Lower extension front brick wall",
+          "box": [
+            560,
+            220,
+            592,
+            270
+          ],
+          "normal": [
+            -0.25231016490300134,
+            -0.16157202076162908,
+            0.9540618757678266
+          ],
+          "pixels": 1600,
+          "medianDeviationDeg": 2.581762052352576,
+          "p90DeviationDeg": 6.1560251582211825,
+          "candidateAngularDifferenceDeg": 38.63230941527328
+        },
+        {
+          "id": "wing",
+          "label": "Upper rear wing end wall",
+          "box": [
+            550,
+            137,
+            575,
+            162
+          ],
+          "normal": [
+            -0.25950955932817826,
+            -0.13393108224609304,
+            0.956408518273277
+          ],
+          "pixels": 625,
+          "medianDeviationDeg": 0.7977325414358145,
+          "p90DeviationDeg": 1.6014293845080736,
+          "candidateAngularDifferenceDeg": 38.298752602788966
+        }
+      ],
+      "cameraCheck": {
+        "role": "rear",
+        "localNormal": [
+          0,
+          0,
+          1
+        ],
+        "regions": [
+          "wall",
+          "wing"
+        ]
+      },
+      "expectedCameraNormal": [
+        0.33631418103049704,
+        0.139540379838865,
+        0.9313545265000924
+      ],
+      "camera": [
+        5.817652046945869,
+        1.214639599593305,
+        20.010777574777627,
+        3.4905330425687433,
+        0.1336544192207254,
+        -0.042204986622549366,
+        99.99999999999999,
+        -139.97953401063953
+      ]
+    },
+    {
+      "source": "665a47dfe68e005497291515decd24d8.jpeg",
+      "label": "Rear living area",
+      "regions": [
+        {
+          "id": "ceiling",
+          "label": "Ceiling away from rooflight",
+          "box": [
+            560,
+            85,
+            760,
+            145
+          ],
+          "normal": [
+            -0.22534339383380453,
+            -0.9679092182702009,
+            0.11122994220546623
+          ],
+          "pixels": 12000,
+          "medianDeviationDeg": 0.14588814809681233,
+          "p90DeviationDeg": 0.2879277098280906
+        },
+        {
+          "id": "floor",
+          "label": "Visible floor between furniture",
+          "box": [
+            450,
+            550,
+            485,
+            600
+          ],
+          "normal": [
+            -0.021454913737159312,
+            0.9902873513042487,
+            0.13737047908246788
+          ],
+          "pixels": 1750,
+          "medianDeviationDeg": 0.8957602658185893,
+          "p90DeviationDeg": 7.97753262535006
+        }
+      ],
+      "planePair": [
+        "ceiling",
+        "floor"
+      ],
+      "opposingPlaneDepartureDeg": 20.216454000598674
+    },
+    {
+      "source": "08968f54527a305a14c70973df11894c.jpeg",
+      "label": "Kitchen",
+      "regions": [
+        {
+          "id": "ceiling",
+          "label": "Kitchen ceiling",
+          "box": [
+            310,
+            30,
+            520,
+            100
+          ],
+          "normal": [
+            0.0042687886076292715,
+            -0.99948488699301,
+            0.03180783105452768
+          ],
+          "pixels": 14700,
+          "medianDeviationDeg": 0.12629474788276124,
+          "p90DeviationDeg": 0.30255198960302143
+        },
+        {
+          "id": "floor",
+          "label": "Kitchen floor",
+          "box": [
+            350,
+            555,
+            480,
+            655
+          ],
+          "normal": [
+            -0.002718177356339428,
+            0.9890654321651827,
+            0.14745230553558542
+          ],
+          "pixels": 13000,
+          "medianDeviationDeg": 0.6668340937219217,
+          "p90DeviationDeg": 4.864585346226474
+        }
+      ],
+      "planePair": [
+        "ceiling",
+        "floor"
+      ],
+      "opposingPlaneDepartureDeg": 10.302441783303749
+    },
+    {
+      "source": "a40dadd2d6f86d5b4b85593d231f240b.jpeg",
+      "label": "Front living room",
+      "regions": [
+        {
+          "id": "ceiling",
+          "label": "Ceiling away from chandelier",
+          "box": [
+            330,
+            45,
+            450,
+            90
+          ],
+          "normal": [
+            0.01614729152144903,
+            -0.9993633316436171,
+            0.03181503328131722
+          ],
+          "pixels": 5400,
+          "medianDeviationDeg": 0.19969399250447323,
+          "p90DeviationDeg": 9.631366754095104
+        },
+        {
+          "id": "floor",
+          "label": "Visible carpet below table",
+          "box": [
+            520,
+            640,
+            620,
+            680
+          ],
+          "normal": [
+            0.01715631199962422,
+            0.9903710151419278,
+            0.13737144290324318
+          ],
+          "pixels": 4000,
+          "medianDeviationDeg": 0.17938709490646212,
+          "p90DeviationDeg": 0.4435822625499457
+        }
+      ],
+      "planePair": [
+        "ceiling",
+        "floor"
+      ],
+      "opposingPlaneDepartureDeg": 9.905448491012635
+    },
+    {
+      "source": "35f17817024aeb5a833ac4f0ed4d592a.jpeg",
+      "label": "Lower ground room",
+      "regions": [
+        {
+          "id": "ceiling",
+          "label": "Lower-ground ceiling",
+          "box": [
+            480,
+            45,
+            780,
+            110
+          ],
+          "normal": [
+            0.0014744270705721353,
+            -0.9999891356878131,
+            -0.004422055082651212
+          ],
+          "pixels": 19500,
+          "medianDeviationDeg": 0.14067236011961692,
+          "p90DeviationDeg": 0.26414740528681463
+        },
+        {
+          "id": "floor",
+          "label": "Visible floor",
+          "box": [
+            480,
+            570,
+            670,
+            640
+          ],
+          "normal": [
+            0.021787230208203084,
+            0.9895188451735241,
+            0.14275073255962642
+          ],
+          "pixels": 13300,
+          "medianDeviationDeg": 0.13359652873660843,
+          "p90DeviationDeg": 0.2568732510799346
+        }
+      ],
+      "planePair": [
+        "ceiling",
+        "floor"
+      ],
+      "opposingPlaneDepartureDeg": 8.065948230898528
+    }
+  ],
+  "regionAnnotationsSha256": "6f99735b4c90c6481d220dd4156f11100b84e8c0d111fb6a57c07a1fd4afc4b5",
+  "candidateSha256": "a007baf801faab55368f60fd1d678e70b7f1d825a42a34d23a972e3296c60ac2",
+  "normalFrameHypothesis": "image right / image up / toward camera; front comparison supports compatibility, not independently calibrated"
+}

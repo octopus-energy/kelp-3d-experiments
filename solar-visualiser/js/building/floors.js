@@ -8,12 +8,12 @@
 // =====================================================================
 (function (root, factory) {
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(require('./geometry.js'));
+    module.exports = factory(require('./geometry.js'), require('./plan-geometry.js'));
   } else {
     root.SolarViz = root.SolarViz || {};
-    root.SolarViz.buildingFloors = factory(root.SolarViz.buildingGeometry);
+    root.SolarViz.buildingFloors = factory(root.SolarViz.buildingGeometry, root.SolarViz.planGeometry);
   }
-})(typeof window !== 'undefined' ? window : globalThis, function (G) {
+})(typeof window !== 'undefined' ? window : globalThis, function (G, P) {
 
   const ORDINALS = ['Ground floor', 'First floor', 'Second floor', 'Third floor', 'Fourth floor'];
   const MIN_ATTIC_HEADROOM = 1.5;
@@ -27,7 +27,7 @@
 
     for (let i = 0; i < count; i++) {
       const baseY = solid.groundY + i * h;
-      levels.push(makeLevel(solid, {
+      levels.push(makeLevel(cfg.levelSolids?.[i] || solid, {
         idx: i,
         name: ORDINALS[i] || `Floor ${i}`,
         baseY,
@@ -55,9 +55,9 @@
 
   function makeLevel(solid, lv) {
     const slice = G.sliceMesh(solid.verts, solid.tris, lv.slabTopY + 0.002);
-    lv.loops = slice.loops;
-    lv.outline = slice.loops[0] || solid.footprint;
-    lv.area = slice.loops.reduce((s, l) => s + Math.abs(G.polygonArea(l)), 0);
+    lv.loops = P.unionLoops(slice.loops);
+    lv.outline = lv.loops[0] || solid.footprint;
+    lv.area = Math.abs(lv.loops.reduce((s, l) => s + G.polygonArea(l), 0));
     return lv;
   }
 
@@ -108,5 +108,5 @@
     return { root, levelGroups };
   }
 
-  return { computeFloors, buildFloorMeshes, MIN_ATTIC_HEADROOM };
+  return { computeFloors, makeLevel, buildFloorMeshes, MIN_ATTIC_HEADROOM };
 });

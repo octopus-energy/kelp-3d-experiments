@@ -1,0 +1,26 @@
+{
+  "files": {
+    "checkpoints/Marigold-V2/albedo/trainables.safetensors": "dd955f940becbadb0cf854f51608ed8febec0636891467c05060bc44129d2503",
+    "checkpoints/Marigold-V2/depth/Log-layered/trainables.safetensors": "a2d9d01046efbd370bc176eea76241a646b471677acddb3e603e5aa91fb266a9",
+    "checkpoints/Marigold-V2/depth/Log-stage2/trainables.safetensors": "3edec69490ba8e8fdc8d63e130f93cb93f514360d415a22701250b2535056892",
+    "checkpoints/Marigold-V2/normals/trainables.safetensors": "b98dfcafa8cf86cf042d8a8e615b8b1a7d7f17c939f1716954c1b57b1b4af15a",
+    "checkpoints/Marigold-V2/qwen_text_embeddings/qwen_edit_2509_qwen_albedo_rgb_dummy512_prompt_embeds.pt": "4a3aafb282ffff7f3b6f20aaa2b58d57f836bbcb5eb58e8ec55904bb45564863",
+    "checkpoints/Marigold-V2/qwen_text_embeddings/qwen_edit_2509_qwen_albedo_rgb_dummy512_prompt_mask.pt": "f03b39976cd4d2a60e4262401c84c9fc324368dec3704d0cd00e9d471aa48df0",
+    "checkpoints/Marigold-V2/qwen_text_embeddings/qwen_edit_2509_qwen_depth_realimg512_prompt_embeds.pt": "ba752b582571d990c75ad6aac2a2eeb0cf04c2fe01b233b1675028eabf342a6d",
+    "checkpoints/Marigold-V2/qwen_text_embeddings/qwen_edit_2509_qwen_depth_realimg512_prompt_mask.pt": "80973a6521f21a5a6faf6402cae185dafef840d91e654efbeb1097914e634798",
+    "checkpoints/Marigold-V2/qwen_text_embeddings/qwen_edit_2509_qwen_normals_dummy512_prompt_embeds.pt": "411c502723f2aded4265bd9f3f7032bd9f861a317922628d2aaa82424f436217",
+    "checkpoints/Marigold-V2/qwen_text_embeddings/qwen_edit_2509_qwen_normals_dummy512_prompt_mask.pt": "202dcf62ae9963730237226d8df893b0678338ece99a69ef0c9afa894524cd57",
+    "checkpoints/Qwen-Image-Edit-2509/.gitattributes": "2159b96f67a348657f1224be06c151b4a3202ad865cbb4723a61f1f49baa736f",
+    "checkpoints/Qwen-Image-Edit-2509/README.md": "43794458d2fafed26f7910459eb716589b4ae2020bf1ac37c7f37510d2ca8c0e",
+    "checkpoints/Qwen-Image-Edit-2509/model_index.json": "5ba11ceee68457ad6a48b899b8c9493e347f4685e11e5eeca952a13f16549e35",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/config.json": "247c94f9b923a7d6b6035ca76d27b556bd0efd1a8c7672f31f037644fcce340e",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/diffusion_pytorch_model-00001-of-00005.safetensors": "784a8efc4dcea09ba20b534bbe9e5fae3367d929525031a4bd26c5ddb7eb18e5",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/diffusion_pytorch_model-00002-of-00005.safetensors": "86ce21e5e3bdecfbeaa31aa587c03d0d1af6ab05d79c127149e8217f81e0247f",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/diffusion_pytorch_model-00003-of-00005.safetensors": "c6a046daa991f3b32c3ae39ff95e6e7220455265fcbbb643e9f556bea8641d02",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/diffusion_pytorch_model-00004-of-00005.safetensors": "c28bf871d5db0a6397843eca3987e58ba2c3013d287d5d4a1271d68e158ce7e8",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/diffusion_pytorch_model-00005-of-00005.safetensors": "dd2844e5cafb03b16bed9556aa29c15396a787e17c38a0eda7f5a1281497c76a",
+    "checkpoints/Qwen-Image-Edit-2509/transformer/diffusion_pytorch_model.safetensors.index.json": "034f003b74493730e1c595b2e23232e99d9e28bcef3b4c10c56d1b53eee4b435",
+    "checkpoints/Qwen-Image-Edit-2509/vae/config.json": "c448160dba5ce79c965cb075ee02e18d1c42eb6424f787e5869790d577b56a65",
+    "checkpoints/Qwen-Image-Edit-2509/vae/diffusion_pytorch_model.safetensors": "0c8bc8b758c649abef9ea407b95408389a3b2f610d0d10fcb054fe171d0a8344"
+  }
+}

@@ -81,7 +81,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     disposeFrustums();
     photos.forEach((im) => {
       const m = state.photoMatches[im.id];
-      if (!m || !m.pose) return;
+      if (!m || !m.pose || m.roofNeedsReview) return;
       const pose = m.pose;
       const g = new THREE.Group();
       const fwd = new THREE.Vector3(...PM.poseForward(pose));
@@ -127,8 +127,8 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     list.innerHTML = '';
     photos.forEach((im) => {
       const saved = state.photoMatches[im.id];
-      const suggested = im.match;
-      const status = saved && saved.pose
+      const suggested = state.roofRevision ? null : im.match;
+      const status = saved && saved.roofNeedsReview ? 'roof changed — rematch' : saved && saved.pose
         ? (isFinite(saved.pose.rmse) ? `matched · ${saved.pose.rmse.toFixed(0)} px` : 'matched by eye')
         : suggested
           ? (suggested.needsReview ? 'suggested — needs review' : 'suggested')
@@ -181,7 +181,8 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
 
   function openPanel(im) {
     closePanel();
-    const src = state.photoMatches[im.id] || im.match;
+    const saved = state.photoMatches[im.id];
+    const src = saved && !saved.roofNeedsReview ? saved : (state.roofRevision ? null : im.match);
     const working = (src && src.landmarks ? src.landmarks : []).map((lm) => ({ id: lm.id, px: lm.px.slice() }));
     const el = document.createElement('div');
     el.className = 'pm-panel';
@@ -205,7 +206,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
     document.body.appendChild(el);
     panel = {
       el, im, working, pose: null,
-      imageSize: (src && src.imageSize) || [800, 533],
+      imageSize: (src && src.imageSize) || im.imageSize || [800, 533],
       img: el.querySelector('img'), canvas: el.querySelector('canvas'),
       selected: null, dragging: false,
     };
@@ -537,10 +538,11 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
   // solid rebuilt (footprint edit, settings change): landmarks moved —
   // re-solve accepted matches from their stored points
   building.addRebuildListener(() => {
+    if (Object.values(state.photoMatches || {}).some(m=>m.roofNeedsReview)) { closePanel(); closeOverlay(); }
     refreshModelData();
     Object.keys(state.photoMatches).forEach((id) => {
       const m = state.photoMatches[id];
-      if (m && m.landmarks) m.pose = solveMatch(m) || m.pose;
+      if (m && m.landmarks && !m.roofNeedsReview) m.pose = solveMatch(m) || m.pose;
     });
     rebuildFrustums();
     refreshList();
@@ -550,7 +552,7 @@ window.SolarViz.setupPhotoMatch = function ({ camera, view, renderer, controls, 
   // solve stored/suggested matches once at startup so frustums appear
   photos.forEach((im) => {
     const saved = state.photoMatches[im.id];
-    if (saved && saved.landmarks && !saved.pose) saved.pose = solveMatch(saved);
+    if (saved && saved.landmarks && !saved.pose && !saved.roofNeedsReview) saved.pose = solveMatch(saved);
   });
   rebuildFrustums();
   refreshList();

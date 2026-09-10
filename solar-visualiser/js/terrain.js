@@ -6,16 +6,35 @@ window.SolarViz = window.SolarViz || {};
 
 window.SolarViz.buildTerrain = function ({ siteData, dsm, coords, aerialDataUrl, renderer }) {
   const { WIDTH, HEIGHT, lonLatToLocal } = coords;
-  const SEG = dsm.ncols - 1;
+  // Where the export supplied only 2D roofs, the prepared planes estimate
+  // their heights from noisy DSM samples. Cap those terrain pixels at the
+  // inferred roof surface so noise cannot bury the proposed solar panels.
+  const inferredRoofs = siteData.roof_faces.filter(f => f.height_source).map(f => {
+    const points = f.geometry.coordinates[0].map(p => {
+      const [x, z] = coords.lonLatToSceneXZ(p[0], p[1]);
+      return [x, z, p[2]];
+    });
+    return { ring: points.map(p => [p[0], p[1]]), plane: window.SolarViz.geometryUtils.fitPlane(points) };
+  });
 
-  const geom = new THREE.PlaneGeometry(WIDTH, HEIGHT, SEG, SEG);
+  const geom = new THREE.PlaneGeometry(WIDTH, HEIGHT, dsm.ncols - 1, dsm.nrows - 1);
   geom.rotateX(-Math.PI / 2);
   const pos = geom.attributes.position;
   for (let r = 0; r < dsm.nrows; r++) {
     for (let c = 0; c < dsm.ncols; c++) {
       const idx = r * dsm.ncols + c;
       const elev = dsm.grid[idx];
-      pos.setY(idx, isFinite(elev) && elev !== dsm.nodata ? elev : 28);
+      let height = isFinite(elev) && elev !== dsm.nodata ? elev : siteData.property_details.altitude;
+      const x = (c + 0.5) * dsm.cellsize;
+      const z = (r + 0.5) * dsm.cellsize;
+      pos.setX(idx, x - WIDTH / 2);
+      pos.setZ(idx, z - HEIGHT / 2);
+      inferredRoofs.forEach(roof => {
+        if (window.SolarViz.buildingGeometry.pointInPolygon(roof.ring, x, z)) {
+          height = Math.min(height, roof.plane.getHeight(x, z));
+        }
+      });
+      pos.setY(idx, height);
     }
   }
   geom.computeVertexNormals();
@@ -54,6 +73,11 @@ window.SolarViz.buildTerrain = function ({ siteData, dsm, coords, aerialDataUrl,
 
   const terrainMesh = new THREE.Mesh(geom, matTextured);
   terrainMesh.receiveShadow = true;
+  // ASHP context uses the original DSM, without the solar-panel roof caps.
+  const rawGeometry=geom.clone(),rawPosition=rawGeometry.attributes.position;
+  for(let i=0;i<rawPosition.count;i++){const h=dsm.grid[i];rawPosition.setY(i,Number.isFinite(h)&&h!==dsm.nodata?h:siteData.property_details.altitude);}
+  rawPosition.needsUpdate=true;rawGeometry.computeVertexNormals();
+  terrainMesh.userData.rawDSMGeometry=rawGeometry;
 
   return { terrainMesh, geom, matTextured, matSolid };
 };

@@ -1,0 +1,939 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "annotationMethod": "Assistant visual interpretation of original images; approximate frame corners, not automated detections. Coordinates retained for review.",
+  "imageSize": [
+    1024,
+    683
+  ],
+  "photos": [
+    {
+      "imageId": "4319b0211a370eba9015b36e035cc7a1",
+      "role": "fit",
+      "observations": [
+        {
+          "landmark": "front_left",
+          "px": [
+            0.3271484375,
+            0.24890190336749635
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_root_left",
+          "px": [
+            0.431640625,
+            0.24890190336749635
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_front_left",
+          "px": [
+            0.482421875,
+            0.19765739385065886
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_front_right",
+          "px": [
+            0.6171875,
+            0.2020497803806735
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_root_right",
+          "px": [
+            0.6474609375,
+            0.2562225475841874
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "front_right",
+          "px": [
+            0.6689453125,
+            0.2562225475841874
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_tl",
+          "px": [
+            0.51953125,
+            0.28257686676427524
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_tr",
+          "px": [
+            0.5751953125,
+            0.28550512445095166
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_br",
+          "px": [
+            0.5751953125,
+            0.445095168374817
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_bl",
+          "px": [
+            0.51953125,
+            0.445095168374817
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_tl",
+          "px": [
+            0.517578125,
+            0.5534407027818448
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_tr",
+          "px": [
+            0.5751953125,
+            0.5534407027818448
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_br",
+          "px": [
+            0.5751953125,
+            0.739385065885798
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_bl",
+          "px": [
+            0.517578125,
+            0.739385065885798
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_tl",
+          "px": [
+            0.3466796875,
+            0.5812591508052709
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_tr",
+          "px": [
+            0.4052734375,
+            0.5812591508052709
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_br",
+          "px": [
+            0.4052734375,
+            0.808199121522694
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_bl",
+          "px": [
+            0.34765625,
+            0.808199121522694
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        }
+      ],
+      "verticals": [
+        {
+          "landmark": "bay_front_left",
+          "start": [
+            494,
+            135
+          ],
+          "end": [
+            491,
+            529
+          ],
+          "sigmaDirection": 0.008
+        },
+        {
+          "landmark": "bay_front_right",
+          "start": [
+            632,
+            138
+          ],
+          "end": [
+            636,
+            528
+          ],
+          "sigmaDirection": 0.008
+        }
+      ]
+    },
+    {
+      "imageId": "655c2e755834a41b23f260899a2fe835",
+      "role": "fit",
+      "observations": [
+        {
+          "landmark": "front_left",
+          "px": [
+            0.3037109375,
+            0.22547584187408493
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_root_left",
+          "px": [
+            0.40625,
+            0.2020497803806735
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_front_left",
+          "px": [
+            0.435546875,
+            0.13469985358711567
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_front_right",
+          "px": [
+            0.5615234375,
+            0.10980966325036604
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay_root_right",
+          "px": [
+            0.6220703125,
+            0.1595900439238653
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "front_right",
+          "px": [
+            0.6494140625,
+            0.14641288433382138
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_tl",
+          "px": [
+            0.466796875,
+            0.2225475841874085
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_tr",
+          "px": [
+            0.5400390625,
+            0.21522693997071743
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_br",
+          "px": [
+            0.5400390625,
+            0.38799414348462663
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-upper_bl",
+          "px": [
+            0.466796875,
+            0.3953147877013177
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_tl",
+          "px": [
+            0.466796875,
+            0.5124450951683748
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_tr",
+          "px": [
+            0.5400390625,
+            0.5109809663250366
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_br",
+          "px": [
+            0.5400390625,
+            0.7247437774524158
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "bay-lower_bl",
+          "px": [
+            0.466796875,
+            0.726207906295754
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_tl",
+          "px": [
+            0.330078125,
+            0.5607613469985359
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_tr",
+          "px": [
+            0.384765625,
+            0.5446559297218155
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_br",
+          "px": [
+            0.384765625,
+            0.7701317715959004
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        },
+        {
+          "landmark": "front-door_bl",
+          "px": [
+            0.330078125,
+            0.7818448023426061
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "fit"
+        }
+      ],
+      "verticals": [
+        {
+          "landmark": "bay_front_left",
+          "start": [
+            446,
+            92
+          ],
+          "end": [
+            447,
+            522
+          ],
+          "sigmaDirection": 0.008
+        },
+        {
+          "landmark": "bay_front_right",
+          "start": [
+            575,
+            75
+          ],
+          "end": [
+            584,
+            521
+          ],
+          "sigmaDirection": 0.008
+        }
+      ]
+    },
+    {
+      "imageId": "88a6310f77aee7b99e0c2e18136d4b78",
+      "role": "check",
+      "observations": [
+        {
+          "landmark": "front_left",
+          "px": [
+            0.322265625,
+            0.22693997071742314
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_root_left",
+          "px": [
+            0.455078125,
+            0.2225475841874085
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_front_left",
+          "px": [
+            0.5107421875,
+            0.1800878477306003
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_front_right",
+          "px": [
+            0.6669921875,
+            0.18740849194729137
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_root_right",
+          "px": [
+            0.703125,
+            0.2445095168374817
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "front_right",
+          "px": [
+            0.7294921875,
+            0.24890190336749635
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay-upper_tl",
+          "px": [
+            0.552734375,
+            0.28989751098096633
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-upper_tr",
+          "px": [
+            0.6220703125,
+            0.28989751098096633
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-upper_br",
+          "px": [
+            0.6220703125,
+            0.46266471449487556
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-upper_bl",
+          "px": [
+            0.552734375,
+            0.46266471449487556
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_tl",
+          "px": [
+            0.5517578125,
+            0.5929721815519766
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_tr",
+          "px": [
+            0.6220703125,
+            0.5915080527086384
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_br",
+          "px": [
+            0.6220703125,
+            0.8111273792093704
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_bl",
+          "px": [
+            0.5517578125,
+            0.8111273792093704
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "front-door_tl",
+          "px": [
+            0.3388671875,
+            0.6530014641288433
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        },
+        {
+          "landmark": "front-door_tr",
+          "px": [
+            0.408203125,
+            0.6500732064421669
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        },
+        {
+          "landmark": "front-door_br",
+          "px": [
+            0.408203125,
+            0.8755490483162518
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        },
+        {
+          "landmark": "front-door_bl",
+          "px": [
+            0.3388671875,
+            0.87701317715959
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        }
+      ],
+      "verticals": [
+        {
+          "landmark": "bay_front_left",
+          "start": [
+            523,
+            123
+          ],
+          "end": [
+            521,
+            592
+          ],
+          "sigmaDirection": 0.008
+        },
+        {
+          "landmark": "bay_front_right",
+          "start": [
+            683,
+            128
+          ],
+          "end": [
+            685,
+            592
+          ],
+          "sigmaDirection": 0.008
+        }
+      ]
+    },
+    {
+      "imageId": "bd31bdb708cc878cc82d2d19ad072c68",
+      "role": "check",
+      "observations": [
+        {
+          "landmark": "front_left",
+          "px": [
+            0.2421875,
+            0.05710102489019034
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_root_left",
+          "px": [
+            0.4013671875,
+            0.1259150805270864
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_front_left",
+          "px": [
+            0.49609375,
+            0.07759882869692533
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_front_right",
+          "px": [
+            0.6318359375,
+            0.1376281112737921
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay_root_right",
+          "px": [
+            0.6552734375,
+            0.20937042459736457
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "front_right",
+          "px": [
+            0.6767578125,
+            0.22108345534407028
+          ],
+          "sigmaPx": 5,
+          "kind": "roof",
+          "use": "pose"
+        },
+        {
+          "landmark": "bay-upper_tl",
+          "px": [
+            0.52734375,
+            0.20351390922401172
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-upper_tr",
+          "px": [
+            0.5908203125,
+            0.22693997071742314
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-upper_br",
+          "px": [
+            0.5908203125,
+            0.4216691068814056
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-upper_bl",
+          "px": [
+            0.52734375,
+            0.4055636896046852
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_tl",
+          "px": [
+            0.5263671875,
+            0.5065885797950219
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_tr",
+          "px": [
+            0.5908203125,
+            0.5168374816983895
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_br",
+          "px": [
+            0.5908203125,
+            0.7291361639824304
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "bay-lower_bl",
+          "px": [
+            0.5263671875,
+            0.7247437774524158
+          ],
+          "sigmaPx": 4,
+          "kind": "window",
+          "use": "check"
+        },
+        {
+          "landmark": "front-door_tl",
+          "px": [
+            0.2978515625,
+            0.5739385065885798
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        },
+        {
+          "landmark": "front-door_tr",
+          "px": [
+            0.3642578125,
+            0.5783308931185944
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        },
+        {
+          "landmark": "front-door_br",
+          "px": [
+            0.3642578125,
+            0.7906295754026355
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        },
+        {
+          "landmark": "front-door_bl",
+          "px": [
+            0.2978515625,
+            0.7891654465592972
+          ],
+          "sigmaPx": 4,
+          "kind": "door",
+          "use": "pose"
+        }
+      ],
+      "verticals": [
+        {
+          "landmark": "bay_front_left",
+          "start": [
+            508,
+            53
+          ],
+          "end": [
+            511,
+            552
+          ],
+          "sigmaDirection": 0.008
+        },
+        {
+          "landmark": "bay_front_right",
+          "start": [
+            647,
+            94
+          ],
+          "end": [
+            650,
+            552
+          ],
+          "sigmaDirection": 0.008
+        }
+      ]
+    }
+  ],
+  "plan": {
+    "source": "floorplan.png",
+    "dimensions": [
+      {
+        "room": "Bedroom 1",
+        "width": 4.88,
+        "depth": 4.09,
+        "note": "into bay; internal maximum dimensions"
+      },
+      {
+        "room": "Bedroom 2",
+        "width": 3.15,
+        "depth": 3.96
+      },
+      {
+        "room": "Bedroom 3",
+        "width": 3.0,
+        "depth": 2.77
+      },
+      {
+        "room": "Living/dining",
+        "width": 3.68,
+        "depth": 8.13,
+        "note": "maximum"
+      },
+      {
+        "room": "Kitchen/living",
+        "width": 3.0,
+        "depth": 8.28,
+        "note": "maximum"
+      },
+      {
+        "room": "Study/play room",
+        "width": 3.68,
+        "depth": 3.89
+      },
+      {
+        "room": "Utility",
+        "width": 2.44,
+        "depth": 3.99
+      }
+    ],
+    "levels": [
+      "lower ground",
+      "ground",
+      "first"
+    ],
+    "interpretation": [
+      "Two-storey front bay, with lower-ground window visible in entrance photo.",
+      "Two-storey rear wing, followed by a lower rear extension.",
+      "Rooflight and rear glazed doors visible in extension interior.",
+      "No attic floor appears on supplied plan; rear dormers may belong to neighbours and are not added."
+    ],
+    "confidence": "Printed dimensions used as soft constraints; plan pixels are schematic, not an exact survey."
+  },
+  "depth": {
+    "status": "not-run",
+    "candidate": "huawei-bayerlab/marigold-v2",
+    "reason": "Published inference requires Linux/CUDA; this host is macOS ARM with no CUDA GPU.",
+    "parameterization": "Default Log-stage2 is affine-invariant log depth, not metres. Align in log-depth space with independent metric anchors.",
+    "source": "https://github.com/huawei-bayerlab/marigold-v2"
+  },
+  "uncertainties": [
+    "Basement depth and rear ground levels are not surveyed.",
+    "Side windows, rear opening sizes and rooflight dimensions have not been numerically fitted.",
+    "No monocular depth was generated or used.",
+    "Rear mono-pitch roof form confirmed by user; exact pitches, heights and alignment with the neighbouring roofs still need checking."
+  ],
+  "cameraInterpretation": "Iteration 2: add observed vertical facade-edge directions and an image vertical shift for cropped/perspective-corrected listing photos. Window positions in check images remain excluded from geometry fitting.",
+  "rearRoofCorrection": {
+    "source": "User correction, supported by rear listing photographs",
+    "images": [
+      "b3c87cfb9faa2d98b3231da431fae97b",
+      "d234ecc31aca67d6789df113f1b380c8"
+    ],
+    "roofForm": "Both rear volumes have mono-pitch roofs. The taller wing must not have a central ridge.",
+    "slopeInterpretation": "High edge at house-local u=0, falling across the width. Upper-wing direction supported by DSM samples; lower direction inferred from rear photo and remains uncalibrated.",
+    "status": "form-confirmed-pitches-approximate",
+    "preserve": "Keep the fitted front geometry and camera poses unchanged."
+  }
+}

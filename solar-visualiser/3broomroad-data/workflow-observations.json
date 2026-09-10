@@ -1,0 +1,1731 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "status": "survey-planning",
+  "planImageSize": [
+    1040,
+    1080
+  ],
+  "rooms": [
+    {
+      "id": "lg-study",
+      "name": "Study / play room",
+      "level": "lower-ground",
+      "planPolygon": [
+        [
+          97,
+          799
+        ],
+        [
+          299,
+          799
+        ],
+        [
+          299,
+          980
+        ],
+        [
+          270,
+          980
+        ],
+        [
+          238,
+          1028
+        ],
+        [
+          143,
+          1028
+        ],
+        [
+          111,
+          981
+        ],
+        [
+          97,
+          981
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        3.68,
+        3.89
+      ],
+      "photos": [
+        "35f17817024aeb5a833ac4f0ed4d592a"
+      ],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "lg-utility",
+      "name": "Utility",
+      "level": "lower-ground",
+      "planPolygon": [
+        [
+          139,
+          638
+        ],
+        [
+          299,
+          638
+        ],
+        [
+          299,
+          781
+        ],
+        [
+          97,
+          781
+        ],
+        [
+          97,
+          737
+        ],
+        [
+          139,
+          737
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        2.44,
+        3.99
+      ],
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "lg-store",
+      "name": "Storage",
+      "level": "lower-ground",
+      "planPolygon": [
+        [
+          27,
+          860
+        ],
+        [
+          80,
+          860
+        ],
+        [
+          80,
+          980
+        ],
+        [
+          27,
+          980
+        ]
+      ],
+      "printedMaxDimensionsM": null,
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "lg-shower",
+      "name": "Lower shower / WC",
+      "level": "lower-ground",
+      "planPolygon": [
+        [
+          139,
+          564
+        ],
+        [
+          299,
+          564
+        ],
+        [
+          299,
+          624
+        ],
+        [
+          139,
+          624
+        ]
+      ],
+      "printedMaxDimensionsM": null,
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "g-living",
+      "name": "Living / dining",
+      "level": "ground",
+      "planPolygon": [
+        [
+          488,
+          566
+        ],
+        [
+          638,
+          566
+        ],
+        [
+          638,
+          980
+        ],
+        [
+          619,
+          980
+        ],
+        [
+          590,
+          1025
+        ],
+        [
+          523,
+          1025
+        ],
+        [
+          491,
+          980
+        ],
+        [
+          453,
+          980
+        ],
+        [
+          453,
+          799
+        ],
+        [
+          488,
+          785
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        3.68,
+        8.13
+      ],
+      "photos": [
+        "a40dadd2d6f86d5b4b85593d231f240b",
+        "dd85ffc2fbe1c92a140814bbf153dea7"
+      ],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "g-hall",
+      "name": "Hall / stairs",
+      "level": "ground",
+      "planPolygon": [
+        [
+          379,
+          568
+        ],
+        [
+          415,
+          568
+        ],
+        [
+          465,
+          602
+        ],
+        [
+          465,
+          768
+        ],
+        [
+          432,
+          790
+        ],
+        [
+          432,
+          980
+        ],
+        [
+          379,
+          980
+        ]
+      ],
+      "printedMaxDimensionsM": null,
+      "photos": [
+        "80c683d944553f0ea65667c4d3965e6c"
+      ],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "g-kitchen",
+      "name": "Kitchen / rear living area",
+      "level": "ground",
+      "planPolygon": [
+        [
+          422,
+          87
+        ],
+        [
+          541,
+          87
+        ],
+        [
+          541,
+          543
+        ],
+        [
+          379,
+          543
+        ],
+        [
+          379,
+          155
+        ],
+        [
+          422,
+          155
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        3.0,
+        8.28
+      ],
+      "photos": [
+        "08968f54527a305a14c70973df11894c",
+        "e5ccf137f38f3fea774a3f2d86ba7e07",
+        "665a47dfe68e005497291515decd24d8"
+      ],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "f-bed1",
+      "name": "Bedroom 1",
+      "level": "first",
+      "planPolygon": [
+        [
+          738,
+          801
+        ],
+        [
+          1000,
+          801
+        ],
+        [
+          1000,
+          981
+        ],
+        [
+          975,
+          981
+        ],
+        [
+          941,
+          1028
+        ],
+        [
+          852,
+          1028
+        ],
+        [
+          820,
+          981
+        ],
+        [
+          738,
+          981
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        4.88,
+        4.09
+      ],
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "f-bed2",
+      "name": "Bedroom 2",
+      "level": "first",
+      "planPolygon": [
+        [
+          840,
+          566
+        ],
+        [
+          1000,
+          566
+        ],
+        [
+          1000,
+          781
+        ],
+        [
+          840,
+          781
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        3.15,
+        3.96
+      ],
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "f-bed3",
+      "name": "Bedroom 3",
+      "level": "first",
+      "planPolygon": [
+        [
+          738,
+          270
+        ],
+        [
+          896,
+          270
+        ],
+        [
+          896,
+          423
+        ],
+        [
+          779,
+          423
+        ],
+        [
+          779,
+          473
+        ],
+        [
+          738,
+          473
+        ]
+      ],
+      "printedMaxDimensionsM": [
+        3.0,
+        2.77
+      ],
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "f-bath",
+      "name": "Bathroom",
+      "level": "first",
+      "planPolygon": [
+        [
+          796,
+          442
+        ],
+        [
+          896,
+          442
+        ],
+        [
+          896,
+          543
+        ],
+        [
+          765,
+          543
+        ],
+        [
+          754,
+          516
+        ],
+        [
+          796,
+          493
+        ]
+      ],
+      "printedMaxDimensionsM": null,
+      "photos": [
+        "0fd2882fa08c1065b617894a2342c16d",
+        "4632731e6e024a0324b73e5f606932e7"
+      ],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    },
+    {
+      "id": "f-landing",
+      "name": "Landing / stairs",
+      "level": "first",
+      "planPolygon": [
+        [
+          738,
+          565
+        ],
+        [
+          819,
+          565
+        ],
+        [
+          819,
+          780
+        ],
+        [
+          738,
+          780
+        ]
+      ],
+      "printedMaxDimensionsM": null,
+      "photos": [],
+      "status": "interpreted-plan",
+      "ceilingHeightM": null,
+      "netFloorAreaM2": null,
+      "heatedStatus": "unknown",
+      "boundaryStatus": "unclassified",
+      "heatLossW": null
+    }
+  ],
+  "emitters": [
+    {
+      "id": "emitter-kitchen",
+      "roomId": "g-kitchen",
+      "imageId": "08968f54527a305a14c70973df11894c",
+      "bbox": [
+        0.553,
+        0.583,
+        0.05,
+        0.15
+      ],
+      "observation": "Partly obscured white radiator beneath kitchen window; depth and panel count not visible.",
+      "status": "photo-observed-unmeasured",
+      "widthMm": null,
+      "heightMm": null,
+      "depthMm": null,
+      "ratedOutputW": null,
+      "replacementDecision": "undetermined"
+    },
+    {
+      "id": "emitter-rear-living",
+      "roomId": "g-kitchen",
+      "imageId": "665a47dfe68e005497291515decd24d8",
+      "bbox": [
+        0.635,
+        0.656,
+        0.147,
+        0.119
+      ],
+      "observation": "White panel radiator under rear living-area side window, partly hidden by furniture.",
+      "status": "photo-observed-unmeasured",
+      "widthMm": null,
+      "heightMm": null,
+      "depthMm": null,
+      "ratedOutputW": null,
+      "replacementDecision": "undetermined"
+    },
+    {
+      "id": "emitter-living",
+      "roomId": "g-living",
+      "imageId": "a40dadd2d6f86d5b4b85593d231f240b",
+      "bbox": [
+        0.794,
+        0.565,
+        0.071,
+        0.067
+      ],
+      "observation": "Possible radiator visible behind sofa; confirm attribution and complete dimensions.",
+      "status": "photo-observed-unmeasured",
+      "widthMm": null,
+      "heightMm": null,
+      "depthMm": null,
+      "ratedOutputW": null,
+      "replacementDecision": "undetermined"
+    },
+    {
+      "id": "emitter-study",
+      "roomId": "lg-study",
+      "imageId": "35f17817024aeb5a833ac4f0ed4d592a",
+      "bbox": [
+        0.043,
+        0.647,
+        0.171,
+        0.35
+      ],
+      "observation": "White column-style radiator. Room assignment is tentative; listing caption only says lower ground room.",
+      "status": "photo-observed-unmeasured",
+      "widthMm": null,
+      "heightMm": null,
+      "depthMm": null,
+      "ratedOutputW": null,
+      "replacementDecision": "undetermined"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "rear-geometry",
+      "targetId": "rear-roofs",
+      "title": "Resolve rear roof and camera mismatch",
+      "why": "Rear checks fail; incorrect junctions or dimensions invalidate photo-derived areas.",
+      "method": "Confirm which edges belong to this house. Capture two rear views with overlapping corners, one known horizontal distance, both eave heights and garden/threshold level difference.",
+      "fields": [
+        {
+          "key": "wingLow",
+          "label": "Upper-wing low eave above house datum",
+          "type": "number",
+          "unit": "m",
+          "min": 0,
+          "max": 15,
+          "required": true
+        },
+        {
+          "key": "wingHigh",
+          "label": "Upper-wing high eave above house datum",
+          "type": "number",
+          "unit": "m",
+          "min": 0,
+          "max": 15,
+          "required": true
+        },
+        {
+          "key": "extensionLow",
+          "label": "Lower-extension low eave above datum",
+          "type": "number",
+          "unit": "m",
+          "min": 0,
+          "max": 10,
+          "required": true
+        },
+        {
+          "key": "extensionHigh",
+          "label": "Lower-extension high eave above datum",
+          "type": "number",
+          "unit": "m",
+          "min": 0,
+          "max": 10,
+          "required": true
+        },
+        {
+          "key": "datum",
+          "label": "Describe and photograph the common height datum",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "rear-photos",
+        "dsm"
+      ],
+      "status": "open",
+      "invalidates": [
+        "rear-camera",
+        "roof-geometry",
+        "room-heat-loss"
+      ]
+    },
+    {
+      "id": "site-boundary",
+      "targetId": "site",
+      "title": "Verify garden extent, access and neighbours",
+      "why": "OS site extent is auto-defined; siting and routes depend on actual access and boundary context.",
+      "method": "Walk the access route; annotate usable space, boundary evidence, neighbour windows and obstacles. Record uncertainty; do not infer legal ownership from OS polygons.",
+      "fields": [
+        {
+          "key": "extent",
+          "label": "Boundary / access observations",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "os",
+        "rear-photos"
+      ],
+      "status": "open",
+      "invalidates": [
+        "outdoor-siting",
+        "service-routes"
+      ]
+    },
+    {
+      "id": "thermal-boundaries",
+      "targetId": "house",
+      "title": "Classify party walls and basement boundaries",
+      "why": "Mid-terrace party walls and ground-contact surfaces must not all be treated as outdoor walls.",
+      "method": "For each room identify external, adjoining dwelling, ground, unheated-space and internal surfaces; record neighbour heating assumptions, exposed basement walls and insulation evidence.",
+      "fields": [
+        {
+          "key": "boundaries",
+          "label": "Surface IDs, adjoining spaces and construction evidence",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "os",
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-heat-loss",
+        "emitter-sizing",
+        "heat-pump-selection"
+      ]
+    },
+    {
+      "id": "room-lg-study",
+      "targetId": "lg-study",
+      "title": "Measure Study / play room",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-lg-utility",
+      "targetId": "lg-utility",
+      "title": "Measure Utility",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-lg-store",
+      "targetId": "lg-store",
+      "title": "Measure Storage",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-lg-shower",
+      "targetId": "lg-shower",
+      "title": "Measure Lower shower / WC",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-g-living",
+      "targetId": "g-living",
+      "title": "Measure Living / dining",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-g-hall",
+      "targetId": "g-hall",
+      "title": "Measure Hall / stairs",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-g-kitchen",
+      "targetId": "g-kitchen",
+      "title": "Measure Kitchen / rear living area",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-f-bed1",
+      "targetId": "f-bed1",
+      "title": "Measure Bedroom 1",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-f-bed2",
+      "targetId": "f-bed2",
+      "title": "Measure Bedroom 2",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-f-bed3",
+      "targetId": "f-bed3",
+      "title": "Measure Bedroom 3",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-f-bath",
+      "targetId": "f-bath",
+      "title": "Measure Bathroom",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "room-f-landing",
+      "targetId": "f-landing",
+      "title": "Measure Landing / stairs",
+      "why": "Room areas, ceiling profiles and heated status determine the thermal model.",
+      "method": "Check plan assignment; measure a closed room outline and floor-to-ceiling profile, openings, wall thickness and adjacency. Printed maximum dimensions are not net area.",
+      "fields": [
+        {
+          "key": "height",
+          "label": "Representative clear height",
+          "type": "number",
+          "unit": "m",
+          "min": 1,
+          "max": 8,
+          "required": true
+        },
+        {
+          "key": "outline",
+          "label": "Measured outline / dimensions, ceiling variations and evidence references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "conditions",
+          "label": "Heated status, adjacent spaces, glazing, insulation and ventilation",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "plan"
+      ],
+      "status": "open",
+      "invalidates": [
+        "room-geometry",
+        "room-heat-loss",
+        "emitter-sizing"
+      ]
+    },
+    {
+      "id": "survey-emitter-kitchen",
+      "targetId": "emitter-kitchen",
+      "title": "Identify and measure kitchen emitter",
+      "why": "A photograph cannot establish output at the proposed water temperatures or whether replacement is needed.",
+      "method": "Photograph front, side, valves and model label. Measure dimensions, panel/convector or column count and pipe outside diameter. Record obstructions and homeowner constraints.",
+      "fields": [
+        {
+          "key": "width",
+          "label": "Width",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 5000,
+          "required": true
+        },
+        {
+          "key": "height",
+          "label": "Height",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 3000,
+          "required": true
+        },
+        {
+          "key": "depth",
+          "label": "Depth",
+          "type": "number",
+          "unit": "mm",
+          "min": 10,
+          "max": 600,
+          "required": true
+        },
+        {
+          "key": "type",
+          "label": "Manufacturer/model or panel/convector/column count",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "pipes",
+          "label": "Pipe diameter, valves and access",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "08968f54527a305a14c70973df11894c"
+      ],
+      "status": "open",
+      "invalidates": [
+        "emitter-sizing",
+        "hydraulic-design"
+      ]
+    },
+    {
+      "id": "survey-emitter-rear-living",
+      "targetId": "emitter-rear-living",
+      "title": "Identify and measure rear-living emitter",
+      "why": "A photograph cannot establish output at the proposed water temperatures or whether replacement is needed.",
+      "method": "Photograph front, side, valves and model label. Measure dimensions, panel/convector or column count and pipe outside diameter. Record obstructions and homeowner constraints.",
+      "fields": [
+        {
+          "key": "width",
+          "label": "Width",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 5000,
+          "required": true
+        },
+        {
+          "key": "height",
+          "label": "Height",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 3000,
+          "required": true
+        },
+        {
+          "key": "depth",
+          "label": "Depth",
+          "type": "number",
+          "unit": "mm",
+          "min": 10,
+          "max": 600,
+          "required": true
+        },
+        {
+          "key": "type",
+          "label": "Manufacturer/model or panel/convector/column count",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "pipes",
+          "label": "Pipe diameter, valves and access",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "665a47dfe68e005497291515decd24d8"
+      ],
+      "status": "open",
+      "invalidates": [
+        "emitter-sizing",
+        "hydraulic-design"
+      ]
+    },
+    {
+      "id": "survey-emitter-living",
+      "targetId": "emitter-living",
+      "title": "Identify and measure living emitter",
+      "why": "A photograph cannot establish output at the proposed water temperatures or whether replacement is needed.",
+      "method": "Photograph front, side, valves and model label. Measure dimensions, panel/convector or column count and pipe outside diameter. Record obstructions and homeowner constraints.",
+      "fields": [
+        {
+          "key": "width",
+          "label": "Width",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 5000,
+          "required": true
+        },
+        {
+          "key": "height",
+          "label": "Height",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 3000,
+          "required": true
+        },
+        {
+          "key": "depth",
+          "label": "Depth",
+          "type": "number",
+          "unit": "mm",
+          "min": 10,
+          "max": 600,
+          "required": true
+        },
+        {
+          "key": "type",
+          "label": "Manufacturer/model or panel/convector/column count",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "pipes",
+          "label": "Pipe diameter, valves and access",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "a40dadd2d6f86d5b4b85593d231f240b"
+      ],
+      "status": "open",
+      "invalidates": [
+        "emitter-sizing",
+        "hydraulic-design"
+      ]
+    },
+    {
+      "id": "survey-emitter-study",
+      "targetId": "emitter-study",
+      "title": "Identify and measure study emitter",
+      "why": "A photograph cannot establish output at the proposed water temperatures or whether replacement is needed.",
+      "method": "Photograph front, side, valves and model label. Measure dimensions, panel/convector or column count and pipe outside diameter. Record obstructions and homeowner constraints.",
+      "fields": [
+        {
+          "key": "width",
+          "label": "Width",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 5000,
+          "required": true
+        },
+        {
+          "key": "height",
+          "label": "Height",
+          "type": "number",
+          "unit": "mm",
+          "min": 50,
+          "max": 3000,
+          "required": true
+        },
+        {
+          "key": "depth",
+          "label": "Depth",
+          "type": "number",
+          "unit": "mm",
+          "min": 10,
+          "max": 600,
+          "required": true
+        },
+        {
+          "key": "type",
+          "label": "Manufacturer/model or panel/convector/column count",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "pipes",
+          "label": "Pipe diameter, valves and access",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "35f17817024aeb5a833ac4f0ed4d592a"
+      ],
+      "status": "open",
+      "invalidates": [
+        "emitter-sizing",
+        "hydraulic-design"
+      ]
+    },
+    {
+      "id": "emitter-completeness",
+      "targetId": "house",
+      "title": "Find all remaining emitters",
+      "why": "The four photo observations are an incomplete inventory.",
+      "method": "Walk every room, including halls, bathrooms and lower ground; link each emitter or confirmed absence to a stable room ID.",
+      "fields": [
+        {
+          "key": "inventory",
+          "label": "Remaining emitters / rooms without emitters",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [],
+      "status": "open",
+      "invalidates": [
+        "emitter-sizing",
+        "hydraulic-design"
+      ]
+    },
+    {
+      "id": "electrical-supply",
+      "targetId": "electricity",
+      "title": "Locate meter, consumer unit and supply route",
+      "why": "Meter position alone does not establish a suitable electrical connection.",
+      "method": "Qualified electrical assessment: locate meter, service and consumer unit; record supply capacity, earthing, spare ways and a feasible protected cable route.",
+      "fields": [
+        {
+          "key": "locations",
+          "label": "Locations and photo references",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "assessment",
+          "label": "Electrical assessor findings and remaining checks",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [],
+      "status": "open",
+      "invalidates": [
+        "electrical-design",
+        "service-routes"
+      ]
+    },
+    {
+      "id": "cylinder-location",
+      "targetId": "dhw",
+      "title": "Locate existing hot-water equipment and cylinder options",
+      "why": "Cylinder volume, access, support and recovery requirements depend on the house and household.",
+      "method": "Identify existing system, available cupboard dimensions, delivery route, structural support, drainage and connections; ask about hot-water use.",
+      "fields": [
+        {
+          "key": "existing",
+          "label": "Existing boiler/cylinder/system",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "spaces",
+          "label": "Candidate spaces and measured clearances",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "demand",
+          "label": "Occupancy and hot-water use; evidence source",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [],
+      "status": "open",
+      "invalidates": [
+        "hot-water-design",
+        "service-routes"
+      ]
+    },
+    {
+      "id": "heat-pump-site",
+      "targetId": "hp-site",
+      "title": "Measure outdoor siting options",
+      "why": "Usable ground, sound, airflow, servicing, drains and routing constrain location.",
+      "method": "Compare rear courtyard options with homeowners; measure available envelope and routes, drainage, neighbour receptors and obstacles. Check selected manufacturer and current applicable siting requirements.",
+      "fields": [
+        {
+          "key": "options",
+          "label": "Measured candidate locations and trade-offs",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "constraints",
+          "label": "Clearances, noise, drainage, access and checks still required",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [
+        "os",
+        "rear-photos"
+      ],
+      "status": "open",
+      "invalidates": [
+        "outdoor-siting",
+        "service-routes"
+      ]
+    },
+    {
+      "id": "routes",
+      "targetId": "services",
+      "title": "Trace hydraulic and electrical routes",
+      "why": "Straight-line distances miss walls, level changes, access and hydraulic resistance.",
+      "method": "Record separate route segments from outdoor unit to hydraulic/cylinder connections, heating circuit, consumer unit and condensate discharge. Mark length, vertical rise, diameter, fittings, penetrations and access.",
+      "fields": [
+        {
+          "key": "segments",
+          "label": "Endpoint IDs and measured route segments",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "unknown",
+          "label": "Concealed sections and access needed",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "surveyor",
+      "sourceIds": [],
+      "status": "open",
+      "invalidates": [
+        "hydraulic-design",
+        "electrical-design"
+      ]
+    },
+    {
+      "id": "homeowner-preferences",
+      "targetId": "homeowner",
+      "title": "Record homeowner choices and constraints",
+      "why": "Layout and equipment changes need explicit household choices.",
+      "method": "Discuss comfort, rooms used, hot-water habits, refurbishment plans, outdoor space, cylinder storage trade-offs, radiator appearance and disruption. Record preferred alternatives separately from technical approval.",
+      "fields": [
+        {
+          "key": "preferences",
+          "label": "Named option IDs, preferences and unresolved choices",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "priority": "high",
+      "role": "homeowner",
+      "sourceIds": [],
+      "status": "open",
+      "invalidates": [
+        "option-selection",
+        "design-review"
+      ]
+    }
+  ],
+  "adjacencies": [
+    {
+      "a": "g-hall",
+      "b": "g-living",
+      "status": "plan-interpreted",
+      "connection": "door"
+    },
+    {
+      "a": "g-hall",
+      "b": "g-kitchen",
+      "status": "plan-interpreted",
+      "connection": "door"
+    },
+    {
+      "a": "f-landing",
+      "b": "f-bed1",
+      "status": "plan-interpreted",
+      "connection": "door"
+    },
+    {
+      "a": "f-landing",
+      "b": "f-bed2",
+      "status": "plan-interpreted",
+      "connection": "door"
+    },
+    {
+      "a": "f-landing",
+      "b": "f-bath",
+      "status": "plan-interpreted",
+      "connection": "door"
+    },
+    {
+      "a": "f-bath",
+      "b": "f-bed3",
+      "status": "plan-interpreted",
+      "connection": "access via landing corridor; exact partition needs checking"
+    },
+    {
+      "a": "lg-utility",
+      "b": "lg-study",
+      "status": "plan-interpreted",
+      "connection": "door via circulation"
+    }
+  ],
+  "options": [
+    {
+      "id": "hp-rear",
+      "title": "Outdoor unit near rear courtyard",
+      "status": "hypothesis",
+      "dependsOn": [
+        "site-boundary",
+        "heat-pump-site",
+        "routes",
+        "homeowner-preferences"
+      ],
+      "tradeoff": "Potentially short route to rear kitchen; compare noise, airflow, garden use and service access."
+    },
+    {
+      "id": "cylinder-lower",
+      "title": "Cylinder in lower-ground utility area",
+      "status": "hypothesis",
+      "dependsOn": [
+        "cylinder-location",
+        "routes",
+        "homeowner-preferences"
+      ],
+      "tradeoff": "May preserve upstairs storage; access, headroom, support, drainage and route remain unknown."
+    },
+    {
+      "id": "cylinder-other",
+      "title": "Alternative internal cylinder space",
+      "status": "unlocated-alternative",
+      "dependsOn": [
+        "cylinder-location",
+        "homeowner-preferences"
+      ],
+      "tradeoff": "Survey other cupboards; compare delivery access, storage loss and connection distances."
+    }
+  ],
+  "serviceNodes": [
+    {
+      "id": "electricity",
+      "kind": "meter-and-consumer-unit",
+      "location": null,
+      "status": "unknown"
+    },
+    {
+      "id": "dhw",
+      "kind": "hot-water-system",
+      "location": null,
+      "status": "unknown"
+    },
+    {
+      "id": "hp-site",
+      "kind": "outdoor-unit",
+      "location": null,
+      "status": "unknown"
+    },
+    {
+      "id": "heating",
+      "kind": "heating-circuit",
+      "location": null,
+      "status": "unknown"
+    },
+    {
+      "id": "drain",
+      "kind": "condensate-discharge",
+      "location": null,
+      "status": "unknown"
+    }
+  ],
+  "readiness": {
+    "roomHeatLoss": "blocked",
+    "emitterSizing": "blocked",
+    "equipmentSelection": "blocked",
+    "installationDesign": "blocked",
+    "reason": "Room surface geometry, construction/U-values, ventilation, design temperatures, full emitter inventory and service routes have not been verified. No heat-loss or equipment-sizing calculation is implemented here."
+  },
+  "notes": [
+    "Room polygons are image-space interpretations for review, not metric 3D partitions. Uncoloured areas include walls, stairs and circulation.",
+    "Kitchen and rear living area are one connected zone hypothesis; confirm opening/door arrangement.",
+    "Bedroom photo-to-room assignments are deliberately unresolved.",
+    "OS descriptions are attributed evidence, not measured construction or legal boundaries.",
+    "Current source dates differ; extensions and interiors may have changed.",
+    "Survey records are append-only evidence. A designer must review changes before they affect geometry or sizing."
+  ]
+}

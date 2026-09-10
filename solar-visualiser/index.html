@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Solar Site 3D — PO19 5DZ</title>
+<title>Solar Site 3D</title>
 <link rel="stylesheet" href="css/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +17,8 @@
 </div>
 
 <div class="header">
-  <h1><span>Solar Site</span> · 5fde813908 · PO19 5DZ</h1>
-  <div class="sub">Lat 50.8515 · Lon -0.7852 · 50°51'05"N 0°47'07"W</div>
+  <h1><span>Solar Site</span> · <span id="site-heading">Loading property…</span></h1>
+  <div class="sub" id="site-coordinates"></div>
 </div>
 
 <div class="mode-toggle" id="mode-toggle">
@@ -28,17 +28,20 @@
 </div>
 
 <div class="sidebar">
+<label class="property-label" for="property-select">Property</label>
+<select id="property-select" aria-label="Property address"></select>
+<p id="property-note" class="property-note" hidden></p>
 <div class="mode-panel" id="panel-solar">
   <h2>Site Summary</h2>
   <div class="stat-row">
     <span class="stat-label">Outcome</span>
-    <span class="stat-value" style="color: var(--good)">Suitable</span>
+    <span class="stat-value" style="color: var(--good)" id="site-outcome">—</span>
   </div>
-  <div class="stat-row"><span class="stat-label">Confidence</span><span class="stat-value">91%</span></div>
-  <div class="stat-row"><span class="stat-label">Storeys</span><span class="stat-value">2</span></div>
-  <div class="stat-row"><span class="stat-label">Ridge Height</span><span class="stat-value">7.3 m</span></div>
-  <div class="stat-row"><span class="stat-label">Total Panels</span><span class="stat-value big">13</span></div>
-  <div class="stat-row"><span class="stat-label">Annual Output</span><span class="stat-value big">4,445 kWh</span></div>
+  <div class="stat-row"><span class="stat-label">Confidence</span><span class="stat-value" id="site-confidence">—</span></div>
+  <div class="stat-row"><span class="stat-label">Storeys</span><span class="stat-value" id="site-storeys">—</span></div>
+  <div class="stat-row"><span class="stat-label">Ridge Height</span><span class="stat-value" id="site-ridge">—</span></div>
+  <div class="stat-row"><span class="stat-label">Total Panels</span><span class="stat-value big" id="site-panels">—</span></div>
+  <div class="stat-row"><span class="stat-label">Annual Output</span><span class="stat-value big" id="site-output">—</span></div>
 
   <h2>View Layers</h2>
   <label class="toggle-row">
@@ -113,6 +116,26 @@
 </div>
 
 <div class="mode-panel" id="panel-ashp" style="display:none">
+  <nav class="workspace-tabs" aria-label="Building workspace">
+    <button id="workspace-house" data-workspace="house" aria-pressed="true">House</button>
+    <button id="workspace-rooms" data-workspace="rooms" aria-pressed="false">Rooms</button>
+    <button id="workspace-survey" data-workspace="survey" aria-pressed="false">Survey</button>
+  </nav>
+  <section data-workspace-panel="house">
+    <h2 class="workspace-title">Your house</h2>
+    <div id="bm-project"></div>
+    <div class="workspace-view-controls">  <label class="toggle-row">
+    <input type="checkbox" id="bm-terrain" checked>
+    <span class="toggle-label" title="Hide or show the DSM mesh, including neighbouring buildings and ground">Show DSM</span>
+  </label>  <label class="toggle-row">
+    <input type="checkbox" id="bm-ghost">
+    <span class="toggle-label">Ghost shell (see inside)</span>
+  </label>  <label class="toggle-row"><input type="checkbox" id="bm-reveal-lower"><span class="toggle-label">Reveal lower ground (display cutaway)</span></label></div>
+    <button class="btn workspace-primary" id="bm-go-rooms">Explore rooms →</button>
+    <details class="workspace-details"><summary>Edit exterior</summary>  <h2>Roof geometry</h2>
+  <button class="btn" id="bm-roof-edit">Edit roof geometry…</button>
+  <a class="btn" id="bm-reconstruction" href="reconstruction.html" hidden>Review reconstruction experiment…</a>
+  <p class="property-note" id="bm-roof-summary">Correct roof faces and add missing sections before matching photos.</p>
   <h2>Building Model</h2>
   <div class="stat-row">
     <span class="stat-label">Solid</span>
@@ -122,10 +145,8 @@
     <input type="checkbox" id="bm-show" checked>
     <span class="toggle-label">Show building</span>
   </label>
-  <label class="toggle-row">
-    <input type="checkbox" id="bm-ghost">
-    <span class="toggle-label">Ghost shell (see inside)</span>
-  </label>
+
+
   <label class="toggle-row">
     <input type="checkbox" id="bm-edges" checked>
     <span class="toggle-label">Edges</span>
@@ -140,7 +161,7 @@
   </label>
   <label class="toggle-row">
     <input type="checkbox" id="bm-flatten" checked>
-    <span class="toggle-label">Flatten terrain under building</span>
+    <span class="toggle-label">Replace DSM house surface</span>
   </label>
   <div class="slider-row">
     <div class="lbl"><span>Snap tolerance</span><span id="v-bm-tol">0.70 m</span></div>
@@ -150,7 +171,64 @@
   <button class="btn bm-btn-gap bm-btn-danger" id="bm-footprint-delete" style="display:none">Delete corner</button>
   <button class="btn bm-btn-gap" id="bm-footprint-reset" style="display:none">Reset footprint edits</button>
 
-  <h2>Floors</h2>
+
+  <div class="bm-fp-score">Cutaways change the display only. Switch off to compare the original surface.</div>
+</details>
+    <details class="workspace-details"><summary>Photos &amp; matching</summary>  <h2>Property Photos</h2>
+  <div id="bm-gallery"></div>
+
+  <h2>Photo Positions</h2>
+  <div id="bm-photo-list"></div>
+  <label class="toggle-row">
+    <input type="checkbox" id="bm-facade-tex">
+    <span class="toggle-label">Project photos onto walls</span>
+  </label>
+  <button class="btn" id="bm-facade-draw">Draw windows on a wall…</button>
+
+</details>
+    <details class="workspace-details"><summary>Import &amp; export</summary>  <h2>Model Data</h2>
+  <button class="btn" id="bm-export">Export JSON</button>
+  <button class="btn bm-btn-gap" id="bm-import">Import JSON</button>
+  <input type="file" id="bm-import-file" accept=".json" style="display:none">
+</details>
+  </section>
+  <section data-workspace-panel="rooms" hidden>
+    <h2 class="workspace-title">Rooms</h2>
+    <p class="workspace-note" id="bm-auto-summary"></p>
+    <div id="bm-floor-list"></div>
+    <div id="bm-room-list"></div>
+    <button class="btn workspace-primary" id="bm-geometry-prep">Review room boundaries…</button>
+    <details class="workspace-details" id="bm-manual-rooms"><summary>Adjust room layout</summary>  <button class="btn" id="bm-wall-btn" disabled>+ Draw dividing wall</button>
+  <button class="btn bm-btn-gap" id="bm-undo-wall" disabled>Undo last wall</button>
+  <button class="btn bm-btn-gap" id="bm-fp-import" disabled>Import rooms from floorplan</button>
+  <div id="bm-fp-preview" style="display:none">
+    <div class="bm-fp-row">
+      <button id="bm-fp-rot" title="Rotate 90°">⟲ 90°</button>
+      <button id="bm-fp-mirror" title="Mirror">⇋ mirror</button>
+      <button id="bm-fp-left" title="Shift west">←</button>
+      <button id="bm-fp-up" title="Shift north">↑</button>
+      <button id="bm-fp-down" title="Shift south">↓</button>
+      <button id="bm-fp-right" title="Shift east">→</button>
+    </div>
+    <div class="bm-fp-row"><button id="bm-fp-smaller">Scale −1%</button><button id="bm-fp-larger">Scale +1%</button></div>
+    <div class="bm-fp-score" id="bm-fp-score">—</div>
+    <button class="btn" id="bm-fp-apply">Apply</button>
+    <button class="btn bm-btn-gap bm-btn-danger" id="bm-fp-cancel">Cancel import</button>
+  </div>
+  <label class="toggle-row" id="bm-fp-underlay-row" style="display:none">
+    <input type="checkbox" id="bm-fp-underlay" checked>
+    <span class="toggle-label">Floorplan underlay</span>
+  </label>
+  <div id="bm-wall-edit" style="display:none">
+    <div class="bm-fp-score">Wall selected — drag it sideways in the view to move it</div>
+    <button class="btn bm-btn-danger" id="bm-wall-delete">Delete wall</button>
+  </div>
+</details>
+    <details class="workspace-details"><summary>Floor heights &amp; basement</summary>  <div id="bm-lower-controls" hidden>
+    <div class="bm-fp-score">Plan shows a lower-ground level under the main house. Its depth, extent and ground contact are unmeasured.</div>
+    <div class="stat-row rate-row"><label class="stat-label" for="bm-lower-depth">Assumed lower-ground depth (m)</label><input id="bm-lower-depth" type="number" min="1.8" max="4" step="0.1" value="2.6"></div>
+    <button class="btn bm-btn-gap" id="bm-add-lower">Add provisional lower ground</button>
+  </div>
   <div class="stat-row rate-row">
     <span class="stat-label">Storeys</span>
     <input type="number" id="bm-storeys" value="2" min="1" max="5" step="1">
@@ -171,36 +249,8 @@
     <div class="lbl"><span>Exploded view</span><span id="v-bm-explode">0.0 m</span></div>
     <input type="range" id="bm-explode" min="0" max="60" step="2" value="0">
   </div>
-  <div id="bm-floor-list"></div>
-
-  <h2>Rooms</h2>
-  <button class="btn" id="bm-wall-btn" disabled>+ Draw dividing wall</button>
-  <button class="btn bm-btn-gap" id="bm-undo-wall" disabled>Undo last wall</button>
-  <button class="btn bm-btn-gap" id="bm-fp-import" disabled>Import rooms from floorplan</button>
-  <div id="bm-fp-preview" style="display:none">
-    <div class="bm-fp-row">
-      <button id="bm-fp-rot" title="Rotate 90°">⟲ 90°</button>
-      <button id="bm-fp-mirror" title="Mirror">⇋ mirror</button>
-      <button id="bm-fp-left" title="Shift west">←</button>
-      <button id="bm-fp-up" title="Shift north">↑</button>
-      <button id="bm-fp-down" title="Shift south">↓</button>
-      <button id="bm-fp-right" title="Shift east">→</button>
-    </div>
-    <div class="bm-fp-score" id="bm-fp-score">—</div>
-    <button class="btn" id="bm-fp-apply">Apply</button>
-    <button class="btn bm-btn-gap bm-btn-danger" id="bm-fp-cancel">Cancel import</button>
-  </div>
-  <label class="toggle-row" id="bm-fp-underlay-row" style="display:none">
-    <input type="checkbox" id="bm-fp-underlay" checked>
-    <span class="toggle-label">Floorplan underlay</span>
-  </label>
-  <div id="bm-wall-edit" style="display:none">
-    <div class="bm-fp-score">Wall selected — drag it sideways in the view to move it</div>
-    <button class="btn bm-btn-danger" id="bm-wall-delete">Delete wall</button>
-  </div>
-  <div id="bm-room-list"></div>
-
-  <h2>Windows &amp; Radiators</h2>
+</details>
+    <details class="workspace-details"><summary>Windows &amp; radiators</summary>  <h2>Windows &amp; Radiators</h2>
   <button class="btn" id="bm-window-btn">+ Window (click a wall)</button>
   <button class="btn bm-btn-gap" id="bm-rad-wall-btn">+ Radiator (click a wall)</button>
   <button class="btn bm-btn-gap" id="bm-rad-under-btn" disabled>+ Radiator under window</button>
@@ -225,21 +275,16 @@
   </div>
   <div id="bm-opening-list"></div>
 
-  <h2>Photo Positions</h2>
-  <div id="bm-photo-list"></div>
-  <label class="toggle-row">
-    <input type="checkbox" id="bm-facade-tex">
-    <span class="toggle-label">Project photos onto walls</span>
-  </label>
-  <button class="btn" id="bm-facade-draw">Draw windows on a wall…</button>
-
-  <h2>Property Photos</h2>
-  <div id="bm-gallery"></div>
-
-  <h2>Model Data</h2>
-  <button class="btn" id="bm-export">Export JSON</button>
-  <button class="btn bm-btn-gap" id="bm-import">Import JSON</button>
-  <input type="file" id="bm-import-file" accept=".json" style="display:none">
+</details>
+    <details class="workspace-details"><summary>Mapping details</summary><div id="bm-mapping-details"></div></details>
+  </section>
+  <section data-workspace-panel="survey" hidden>
+    <h2 class="workspace-title">Refine on site</h2>
+    <p class="workspace-note">Keep the remote model as a baseline. Focus site checks on the uncertainties that matter most.</p>
+    <button class="btn workspace-primary" id="bm-survey-review">Review priority checks →</button>
+    <p class="workspace-note">Validate room dimensions, shared walls and basement exposure. Each measurement retains its source and review decision.</p>
+    <details class="workspace-details"><summary>Installation evidence</summary><p class="workspace-note">Photos, emitters, services and homeowner preferences.</p><a class="btn" id="bm-survey-evidence" href="survey.html">Open evidence record</a></details>
+  </section>
 </div>
 
 <div class="mode-panel" id="panel-evc" style="display:none">
@@ -292,17 +337,8 @@
 <script src="vendor/three.min.js"></script>
 <script src="vendor/OrbitControls.js"></script>
 
-<!-- Site data: SITE_DATA, DSM heightmap, aerial image. Swap this for an
-     API call once a backend is available. -->
-<script src="data/site-data.js"></script>
-
-<!-- Property image manifest: IMAGE_DATA, produced by an offline AI pass
-     over data/images/ (suggestions only — same backend swap point). -->
-<script src="data/image-data.js"></script>
-
-<!-- Embedded data-URL copies of the images (keeps WebGL textures and
-     canvas pixel reads working from file:// — see gallery.js imageUrl). -->
-<script src="data/image-blobs.js"></script>
+<!-- Selected property bundle; main.js awaits loading before creating the scene. -->
+<script src="js/properties.js"></script>
 
 <!-- App modules, in dependency order -->
 <script src="js/geometry-utils.js"></script>
@@ -316,13 +352,27 @@
 <script src="js/scaffolding.js"></script>
 <script src="js/building/geometry.js"></script>
 <script src="js/building/solid.js"></script>
+<script src="js/building/roof-edit.js"></script>
+<script src="js/building/roof-dsm.js"></script>
+<script src="js/building/plan-geometry.js"></script>
 <script src="js/building/floors.js"></script>
 <script src="js/building/rooms.js"></script>
 <script src="js/building/floorplan.js"></script>
 <script src="js/building/photomatch.js"></script>
 <script src="js/building/openings.js"></script>
 <script src="js/building/gallery.js"></script>
+<script src="js/building/reconstruction.js"></script>
+<script src="js/building/terrain-cutout.js"></script>
+<script src="js/building/building-project.js"></script>
+<script src="js/building/plan-intake.js"></script>
+<script src="js/building/heat-loss.js"></script>
+<script src="js/building/automatic-rooms.js"></script>
 <script src="js/building/building-ui.js"></script>
+<script src="js/building/project-ui.js"></script>
+<script src="js/building/workspace-ui.js"></script>
+<script src="js/building/geometry-prep.js"></script>
+<script src="js/building/geometry-prep-ui.js"></script>
+<script src="js/building/roof-edit-ui.js"></script>
 <script src="js/building/photomatch-ui.js"></script>
 <script src="js/building/facade.js"></script>
 <script src="js/interactions.js"></script>
