@@ -963,7 +963,9 @@ must affect both sides with equal and opposite transfer, preserving whole-home
 conservation. Null/excluded outputs remain distinct from zero.
 
 Separate current construction corrections from future improvements. Corrections
-require an explicit source, append observations and update demand. Improvement
+retain attribution, append observations and update demand. A homeowner’s selected
+answer is itself a homeowner report; a typed explanation is optional. Professional
+assessments still require their supporting source. Improvement
 targets belong to household scenarios; they show demand and emitter-capacity gaps
 without silently changing the existing-home schedule or price. Newer opening-group
 answers supersede older per-opening U values, with both retained in replay. Geometry,
@@ -992,3 +994,17 @@ compact and the active form visible. Active journey topics use no accordions.
 Run the room-assessment, planning, installation/store/proposal and HTTP/file browser
 suites documented in ROOM-LED-PLANNING.md. Regenerate the proposal after JS changes,
 preserve earlier proposal archives, and verify source hashes before committing.
+
+
+### Homeowner answers must not require a justification — 2026-09-11
+
+Do not block an ordinary homeowner answer with a required evidence/source text
+field. For room boundaries and current glazing/U-value corrections, optional notes
+supplement the selected answer. Record role, time, target and the actual response
+automatically; explicitly retain “supporting source not supplied” for an unsourced
+U entry. Never describe this as measured or site verified. “Not sure” must save
+without an explanation and reopen review. Use everyday boundary labels for the
+homeowner; assumed adjoining temperatures and geometry-split instructions belong
+to the professional assessment. Keep drafts role-scoped so professional evidence
+requirements cannot be replaced by a cached homeowner form. Verify blank-note
+submission, uncertainty reopening, role switching and phone/HTTP/offline behaviour.

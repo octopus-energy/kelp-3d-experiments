@@ -169,3 +169,17 @@ priced or applied to the agreed design. Unsupported radiator products/sizes reta
 unknown output. Geometry/area changes still require reviewed reconstruction. Site
 clearances, hydraulics, noise and product selection remain separate checks. Local
 storage and the role switch do not provide remote collaboration or authentication.
+
+
+Homeowner boundary and current U-value answers accept an optional explanation.
+The record automatically retains the homeowner role and response; an unsourced
+U-value stays explicitly unsourced. Professional forms retain a required evidence
+source. Boundary choices use everyday descriptions, and “Not sure” reopens review
+without asking the homeowner to justify uncertainty.
+
+Follow-up verification: proposal `a0794c9f2252b710`; blank homeowner notes save
+for boundaries and U corrections, “Not sure” reopens review, saved choices remain
+selected, and professional requirements remain separate. Room assessment,
+installation, proposal and Python proposal checks pass. Browser coverage includes
+HTTP/file, phone screenshots and replay; deliberately invalid professional test
+drafts are reset before reload so the unsaved-work safeguard can remain enabled.
