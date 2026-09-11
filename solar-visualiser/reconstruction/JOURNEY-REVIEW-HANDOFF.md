@@ -280,3 +280,9 @@ paragraph. Read the shared spatial journey section of WORKFLOW.md and run
 proposed equipment, radiators and walking paths must preserve their floor/room
 identity in 2D, 3D, review, export and replay. Approximate plan positions and assumed
 3D display heights must never be presented as measured or approved installation fit.
+
+The homeowner room heat-loss screen is now photo-led and compact: percentage shares,
+plain-language answers, immediate saved effects, and secondary fixed isometric 3D
+with a 2D toggle. Technical quantities remain available to colleagues. Run the
+minimal-room browser check as well as the spatial checks; the illustrative wall
+thickness must never affect evidence geometry or thermal quantities.

@@ -197,3 +197,13 @@ Radiators can be positioned from their room inventory. Every room topic retains 
 Survey and joint review reuse these positions, including earlier replay snapshots.
 Plan positions are approximate; mounting heights, wall fit, service routes, access,
 clearances and siting remain review items. Saved positions do not certify equipment.
+
+## Minimal homeowner room view
+
+The photograph leads; the compact supporting model starts in fixed isometric 3D,
+with a 2D toggle. Homeowners see percentage heat-loss shares and plain-language
+boundary/glazing choices that save and recalculate immediately. Technical quantities
+and source-required edits remain in adviser/surveyor views. The displayed wall
+thickness is illustrative, not a measurement or calculation input. Room notes that
+need a construction assessment do not automatically lower demand. Saved-project
+recovery is in the footer, with a dismissible notice and no deletion of older work.

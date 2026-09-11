@@ -1049,3 +1049,27 @@ and invalidation of a prior siting review. Broad proposal, installation, plannin
 room, survey, reconstruction and geometry-preparation checks passed; Python evidence
 and exterior checks run from the reconstruction directory (9 tests). The initial
 Python invocation from the repository root failed imports; use that working directory.
+
+### Photo-led room review
+
+Lead with the matched room photograph. The secondary model uses a 3D/2D toggle,
+starting in a fixed orthographic isometric view. Its 160 mm wall thickness is a
+presentation aid only: it does not change thermal surfaces, dimensions, evidence or
+reconstruction snapshots. The existing source edges and opening identities remain
+selectable, and radiator placement switches explicitly to the plan.
+
+Homeowner heat-loss review shows compact percentage shares instead of technical
+area/U-value/temperature-difference fields. Shares use positive category totals;
+negative category transfers are labelled as heat arriving from another room. Simple
+boundary and glazing answers append the same scoped observations and recalculate
+immediately. The result reports increases as well as reductions, with “less than 1%”
+for small changes. A shared wall identifies other affected rooms. Unknown restores
+the working assumption; an opening answer replaces prior per-pane corrections under
+the existing evidence rules. Adviser/surveyor views retain sourced technical editing.
+Construction notes queue review rather than making up an insulation specification.
+
+The saved-project notice is available from the footer and dismissible. Prior projects
+are retained; routine save receipts no longer shift the page. Storage failures remain
+visible. Verify `browser-minimal-room.cjs` for photo order, toggle, fixed camera,
+illustrative thickness, immediate answer effects, role separation and HTTP/offline
+phone rendering, alongside room-assessment and spatial browser coverage.
