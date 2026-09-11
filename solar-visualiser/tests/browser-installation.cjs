@@ -57,8 +57,8 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`document.querySelectorAll('.room-use-choices [aria-pressed=true]').length`),0,'Untouched comfort and use are not preselected');
   await evalJS(`document.querySelector('[data-comfort="warm"]').click();document.querySelector('[data-room-use="0:r0"][data-use="usual"]').click()`);
   assert.equal(await evalJS(`SolarViz.installation.roomAnswers(__BROOM_INSTALLATION__.project,'0:r0').comfort&&SolarViz.installation.roomAnswers(__BROOM_INSTALLATION__.project,'0:r0').use`),true,'Explicit neutral answers are saved distinctly');
-  assert.equal(await evalJS(`document.querySelectorAll('.room-workspace .room-plan polygon').length>1&&document.querySelectorAll('.room-conversation [data-cold]').length===1`),true,'One room question alongside floor context');
-  const displayedPhoto=await evalJS(`document.querySelector('.room-photo-context>.journey-photo img').src`);
+  assert.equal(await evalJS(`document.querySelectorAll('#room-detail-plan polygon').length>=1&&document.querySelector('[data-room-view="3d"]').getAttribute('aria-pressed')==='true'&&document.querySelectorAll('.room-conversation [data-cold]').length===1`),true,'One room question alongside the photo and selected 3D view');
+  const displayedPhoto=await evalJS(`document.querySelector('.room-hero-photo .journey-photo img').src`);
   await evalJS(`document.getElementById('room-correct-photo').click()`);
   assert.equal(await evalJS(`document.querySelector('#matching-evidence img').src`),displayedPhoto,'Correct match opens the photo being discussed');
   await evalJS(`document.getElementById('close-matching').click()`);
@@ -68,7 +68,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...nextRect});await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...nextRect});
   assert.equal(await evalJS(`document.getElementById('active-room-heading').textContent`),'Hall / stairs','Typing a note then clicking Next saves and moves to another room in one click');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['0:r0'].note`),'Cold near the window');
-  await evalJS(`document.querySelector('[data-room="0:r0"]').click();document.querySelector('[data-room-stage="0"]').click();const note=document.querySelector('[data-room-note]');note.value='';note.dispatchEvent(new Event('change'));`);
+  await evalJS(`document.getElementById('room-jump').value='0:r0';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="0"]').click();const note=document.querySelector('[data-room-note]');note.value='';note.dispatchEvent(new Event('change'));`);
   const eventsBeforeWalk=await evalJS('__BROOM_INSTALLATION__.project.events.length');
   await evalJS(`document.querySelector('[data-room-stage="1"]').click()`);
   assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'My radiators');
@@ -85,7 +85,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`!__BROOM_INSTALLATION__.view.services.getObjectByName('hydraulic-route')&&document.getElementById('route-caption').textContent.includes('Choose a cylinder position')&&__BROOM_INSTALLATION__.brief.selected.net===null`),true,'Unresolved endpoint gives no invented route or price');
   await evalJS(`document.querySelector('[data-return-suggested]').click()`);
   assert.equal(await evalJS(`!!__BROOM_INSTALLATION__.view.services.getObjectByName('hydraulic-route')`),true);
-  await evalJS(`__BROOM_INSTALLATION__.go(0);document.querySelector('[data-priority="running"]').click();__BROOM_INSTALLATION__.go(3);document.getElementById('no-kitchen').click();__BROOM_INSTALLATION__.go(2);document.querySelector('[data-room="0:r11"]').click();document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-keep="yes"]').click()`);
+  await evalJS(`__BROOM_INSTALLATION__.go(0);document.querySelector('[data-priority="running"]').click();__BROOM_INSTALLATION__.go(3);document.getElementById('no-kitchen').click();__BROOM_INSTALLATION__.go(2);document.getElementById('room-jump').value='0:r11';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-keep="yes"]').click()`);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.suggested.flow'),45);
   await evalJS('__BROOM_INSTALLATION__.go(3)');assert.equal(await evalJS(`document.getElementById('no-kitchen').checked`),true);
   await evalJS(`document.querySelector('header [data-role="surveyor"]').click();__BROOM_INSTALLATION__.go(4);document.querySelector('[data-task="emitter-0:r11"]').click()`);
