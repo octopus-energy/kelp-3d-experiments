@@ -1,10 +1,11 @@
 // Pure discussion decisions: no DOM, network, installation approval or source edits.
-(function(root,factory){if(typeof module!=='undefined'&&module.exports)module.exports=factory(require('./room-assessment'));else(root.SolarViz=root.SolarViz||{}).proposal=factory(root.SolarViz.roomAssessment);})(typeof window!=='undefined'?window:globalThis,function(A){
+(function(root,factory){if(typeof module!=='undefined'&&module.exports)module.exports=factory(require('./room-assessment'),require('./spatial'));else(root.SolarViz=root.SolarViz||{}).proposal=factory(root.SolarViz.roomAssessment,root.SolarViz.spatial);})(typeof window!=='undefined'?window:globalThis,function(A,X){
 'use strict';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const rates={equipment:4000,cylinder:1100,electrical:450,commissioning:350,routePerM:35,radiatorChange:300,radiatorLabour:125,radiatorPerW:.125,contingency:15};
 function defaults(data){return {schemaVersion:1,propertyId:data.propertyId,revision:data.revision,flow:50,fabric:'central',basement:'warm',outdoor:'courtyard',cylinder:'utility',usePhotoEstimates:true,photoRooms:{},envelope:{},emitters:{},rates:{...rates},grantIncluded:true,operating:clone(data.operatingAssumptions.defaults),reserve:4,preferences:{occupants:'',hotWaterHabits:[],hotWaterNotes:'',baths:'',comfort:'',priorities:'',notes:''},events:[]};}
 function validate(state,data){
+ X.validateState(state.spatial,data);
  A.validateChoices(state,data);
  if(state?.propertyId!==data.propertyId||state?.revision!==data.revision||state.schemaVersion!==1)throw Error('This discussion belongs to another property or evidence revision.');
  if(![45,50,55].includes(state.flow)||!['lower','central','higher'].includes(state.fabric)||!['warm','cool'].includes(state.basement)||!['courtyard','garden'].includes(state.outdoor)||!['utility','kitchen','unresolved'].includes(state.cylinder))throw Error('Invalid discussion choice');
@@ -33,6 +34,7 @@ function validate(state,data){
 function change(state,data,patch,at=new Date().toISOString()){
  const next={...clone(state),...clone(patch)};
  if(patch.envelope&&state.surfaceOverrides&&!patch.surfaceOverrides){const changed=data.thermalEvidence.groups.filter(g=>JSON.stringify(state.envelope[g.id])!==JSON.stringify(patch.envelope[g.id])).map(g=>g.id);next.surfaceOverrides=A.withoutOpeningOverrides(data,state.surfaceOverrides,changed);patch={...patch,surfaceOverrides:next.surfaceOverrides};}
+ if(next.spatial&&(patch.outdoor!==undefined||patch.cylinder!==undefined)&&patch.spatial===undefined){next.spatial={...next.spatial};if(patch.outdoor!==undefined)delete next.spatial.heatPump;if(patch.cylinder!==undefined)delete next.spatial.cylinder;patch={...patch,spatial:next.spatial};}
  validate(next,data);
  next.events.push({at,role:'pre-survey-call',changes:clone(patch),evidenceRevision:data.revision});return next;
 }
@@ -45,11 +47,12 @@ function restore(state,incoming,data,at=new Date().toISOString()){
 function route(data,state){
  const p=data.geometry.model.parameters,room=data.geometry.geometry.rooms.find(r=>r.sourceRoomId===(state.cylinder==='utility'?'lg-utility':'g-kitchen'));
  const centroid=room.localPoly.reduce((v,q)=>v.map((x,i)=>x+q[i]/room.localPoly.length),[0,0]);
- const hp=[p.width-.6,.55,state.outdoor==='garden'?p.extension_end+3: p.wing_end+1.5];
- if(state.cylinder==='unresolved')return {hp,cylinder:null,points:[],length:null,rise:null};
- const cylinder=[centroid[0],state.cylinder==='utility'?-1.6:.7,centroid[1]],side=p.wing_width+.25,entry=p.length+.1;
- const points=[hp,[side,.8,hp[2]],[side,.8,entry],[side,2.1,entry],[side,2.1,entry-.3],[side,cylinder[1],entry-.3],[cylinder[0],cylinder[1],entry-.3],cylinder];
- return {hp,cylinder,points,length:points.slice(1).reduce((n,q,i)=>n+Math.hypot(...q.map((v,k)=>v-points[i][k])),0),rise:2.1-.8};
+ const hp=state.spatial?.heatPump?X.point(data,state.spatial.heatPump,.55):[p.width-.6,.55,state.outdoor==='garden'?p.extension_end+3: p.wing_end+1.5];
+ if(state.cylinder==='unresolved'&&!state.spatial?.cylinder)return {hp,cylinder:null,points:[],length:null,rise:null};
+ const cylinder=state.spatial?.cylinder?X.point(data,state.spatial.cylinder,.75):[centroid[0],state.cylinder==='utility'?-1.6:.7,centroid[1]],side=p.wing_width+.25,entry=p.length+.1;
+ let points=[hp,[side,.8,hp[2]],[side,.8,entry],[side,2.1,entry],[side,2.1,entry-.3],[side,cylinder[1],entry-.3],[cylinder[0],cylinder[1],entry-.3],cylinder];
+ if(state.spatial?.heatPump||state.spatial?.cylinder)points=[hp,[cylinder[0],hp[1],hp[2]],[cylinder[0],hp[1],cylinder[2]],cylinder];
+ return {hp,cylinder,points,positionBasis:state.spatial?.heatPump||state.spatial?.cylinder?'plan-sketch':'suggested-route',cylinderRoomId:state.spatial?.cylinder?.roomId||room.id,length:points.slice(1).reduce((n,q,i)=>n+Math.hypot(...q.map((v,k)=>v-points[i][k])),0),rise:state.spatial?.heatPump||state.spatial?.cylinder?Math.abs(cylinder[1]-hp[1]):2.1-.8};
 }
 // Catalogue analogues are hypotheses; each variant retains its own temperature exponent.
 function photoEmitters(data,flow,temperature,roomId,photoRooms={}){

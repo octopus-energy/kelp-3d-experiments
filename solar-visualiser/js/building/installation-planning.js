@@ -1,5 +1,5 @@
 // Room comparisons and household planning records; no DOM or derived geometry is persisted.
-(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'),require('./room-assessment'));else(root.SolarViz=root.SolarViz||{}).installationPlanning=factory(root.SolarViz.proposal,root.SolarViz.roomAssessment);})(typeof window==='undefined'?globalThis:window,function(P,A){
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'),require('./room-assessment'),require('./spatial'));else(root.SolarViz=root.SolarViz||{}).installationPlanning=factory(root.SolarViz.proposal,root.SolarViz.roomAssessment,root.SolarViz.spatial);})(typeof window==='undefined'?globalThis:window,function(P,A,X){
 'use strict';
 const copy=x=>JSON.parse(JSON.stringify(x));
 const serviceLabels={boiler:'Existing boiler',cylinder:'Existing hot-water cylinder',meter:'Electricity meter',consumer:'Consumer unit'};
@@ -16,18 +16,20 @@ const checkDefinitions=[
 function validate(h,data){
  const p=h.planning;if(p===undefined)return;
  const record=v=>v&&typeof v==='object'&&!Array.isArray(v),text=v=>typeof v==='string'&&v.length<=5000;
- if(!record(p)||p.rooms!==undefined&&!record(p.rooms)||Object.keys(p).some(k=>!['rooms','gas','finance'].includes(k)))throw Error('Invalid household planning record');
+ if(!record(p)||p.rooms!==undefined&&!record(p.rooms)||Object.keys(p).some(k=>!['rooms','gas','finance','paths'].includes(k)))throw Error('Invalid household planning record');
  for(const [id,r] of Object.entries(p.rooms||{})){
   if(!data.geometry.geometry.rooms.some(r=>r.id===id)||!record(r)||!Array.isArray(r.improvements)||r.improvements.some(v=>!Object.hasOwn(improvementLabels,v))||new Set(r.improvements).size!==r.improvements.length||r.improvements.includes('none')&&r.improvements.length>1)throw Error('Invalid room improvement preference');
   A.validateSurfaceOverrides(r.surfaceIdeas,data);for(const key of Object.keys(r.surfaceIdeas||{})){const s=A.surfaceInfo(data,key,id).surface;if(s.roomA!==id&&s.roomB!==id)throw Error('Improvement belongs to another room');}
   for(const [group,value] of Object.entries(r.glazing||{}))if(!data.thermalEvidence.groups.some(g=>g.id===group&&g.kind==='opening'&&g.roomIds.includes(id)&&Number.isFinite(g.options[value]?.u)))throw Error('Invalid glazing comparison');
  }
+ if(p.paths!==undefined){if(!Array.isArray(p.paths)||p.paths.length>30)throw Error('Invalid paths');for(const path of p.paths){if(!path.id||typeof path.label!=='string'||!Array.isArray(path.points)||path.points.length<2||path.points.length>30)throw Error('Mark at least two points for a path');for(const point of path.points)X.validatePosition(point,data);if(new Set(path.points.map(p=>p.levelIdx)).size!==1)throw Error('Keep a path on one floor');}}
  if(p.gas!==undefined){const g=p.gas;if(!record(g)||!['unknown','keep','explore'].includes(g.intent)||!text(g.appliances)||!text(g.source)||g.standingPence!==null&&(!Number.isFinite(g.standingPence)||g.standingPence<0||g.standingPence>1000))throw Error('Enter a valid gas bill standing charge or leave it unknown');}
  if(p.finance!==undefined){const f=p.finance;if(!record(f)||!text(f.source)||!['cash','loan'].includes(f.method)||!['deposit','apr','months','extra'].every(k=>f[k]===null||Number.isFinite(f[k])&&f[k]>=0)||f.deposit>1000000||f.extra>1000000||f.apr>100||f.months!==null&&(!Number.isInteger(f.months)||f.months<1||f.months>360))throw Error('Enter valid payment assumptions; leave unknown amounts blank');}
 }
 function validateObservation(o,data){
  if(o.kind==='room-context'&&(!data.geometry.geometry.rooms.some(r=>r.id===o.target)||!['unknown','original','extension','mixed'].includes(o.extension)))throw Error('Choose a room and its reported construction context');
- if(o.kind==='service'&&(!Object.hasOwn(serviceLabels,o.target)||!['unknown','present','absent'].includes(o.presence)||typeof o.location!=='string'||o.location.length>5000||o.presence==='present'&&!o.location.trim()))throw Error('Describe where the existing equipment is, or leave its presence unknown');
+ if(o.kind==='service'&&o.position)X.validatePosition(o.position,data);
+ if(o.kind==='service'&&(!Object.hasOwn(serviceLabels,o.target)||!['unknown','present','absent'].includes(o.presence)||typeof o.location!=='string'||o.location.length>5000||o.presence==='present'&&!o.location.trim()&&!o.position))throw Error('Describe where the existing equipment is, or leave its presence unknown');
  if(o.kind==='planning-check'&&(!checkDefinitions.some(c=>c.id===o.target)||!['needs-review','document-received','reviewed'].includes(o.status)||typeof o.reference!=='string'||!o.reference.trim()||o.reference.length>5000||typeof o.scope!=='string'||!o.scope.trim()||o.scope.length>5000||o.status==='reviewed'&&o.role==='homeowner'||typeof o.signature!=='string'))throw Error('Record the document reference, its scope and an adviser or surveyor for a completed review');
 }
 function roomGroups(data,id){return data.thermalEvidence.groups.filter(g=>g.roomIds.includes(id));}

@@ -183,3 +183,15 @@ selected, and professional requirements remain separate. Room assessment,
 installation, proposal and Python proposal checks pass. Browser coverage includes
 HTTP/file, phone screenshots and replay; deliberately invalid professional test
 drafts are reset before reload so the unsaved-work safeguard can remain enabled.
+
+## A shared plan through the conversation
+
+The equipment step starts with a selectable floor plan beside the 3D house. Choose
+existing boiler, cylinder, meter or consumer unit, then mark it; photos/details are
+optional. Proposed equipment uses the same coordinates and updates the indicative
+heating connection sketch. Paths to keep clear are separate homeowner preferences.
+Radiators can be positioned from their room inventory. Every room topic retains its
+2D plan and 3D cutaway; selecting a wall/window addresses the same assumption.
+Survey and joint review reuse these positions, including earlier replay snapshots.
+Plan positions are approximate; mounting heights, wall fit, service routes, access,
+clearances and siting remain review items. Saved positions do not certify equipment.

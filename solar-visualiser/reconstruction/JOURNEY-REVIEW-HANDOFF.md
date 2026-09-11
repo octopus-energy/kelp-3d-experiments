@@ -273,3 +273,10 @@ Make incremental commits after meaningful, verified changes; preserve unrelated 
 Vercel: root `vercel.json` serves `solar-visualiser/`, with no install/build command.
 The project Root Directory should remain empty/default. Commit/push/redeploy is needed
 to update hosting; a successful local check does not verify a live deployment.
+
+The equipment journey now uses model-plan placement rather than requiring a location
+paragraph. Read the shared spatial journey section of WORKFLOW.md and run
+`browser-review.cjs browser-spatial.cjs` when changing placement. Existing equipment,
+proposed equipment, radiators and walking paths must preserve their floor/room
+identity in 2D, 3D, review, export and replay. Approximate plan positions and assumed
+3D display heights must never be presented as measured or approved installation fit.

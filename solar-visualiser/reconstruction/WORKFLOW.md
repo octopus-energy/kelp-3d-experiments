@@ -1008,3 +1008,30 @@ homeowner; assumed adjoining temperatures and geometry-split instructions belong
 to the professional assessment. Keep drafts role-scoped so professional evidence
 requirements cannot be replaced by a cached homeowner form. Verify blank-note
 submission, uncertainty reopening, role switching and phone/HTTP/offline behaviour.
+
+### Shared spatial journey (11 September 2026)
+
+Equipment descriptions alone do not locate an installation. The guided journey now
+uses the model floor plan for existing boiler/cylinder/electrical positions,
+proposed heat-pump/cylinder positions, radiator identities and paths to keep clear.
+`spatial.js` validates property-local positions against stable floor and room IDs;
+renderers derive scene positions from those records. Lower ground retains floor ID 2.
+A plan click is a reported/preferred approximate position, not a measured mounting
+height or approval. Unknown height stays null; 3D uses a stated display height.
+Existing text-only observations and photo-space preferences remain evidence without
+being silently converted to model coordinates. Service corrections and placements
+are append-only; walking-path revisions retain earlier snapshots.
+
+Custom proposed locations update a simple orthogonal connection sketch and its
+indicative length allowance. This is not an obstacle-aware pipe design, clearance,
+noise assessment or electrical route. Existing boiler/meter markers identify
+connections to investigate, not proven usable routes. Surroundings are a planning
+canvas with unresolved boundaries and garden levels. Room plans and cutaways share
+surface IDs and radiator positions; survey/review and exported recaps retain the plan.
+
+Verified with `spatial.test.js`, proposal/installation/room-assessment tests and
+`browser-review.cjs browser-room-assessment.cjs browser-spatial.cjs`. The browser
+checks use actual projected plan clicks, assert plan/3D coordinate parity, move
+between floors, check changing route length, preserve replay and reload, and run
+under HTTP and network-disabled file URLs at desktop and phone sizes. Screenshot
+review remains necessary: tests do not establish legibility or a useful sequence.
