@@ -11,7 +11,12 @@ implemented changes, answer-effect trace and remaining limits. The current
 room-led extension is documented in [ROOM-LED-PLANNING.md](ROOM-LED-PLANNING.md).
 Navigation follows Your home, Your rooms, Equipment & routes, Costs & payments,
 Checks & survey, Review together. Each room keeps its photos and plan beside five
-optional topics: Room & heat loss, My radiators, Flow & output, Options and Comfort.
+optional topics: Room & heat loss, Comfort, My radiators, Flow & output and Options.
+A selectable room cutaway links walls/openings to visible assumptions and signed
+heat-loss breakdowns. Radiators have editable identities, dimensions and type;
+photo uploads remain separate evidence. Insulation and glazing targets compare
+room demand and capacity at three flow settings without rewriting the existing
+home. Active topic forms and comparisons are visible without accordions.
 Existing construction and proposed improvements have distinct consequences.
 Service evidence, gas discussion, illustrative payments and a scoped document
 register feed the adviser brief, site check and joint review. Earlier saved projects
@@ -195,7 +200,7 @@ then as a surveyor resolving the remaining gaps. Check the actual screens and ef
 
 - Does the journey explain the proposition before asking for work? Is there a clear
   next action? Does the homeowner see the benefit of answering each question?
-- Are six top-level steps plus three stages for every room too laborious? Can the
+- Are six top-level steps plus five topics for every room too laborious? Can the
   system focus on consequential gaps while leaving all rooms accessible?
 - Are defaults visibly assumptions, rather than implied homeowner confirmations?
   Does every important preference change the brief, scenario or visible next step?
@@ -229,6 +234,8 @@ Key files under `solar-visualiser/`:
 - `js/building/installation.js`: pure project, evidence, schedules, guidance, replay.
 - `js/building/installation-ui.js`: guided screens, matching and capture.
 - `js/building/installation-store.js`: scoped storage and stale-tab protection.
+- `js/building/room-assessment.js`: pure signed element breakdown, U assumptions and individual radiator inventories.
+- `js/building/room-view.js`, `room-assessment-ui.js`: selectable cutaway, visible assumption/capture forms and live improvement comparisons.
 - `js/building/proposal.js`, `proposal-ui.js`, `proposal-view.js`: calculation choices,
   technical view and 3D scene/route.
 - `css/installation.css`, `proposal.html`: presentation and script order.
@@ -244,10 +251,13 @@ Run commands from the repository root:
 
 ```sh
 /tmp/broom-reconstruction-env/bin/python solar-visualiser/scripts/prepare-proposal.py
+node solar-visualiser/tests/room-assessment.test.js
+node solar-visualiser/tests/installation-planning.test.js
+node solar-visualiser/tests/installation-store.test.js
 node solar-visualiser/tests/installation.test.js
 node solar-visualiser/tests/proposal.test.js
 /tmp/broom-reconstruction-env/bin/python solar-visualiser/scripts/test_proposal.py
-node solar-visualiser/tests/browser-review.cjs browser-installation.cjs browser-proposal.cjs
+node solar-visualiser/tests/browser-review.cjs browser-room-assessment.cjs browser-planning.cjs browser-installation.cjs browser-proposal.cjs
 ```
 
 The Python environment path is machine-specific; verify it exists. Regenerate after

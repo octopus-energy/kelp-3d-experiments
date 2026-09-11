@@ -31,7 +31,9 @@ function validate(state,data){
  return state;
 }
 function change(state,data,patch,at=new Date().toISOString()){
- const next={...clone(state),...clone(patch)};validate(next,data);
+ const next={...clone(state),...clone(patch)};
+ if(patch.envelope&&state.surfaceOverrides&&!patch.surfaceOverrides){const changed=data.thermalEvidence.groups.filter(g=>JSON.stringify(state.envelope[g.id])!==JSON.stringify(patch.envelope[g.id])).map(g=>g.id);next.surfaceOverrides=A.withoutOpeningOverrides(data,state.surfaceOverrides,changed);patch={...patch,surfaceOverrides:next.surfaceOverrides};}
+ validate(next,data);
  next.events.push({at,role:'pre-survey-call',changes:clone(patch),evidenceRevision:data.revision});return next;
 }
 function restore(state,incoming,data,at=new Date().toISOString()){
@@ -78,6 +80,7 @@ function thermalScenario(data,state,fabric=state.fabric){
    for(const row of delta.surfaces){const index=r.surfaces.findIndex(s=>s.identifier===row.identifier);if(index<0)throw Error('Unknown thermal surface');r.surfaces[index]=clone(row);}
   }
  }
+ for(const group of data.thermalEvidence?.groups||[])for(const room of scenario.rooms)for(const row of room.surfaces)if(group.surfaceIds.includes(row.identifier))row.boundaryLabel=group.options[state.envelope?.[group.id]?.choice||group.default].label;
  A.applySurfaces(scenario,state.surfaceOverrides);
  for(const r of scenario.rooms){if(r.bridgeRawW!==undefined){const floor=Math.floor(r.bridgeRawW),fraction=r.bridgeRawW-floor;r.bridgeW=Math.abs(fraction-.5)<1e-9?floor+(floor%2):Math.round(r.bridgeRawW);}r.loadW=r.included?Math.max(0,r.fabricW+r.ventilationW+r.bridgeW):null;}
  scenario.totalW=scenario.rooms.reduce((sum,r)=>sum+(r.loadW||0),0);return scenario;

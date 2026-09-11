@@ -10,6 +10,12 @@ change replay; `installation-ui.js` presents them.
 `installation-planning.js` is a pure UMD dependency loaded before installation;
 `installation-planning-ui.js` renders room/fabric comparisons, existing services,
 gas/payment scenarios and document checks before the main installation UI.
+`room-assessment.js` is a pure UMD dependency before `proposal.js`; it handles
+signed element totals, explicit U overrides and per-radiator catalogue output.
+`room-view.js` and `room-assessment-ui.js` provide selectable 3D assumptions,
+editable inventories and live fabric scenarios. Their DOM/THREE stays outside the
+pure layer. Run `tests/room-assessment.test.js` and
+`tests/browser-review.cjs browser-room-assessment.cjs` for these contracts.
 See [ROOM-LED-PLANNING.md](reconstruction/ROOM-LED-PLANNING.md). See
 [INSTALLATION-JOURNEY.md](reconstruction/INSTALLATION-JOURNEY.md) for scope,
 limitations and tests. The former four-room budget reserve is replaced in both

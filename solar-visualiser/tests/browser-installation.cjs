@@ -22,7 +22,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   fs.writeFileSync(path.join(testTmp,'installation-saved-recovery.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`document.querySelector('#project-storage>details').open=false`);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.emitterCost'),2400);
-  assert.equal(await evalJS(`[...document.querySelectorAll('#journey-content input:not([type=checkbox]),#journey-content textarea')].filter(e=>!e.closest('details:not([open])')&&e.getBoundingClientRect().height>0).length`),0,'Household starts with visual choices and no visible text fields');
+  assert.equal(await evalJS(`document.querySelectorAll('#journey-content details').length`),0,'Household fields are visible without accordions');
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.rooms.filter(r=>r.action==="inventory").every(r=>r.heatingPresence==="assumed-present"&&r.allowance===0&&r.proposedW===null)'),true);
 
   assert.equal(await evalJS(`document.getElementById('heated-lower-ground').textContent.includes('normally heated living space')`),true);
@@ -62,7 +62,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`document.getElementById('room-correct-photo').click()`);
   assert.equal(await evalJS(`document.querySelector('#matching-evidence img').src`),displayedPhoto,'Correct match opens the photo being discussed');
   await evalJS(`document.getElementById('close-matching').click()`);
-  await evalJS(`document.querySelector('details[id^="room-note-"]').open=true;document.querySelector('[data-room-note]').focus()`);
+  await evalJS(`document.querySelector('[data-room-note]').focus()`);
   await call('Input.insertText',{text:'Cold near the window'});
   const nextRect=await evalJS(`(()=>{const b=document.getElementById('room-guide-next');b.scrollIntoView({block:'center'});const r=b.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
   await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...nextRect});await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...nextRect});

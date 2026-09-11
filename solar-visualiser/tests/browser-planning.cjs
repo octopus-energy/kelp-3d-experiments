@@ -17,27 +17,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   const snapshot=async (name,selector)=>{if(selector)await evalJS(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'start'})`);await new Promise(r=>setTimeout(r,100));fs.writeFileSync(path.join(testTmp,'planning-'+name+'.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));};
   const fill=async (selector,values)=>evalJS(`(()=>{const f=document.querySelector(${JSON.stringify(selector)});for(const [key,value] of Object.entries(${JSON.stringify(values)}))f.elements[key].value=value;f.requestSubmit();})()`);
   assert.deepEqual(await evalJS(`[...document.querySelectorAll('#journey-nav button')].map(b=>Number(b.dataset.step))`),[0,2,3,1,4,5]);
-  await evalJS(`document.getElementById('journey-next').click();document.querySelector('[data-room="0:r11"]').click()`);
-  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current=step]').dataset.roomStage`),'3');
-  await snapshot('room-heat-desktop','.room-guide-heading');
-  const demandBefore=await evalJS(`__BROOM_INSTALLATION__.brief.selected.loadW`);
-  await evalJS(`document.getElementById('room-envelope-bay-lower').open=true`);
-  await fill('[data-planning-form=envelope][data-target=bay-lower]',{value:'single',observer:'Homeowner fixture',note:'Synthetic glass-edge account'});
-  assert(await evalJS(`__BROOM_INSTALLATION__.brief.selected.loadW`)>demandBefore);
-  assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.choices.envelope['bay-lower'].basis`),'homeowner-reported');
-  await fill('[data-planning-form=envelope][data-target=bay-lower]',{value:'uncertain',observer:'Homeowner fixture',note:'Reopen the synthetic pane count'});
-  assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.loadW'),demandBefore);
-  await fill('[data-planning-form=envelope][data-target=bay-lower]',{value:'single',observer:'Homeowner fixture',note:'Reapply synthetic test single glazing'});
-  const observedDemand=await evalJS(`__BROOM_INSTALLATION__.brief.selected.loadW`);
-  await evalJS(`document.querySelector('[data-room-stage="4"]').click()`);
-  assert.equal(await evalJS(`document.querySelectorAll('.flow-row').length`),3);
-  await snapshot('room-flow-desktop','.room-guide-heading');
-  await evalJS(`document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-improvement=glazing]').click();document.getElementById('glazing-preview-0:r11').open=true;const s=document.querySelector('[data-glazing-preview=bay-lower]');s.value='double';s.dispatchEvent(new Event('change'))`);
-  assert.equal(await evalJS(`__BROOM_INSTALLATION__.brief.selected.loadW`),observedDemand,'Proposed upgrade never overwrites actual glazing');
-  assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.planning.rooms['0:r11'].glazing['bay-lower']`),'double');
-  await snapshot('glazing-desktop','.fabric-options');
   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:2,mobile:true});
-  for(const [stage,name] of [[3,'room-heat-phone'],[4,'room-flow-phone'],[2,'room-options-phone']]){await evalJS(`document.querySelector('[data-room-stage="${stage}"]').click()`);assert.equal(await evalJS('document.documentElement.scrollWidth<=innerWidth'),true,name);await snapshot(name,'.room-conversation');}
   await evalJS(`__BROOM_INSTALLATION__.go(3);document.getElementById('service-boiler').open=true`);
   await evalJS(`(()=>{const canvas=document.createElement('canvas');canvas.width=32;canvas.height=32;const c=canvas.getContext('2d');c.fillStyle='#286e59';c.fillRect(0,0,32,32);const binary=atob(canvas.toDataURL('image/png').split(',')[1]),bytes=Uint8Array.from(binary,c=>c.charCodeAt(0)),dt=new DataTransfer();dt.items.add(new File([bytes],'synthetic-service.png',{type:'image/png'}));document.querySelector('[data-planning-form=service][data-target=boiler]').elements.files.files=dt.files;})()`);
   await fill('[data-planning-form=service][data-target=boiler]',{presence:'present',location:'Kitchen cupboard',observer:'Homeowner fixture',note:'Existing boiler; synthetic test'});
@@ -51,7 +31,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`document.getElementById('payment-result').textContent.includes('/ month')`),true);
   assert.equal(await evalJS('document.documentElement.scrollWidth<=innerWidth'),true);
   await snapshot('payment-phone','#payment-planning');await snapshot('payment-result-phone','#payment-result');
-  await evalJS(`document.querySelector('[data-role=adviser]').click();document.getElementById('check-siting').open=true`);
+  await evalJS(`document.querySelector('[data-role=adviser]').click();document.querySelector('[data-check-entry=siting]').click()`);
   await fill('[data-planning-form=planning-check][data-target=siting]',{status:'reviewed',reference:'Fixture assessment only',scope:'Courtyard candidate',observer:'Adviser fixture',note:'Synthetic review for automated test'});
   assert.equal(await evalJS(`SolarViz.installationPlanning.checks(__BROOM_INSTALLATION__.project).find(c=>c.id==='siting').status`),'reviewed');
   await snapshot('checks-phone','#design-checklist');

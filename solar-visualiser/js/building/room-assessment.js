@@ -13,6 +13,11 @@ function validateSurfaceOverrides(values,data){
  if(values===undefined)return;if(!record(values))throw Error('Invalid surface assumptions');
  for(const [id,v] of Object.entries(values))if(!surfaceInfo(data,id,data.geometry.geometry.rooms[0].id)||!record(v)||!Number.isFinite(v.u)||v.u<=0||v.u>10||typeof v.source!=='string'||!v.source.trim()||!['homeowner-reported','call-assumption','survey-observed','comparison'].includes(v.basis))throw Error('Each surface needs a valid U-value (above 0, up to 10) and an assumption source');
 }
+function withoutOpeningOverrides(data,overrides,groupIds){
+ if(!overrides)return overrides;
+ const openings=new Set(data.thermalEvidence.groups.filter(g=>g.kind==='opening'&&groupIds.includes(g.id)).flatMap(g=>g.openingIds));
+ return Object.fromEntries(Object.entries(overrides).filter(([id])=>!openings.has(surfaceInfo(data,id,data.geometry.geometry.rooms[0].id)?.opening?.id)));
+}
 function validateInventory(inv,data){
  if(!record(inv)||!Array.isArray(inv.items)||inv.items.length>40||typeof inv.complete!=='boolean'||typeof inv.source!=='string'||!inv.source.trim()||new Set(inv.items.map(i=>i.id)).size!==inv.items.length)throw Error('Invalid radiator inventory');
  for(const r of inv.items){
@@ -33,9 +38,20 @@ function applySurfaces(scenario,overrides){
 function elements(data,resultRoom){return resultRoom.surfaces.map((row,index)=>{
  const info=surfaceInfo(data,row.identifier,resultRoom.id);if(!info)throw Error('Unmapped thermal surface '+row.identifier);
  const {surface:s,opening:o,category,other,group}=info,room=data.geometry.geometry.rooms.find(r=>r.id===other),same=resultRoom.surfaces.filter(q=>surfaceInfo(data,q.identifier,resultRoom.id)?.category===category);
- return {...row,...info,id:row.identifier,label:o?(data.thermalEvidence.groups.find(g=>g.openingIds?.includes(o.id))?.title||o.id):category==='walls'?'Wall '+(same.findIndex(x=>x.identifier===row.identifier)+1):category==='floors'?'Floor '+(same.findIndex(x=>x.identifier===row.identifier)+1):'Ceiling / roof '+(same.findIndex(x=>x.identifier===row.identifier)+1),adjacent:room?room.name:s.boundary==='ground'?'Ground':s.boundary==='party'?'Neighbouring home':s.boundary==='unheated'?'Unheated space':'Outside',basis:row.overrideSource||s.basis,groupId:group?.id};
+ return {...row,...info,id:row.identifier,label:o?(data.thermalEvidence.groups.find(g=>g.openingIds?.includes(o.id))?.title||o.id):category==='walls'?'Wall '+(same.findIndex(x=>x.identifier===row.identifier)+1):category==='floors'?'Floor '+(same.findIndex(x=>x.identifier===row.identifier)+1):'Ceiling / roof '+(same.findIndex(x=>x.identifier===row.identifier)+1),adjacent:row.boundaryLabel|| (room?room.name:s.boundary==='ground'?'Ground':s.boundary==='party'?'Neighbouring home':s.boundary==='unheated'?'Unheated space':'Outside'),basis:row.overrideSource||s.basis,groupId:group?.id};
  });}
 function breakdown(data,room){const rows=elements(data,room),labels={walls:'Walls',windows:'Windows & rooflights',doors:'Doors',floors:'Floors',ceilings:'Ceilings & roof'};return [...Object.entries(labels).map(([id,label])=>({id,label,watts:rows.filter(r=>r.category===id).reduce((n,r)=>n+r.heatloss,0),count:rows.filter(r=>r.category===id).length})),{id:'air',label:'Air changes',watts:room.ventilationW,count:1},{id:'bridges',label:'Junctions',watts:room.bridgeW,count:1}];}
+function localEdge(data,s){if(s.localEdge)return s.localEdge;if(!s.edge)return null;const p=data.geometry.model.parameters,a=p.bearing*Math.PI/180;return s.edge.map(([x,z])=>[(x-p.anchor_x)*Math.sin(a)-(z-p.anchor_z)*Math.cos(a),-(x-p.anchor_x)*Math.cos(a)-(z-p.anchor_z)*Math.sin(a)]);}
+function elementGroups(data,room){
+ const groups=new Map();
+ for(const e of elements(data,room)){
+  const s=e.surface;let key=e.opening?'opening:'+e.opening.id:e.category+':'+s.kind+':'+(e.other||s.boundary);
+  if(!e.opening&&s.kind==='wall'){const [a,b]=localEdge(data,s),dx=b[0]-a[0],dz=b[1]-a[1],length=Math.hypot(dx,dz),sign=dx<-.00001||Math.abs(dx)<.00001&&dz<0?-1:1,ux=dx/length*sign,uz=dz/length*sign;key+=':'+ux.toFixed(4)+':'+uz.toFixed(4)+':'+(ux*a[1]-uz*a[0]).toFixed(4)+':'+(s.boundaryGroup||'');}
+  if(!groups.has(key))groups.set(key,{...e,ids:[],parts:[],area:0,heatloss:0});const g=groups.get(key);g.ids.push(e.id);g.parts.push(e);g.area+=e.area;g.heatloss+=e.heatloss;
+ }
+ const out=[...groups.values()];let wall=0;for(const g of out){if(g.category==='walls')g.label='Wall '+(++wall)+' · '+g.adjacent.replace('Not sure · retain outside assumption','Outside (to check)');if(g.category==='floors')g.label='Floor · '+g.adjacent;if(g.category==='ceilings')g.label='Ceiling / roof · '+g.adjacent;g.mixedU=new Set(g.parts.map(p=>p.u_value)).size>1;}
+ return out;
+}
 function family(c){return c.type.startsWith('K1')?'panel11':c.type.startsWith('K2')?'panel22':c.type==='2-column'?'column2':c.type==='3-column'?'column3':c.type==='4-column'?'column4':'towel';}
 function seedInventory(data,state,room){
  const saved=state.radiatorInventories?.[room.id];if(saved)return copy(saved);
@@ -50,5 +66,5 @@ function itemOutput(data,item,flow,temperature){
  const output50=quantity*c.output50PerUnit;return {output50,availableW:output50*Math.pow(Math.max(0,flow-2.5-temperature)/50,c.exponent),reference,exponent:c.exponent,source:data.emitterEstimates.references[c.referenceId],reason:'Catalogue analogue; exact product and dimensions need checking.'};
 }
 function inventoryOutput(data,inv,flow,temperature){const items=inv.items.map(item=>({...item,...itemOutput(data,item,flow,temperature)})),known=items.reduce((n,r)=>n+(r.availableW||0),0),unknown=items.filter(r=>r.availableW===null).length;return {items,knownW:known,unknown,availableW:inv.complete&&!unknown?known:null,output50:inv.complete&&!unknown?items.reduce((n,r)=>n+r.output50,0):null,complete:inv.complete,source:inv.source};}
-return {types,surfaceInfo,validateSurfaceOverrides,validateInventory,validateChoices,applySurfaces,elements,breakdown,seedInventory,itemOutput,inventoryOutput};
+return {types,surfaceInfo,withoutOpeningOverrides,validateSurfaceOverrides,validateInventory,validateChoices,applySurfaces,elements,localEdge,elementGroups,breakdown,seedInventory,itemOutput,inventoryOutput};
 });

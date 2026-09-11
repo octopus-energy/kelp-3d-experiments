@@ -52,13 +52,13 @@ function assignPhoto(project,data,imageId,roomId,role='homeowner'){
 function validateObservation(o,data){
  if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water','radiator-evidence','discussion','room-context','service','planning-check','envelope-uncertain','surface-assumption','radiator-inventory'].includes(o.kind)||!['surveyor','homeowner','adviser'].includes(o.role)||['observer','note','at','id'].some(k=>typeof o[k]!=='string'||!o[k].trim())||!Number.isFinite(Date.parse(o.at)))throw Error('Record who checked it and the evidence / measurement source.');
  K.validateObservation(o,data);
- if(o.kind==='surface-assumption'){if(o.value!==null)A.validateSurfaceOverrides({[o.target]:o.value},data);else if(!A.surfaceInfo(data,o.target,data.geometry.geometry.rooms[0].id))throw Error('Unknown surface');}
+ if(o.kind==='surface-assumption'){const ids=o.targets||[o.target];if(!Array.isArray(ids)||!ids.length||!ids.includes(o.target)||new Set(ids).size!==ids.length)throw Error('Invalid surface selection');for(const id of ids){if(o.value!==null)A.validateSurfaceOverrides({[id]:o.value},data);else if(!A.surfaceInfo(data,id,data.geometry.geometry.rooms[0].id))throw Error('Unknown surface');}}
  if(o.kind==='radiator-inventory'){if(!data.geometry.geometry.rooms.some(r=>r.id===o.target))throw Error('Unknown room');A.validateInventory(o.inventory,data);}
  if(o.kind==='photo-room'&&(!(data.interiorPhotos||[]).some(i=>i.id===o.target)||o.roomId!==null&&!data.geometry.geometry.rooms.some(r=>r.sourceRoomId===o.roomId)))throw Error('Choose a valid photo and room');
  if(o.kind==='discussion'&&(o.target!=='household'||!['preferred-direction','questions-open'].includes(o.outcome)))throw Error('Record the discussion outcome');
  if(o.kind==='hot-water'&&o.target!=='household')throw Error('Invalid household review');
  const room=data.geometry.geometry.rooms.find(r=>r.id===o.target);
- if(o.kind==='radiator-evidence'&&(!room||!o.attachments?.length||[o.widthMm,o.heightMm].some(n=>n!==null&&(!Number.isFinite(n)||n<=0||n>10000))))throw Error('Add a radiator photo and valid optional dimensions');
+ if(o.kind==='radiator-evidence'&&(o.radiatorId!=null&&(typeof o.radiatorId!=='string'||!o.radiatorId||o.radiatorId.length>500)||!room||!o.attachments?.length||[o.widthMm,o.heightMm].some(n=>n!==null&&(!Number.isFinite(n)||n<=0||n>10000))))throw Error('Add a radiator photo and valid optional dimensions');
  if(o.kind==='comfort'&&!room)throw Error('Choose a valid room for comfort feedback');
  if(o.kind==='emitter'&&(!room||!Number.isFinite(o.output50)||o.output50<0||o.output50>100000||!Number.isFinite(o.exponent)||o.exponent<1||o.exponent>2||o.complete!==true))throw Error('A room total needs a complete emitter inventory, a valid DT50 rating and exponent.');
  if(o.kind==='envelope-uncertain'&&!data.thermalEvidence.groups.some(g=>g.id===o.target))throw Error('Choose a valid construction group to review.');
@@ -120,12 +120,17 @@ function revise(project,data,patch,label,role='homeowner',at=new Date().toISOStr
  return next;
 }
 function observe(project,data,observation){
- const o=copy(observation);if(o.kind==='planning-check')o.signature=K.signature(project,o.target);validateObservation(o,data);if(project.observations.some(x=>x.id===o.id))throw Error('Observation already recorded');
+ const o=copy(observation);if(o.kind==='radiator-evidence'&&o.radiatorId){const room=data.geometry.geometry.rooms.find(r=>r.id===o.target);if(!room||!A.seedInventory(data,project.choices,room).items.some(i=>i.id===o.radiatorId))throw Error('Choose a listed radiator for these photos, or leave them as room evidence.');}if(o.kind==='planning-check')o.signature=K.signature(project,o.target);validateObservation(o,data);if(project.observations.some(x=>x.id===o.id))throw Error('Observation already recorded');
  let choices=copy(project.choices);
  if(o.kind==='emitter')choices.emitters[o.target]={output50:o.output50,exponent:o.exponent,source:o.observer+': '+o.note,basis:o.role==='surveyor'?'site-inventory':o.role==='adviser'?'remote-assessment':'homeowner-reported'};
  if(o.kind==='envelope')choices.envelope[o.target]={choice:o.value,basis:o.role==='surveyor'?'survey-observed':o.role==='adviser'?'call-assumption':'homeowner-reported',note:o.observer+': '+o.note};
  if(o.kind==='envelope-uncertain')delete choices.envelope[o.target];
- if(o.kind==='surface-assumption'){choices.surfaceOverrides={...choices.surfaceOverrides};if(o.value===null)delete choices.surfaceOverrides[o.target];else choices.surfaceOverrides[o.target]={...o.value,source:o.observer+': '+o.note,basis:o.role==='surveyor'?'survey-observed':o.role==='adviser'?'call-assumption':'homeowner-reported'};}
+ // A newer glazing account replaces earlier per-pane U assumptions for that opening group.
+ if(['envelope','envelope-uncertain'].includes(o.kind)){
+  const group=data.thermalEvidence.groups.find(g=>g.id===o.target);
+  if(group.kind==='opening'&&choices.surfaceOverrides)for(const id of Object.keys(choices.surfaceOverrides))if(group.openingIds.includes(A.surfaceInfo(data,id,group.roomIds[0])?.opening?.id))delete choices.surfaceOverrides[id];
+ }
+ if(o.kind==='surface-assumption'){choices.surfaceOverrides={...choices.surfaceOverrides};for(const id of o.targets||[o.target]){if(o.value===null)delete choices.surfaceOverrides[id];else choices.surfaceOverrides[id]={...o.value,source:o.observer+': '+o.note,basis:o.role==='surveyor'?'survey-observed':o.role==='adviser'?'call-assumption':'homeowner-reported'};}}
  if(o.kind==='radiator-inventory'){choices.radiatorInventories={...choices.radiatorInventories,[o.target]:o.inventory};delete choices.emitters[o.target];}
  if(o.kind==='basement')choices.basement=o.value;
  if(o.kind==='photo-room')choices.photoRooms={...choices.photoRooms,[o.target]:o.roomId};
@@ -143,10 +148,11 @@ function tasks(data,project){
  const current=packageFor(data,project,project.selectedFlow),out=K.pending(data,project);
  for(const g of data.thermalEvidence.groups){
   const entry=project.choices.envelope[g.id];if(entry?.basis==='survey-observed')continue;
-  const values=Object.keys(g.options).map(choice=>P.thermalScenario(data,{...project.choices,envelope:{...project.choices.envelope,[g.id]:{choice,basis:'call-assumption',note:''}}}).totalW);
+  const values=Object.keys(g.options).map(choice=>P.thermalScenario(data,{...project.choices,surfaceOverrides:A.withoutOpeningOverrides(data,project.choices.surfaceOverrides,[g.id]),envelope:{...project.choices.envelope,[g.id]:{choice,basis:'call-assumption',note:''}}}).totalW);
   const span=Math.max(...values)-Math.min(...values);
   out.push({id:'envelope-'+g.id,kind:'envelope',target:g.id,title:g.title,owner:entry?.basis==='homeowner-reported'?'Surveyor':'Homeowner / surveyor',impactW:span,effort:g.kind==='boundary'?8:3,why:g.observation,method:g.kind==='boundary'?'Identify the actual adjoining space and contact extent. Partial contact needs a geometry split; do not select full contact.':'Inspect the glass edge / spacer and record the source. The selected category still uses a representative U-value.',imageId:g.imageId,bbox:g.bbox});
  }
+ for(const room of current.rooms){const changed=Object.entries(project.choices.surfaceOverrides||{}).filter(([id,v])=>{const s=A.surfaceInfo(data,id,room.id).surface;return v.basis!=='survey-observed'&&(s.roomA===room.id||s.roomB===room.id);});if(changed.length)out.push({id:'surface-'+room.id,kind:'comfort',target:room.id,title:'Check element assumptions in '+room.name,owner:'Surveyor',impactW:0,effort:4,why:changed.length+' element assumptions were supplied for this room.',method:'Open Room & heat loss to inspect the selected elements, U-values and evidence. Confirm the construction and source, or append a correction; these entries do not validate dimensions.'});}
  for(const r of current.rooms.filter(r=>r.action!=='outside-scope'&&!r.inventoryVerified))out.push({id:'emitter-'+r.id,kind:'emitter',target:r.id,title:'Check every radiator in '+r.name,owner:'Surveyor',impactW:r.loadW,effort:6,why:r.action==='inventory'?'Existing heating is assumed. Identify its type and output; missing photos do not trigger replacement allowances.':r.fragile?'The photo range crosses demand: this check may avoid a replacement.':'Verify total output before confirming the room schedule.',method:'Record every emitter, width/height, sections and column depth or panel type. Add front and side photos; use catalogue DT50 ratings for the complete room total.',imageId:r.sourceEvidence[0]?.imageId,bbox:r.sourceEvidence[0]?.bbox});
  out.sort((a,b)=>(b.impactW/b.effort)-(a.impactW/a.effort));
  const feedback=Object.entries(project.household.roomFeedback||{}).filter(([,f])=>f.cold||f.use!=='usual'||f.note.trim());
@@ -200,7 +206,7 @@ function roomFocus(r){
 }
 function evidenceForTask(data,project,task){
  const room=data.geometry.geometry.rooms.find(r=>r.id===task.target);
- return project.observations.filter(o=>task.kind==='geometry'&&o.kind==='geometry'||['access','site-preferences'].includes(task.id)&&['access','service'].includes(o.kind)||o.target===task.target||o.kind==='photo-room'&&room&&(o.roomId===room.sourceRoomId||P.photoRoom(data,project.choices,o.target)===room.sourceRoomId));
+ return project.observations.filter(o=>task.kind==='geometry'&&o.kind==='geometry'||['access','site-preferences'].includes(task.id)&&['access','service'].includes(o.kind)||o.target===task.target||o.kind==='surface-assumption'&&(o.targets||[o.target]).some(id=>{const info=A.surfaceInfo(data,id,room?.id||data.geometry.geometry.rooms[0].id);return room&&(info.surface.roomA===room.id||info.surface.roomB===room.id)||info.group?.id===task.target;})||o.kind==='photo-room'&&room&&(o.roomId===room.sourceRoomId||P.photoRoom(data,project.choices,o.target)===room.sourceRoomId));
 }
 function discussionStatus(project){
  const observation=project.observations.filter(o=>o.kind==='discussion').at(-1);

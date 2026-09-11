@@ -1,5 +1,5 @@
 // Room comparisons and household planning records; no DOM or derived geometry is persisted.
-(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'));else(root.SolarViz=root.SolarViz||{}).installationPlanning=factory(root.SolarViz.proposal);})(typeof window==='undefined'?globalThis:window,function(P){
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'),require('./room-assessment'));else(root.SolarViz=root.SolarViz||{}).installationPlanning=factory(root.SolarViz.proposal,root.SolarViz.roomAssessment);})(typeof window==='undefined'?globalThis:window,function(P,A){
 'use strict';
 const copy=x=>JSON.parse(JSON.stringify(x));
 const serviceLabels={boiler:'Existing boiler',cylinder:'Existing hot-water cylinder',meter:'Electricity meter',consumer:'Consumer unit'};
@@ -19,6 +19,7 @@ function validate(h,data){
  if(!record(p)||p.rooms!==undefined&&!record(p.rooms)||Object.keys(p).some(k=>!['rooms','gas','finance'].includes(k)))throw Error('Invalid household planning record');
  for(const [id,r] of Object.entries(p.rooms||{})){
   if(!data.geometry.geometry.rooms.some(r=>r.id===id)||!record(r)||!Array.isArray(r.improvements)||r.improvements.some(v=>!Object.hasOwn(improvementLabels,v))||new Set(r.improvements).size!==r.improvements.length||r.improvements.includes('none')&&r.improvements.length>1)throw Error('Invalid room improvement preference');
+  A.validateSurfaceOverrides(r.surfaceIdeas,data);for(const key of Object.keys(r.surfaceIdeas||{})){const s=A.surfaceInfo(data,key,id).surface;if(s.roomA!==id&&s.roomB!==id)throw Error('Improvement belongs to another room');}
   for(const [group,value] of Object.entries(r.glazing||{}))if(!data.thermalEvidence.groups.some(g=>g.id===group&&g.kind==='opening'&&g.roomIds.includes(id)&&Number.isFinite(g.options[value]?.u)))throw Error('Invalid glazing comparison');
  }
  if(p.gas!==undefined){const g=p.gas;if(!record(g)||!['unknown','keep','explore'].includes(g.intent)||!text(g.appliances)||!text(g.source)||g.standingPence!==null&&(!Number.isFinite(g.standingPence)||g.standingPence<0||g.standingPence>1000))throw Error('Enter a valid gas bill standing charge or leave it unknown');}
@@ -30,13 +31,13 @@ function validateObservation(o,data){
  if(o.kind==='planning-check'&&(!checkDefinitions.some(c=>c.id===o.target)||!['needs-review','document-received','reviewed'].includes(o.status)||typeof o.reference!=='string'||!o.reference.trim()||o.reference.length>5000||typeof o.scope!=='string'||!o.scope.trim()||o.scope.length>5000||o.status==='reviewed'&&o.role==='homeowner'||typeof o.signature!=='string'))throw Error('Record the document reference, its scope and an adviser or surveyor for a completed review');
 }
 function roomGroups(data,id){return data.thermalEvidence.groups.filter(g=>g.roomIds.includes(id));}
-function roomComparison(data,project,id,glazing={}){
+function roomComparison(data,project,id,glazing={},surfaceIdeas={}){
  const envelope=copy(project.choices.envelope);
  for(const [group,choice] of Object.entries(glazing)){
   if(!roomGroups(data,id).some(g=>g.id===group&&g.kind==='opening'&&Number.isFinite(g.options[choice]?.u)))throw Error('Unsupported room glazing scenario');
   envelope[group]={choice,basis:'call-assumption',note:'Proposed glazing comparison only'};
  }
- return [45,50,55].map(flow=>{const current=P.evaluate(data,{...project.choices,flow}).rooms.find(r=>r.id===id),proposed=P.evaluate(data,{...project.choices,flow,envelope}).rooms.find(r=>r.id===id);return {flow,current,proposed};});
+ return [45,50,55].map(flow=>{const current=P.evaluate(data,{...project.choices,flow}).rooms.find(r=>r.id===id),proposed=P.evaluate(data,{...project.choices,flow,envelope,surfaceOverrides:{...A.withoutOpeningOverrides(data,project.choices.surfaceOverrides,Object.keys(glazing)),...surfaceIdeas}}).rooms.find(r=>r.id===id);return {flow,current,proposed};});
 }
 function finance(net,f){
  if(!f||net===null||f.extra===null)return {ready:false,reason:'Add any extra work allowance (including zero), and resolve the installation scope.'};
@@ -61,7 +62,7 @@ function checks(project){const physical=signature(project,'physical'),financial=
 function latestService(project,key){return project.observations.filter(o=>o.kind==='service'&&o.target===key).at(-1)||null;}
 function pending(data,project){
  const out=[];
- for(const [id,r] of Object.entries(project.household.planning?.rooms||{}))if(r.improvements.some(v=>v!=='none')||Object.keys(r.glazing||{}).length)out.push({id:'improve-'+id,kind:'comfort',target:id,title:'Compare fabric improvements in '+data.geometry.geometry.rooms.find(r=>r.id===id).name,owner:'Adviser / surveyor',impactW:0,effort:5,why:'The homeowner wants to compare improvements before choosing emitter work.',method:'Check the affected surfaces, construction, moisture implications, disruption and price. Saved glazing comparisons have not changed the existing-home calculation.'});
+ for(const [id,r] of Object.entries(project.household.planning?.rooms||{}))if(r.improvements.some(v=>v!=='none')||Object.keys(r.glazing||{}).length||Object.keys(r.surfaceIdeas||{}).length)out.push({id:'improve-'+id,kind:'comfort',target:id,title:'Compare fabric improvements in '+data.geometry.geometry.rooms.find(r=>r.id===id).name,owner:'Adviser / surveyor',impactW:0,effort:5,why:'The homeowner wants to compare improvements before choosing emitter work.',method:'Check the affected surfaces, construction, moisture implications, disruption and price. Saved improvement comparisons have not changed the existing-home calculation.'});
  for(const o of project.observations.filter(o=>o.kind==='room-context'))if(!out.some(t=>t.id==='context-'+o.target))out.push({id:'context-'+o.target,kind:'comfort',target:o.target,title:'Review construction in '+data.geometry.geometry.rooms.find(r=>r.id===o.target).name,owner:'Surveyor',impactW:0,effort:5,why:'Room construction or boundaries have been described.',method:'Use the latest room account and confirm the affected construction. Notes alone do not change geometry or U-values.'});
  return out;
 }

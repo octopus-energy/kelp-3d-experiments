@@ -951,3 +951,44 @@ states. A complete, sourced remote rating resolves the received-photo assessment
 request while retaining the site-inventory check. Later photos or changed room
 attribution reopen assessment. Replaying the earlier state must recover both the
 rating and its then-current review status.
+
+
+### Visible room assumptions and independent improvement scenarios — 2026-09-11
+
+Break the room result into walls, windows, doors, floors, ceilings/roof, air changes
+and junction allowance. Retain signed transfers between differently heated rooms;
+an internal floor is the lower room's ceiling and the upper room's floor. The
+parts reconcile with the unclamped room result. A shared-surface U correction
+must affect both sides with equal and opposite transfer, preserving whole-home
+conservation. Null/excluded outputs remain distinct from zero.
+
+Separate current construction corrections from future improvements. Corrections
+require an explicit source, append observations and update demand. Improvement
+targets belong to household scenarios; they show demand and emitter-capacity gaps
+without silently changing the existing-home schedule or price. Newer opening-group
+answers supersede older per-opening U values, with both retained in replay. Geometry,
+adjacent-space temperatures and junction allowances are not changed by a U override.
+Unverified U entries must reach the relevant room's survey task and evidence view.
+
+Select assumptions through recorded geometry, not an approximate screen region.
+Internal and external walls use different stored coordinate representations; apply
+the model's anchor/bearing conversion only where local edges are absent. Verify
+all rooms and a real projected browser click. Transparent walls must not intercept
+a visibly selectable opening. Label schematic floor/ceiling highlighting; never
+present its display polygon as a new measured area or adjacency determination.
+
+Radiator identity is independent of photo count. Show source hypotheses, allow
+correction or addition with dimensions/type, and attach multiple photographs to
+one item or leave them as unresolved room evidence. Unsupported catalogue sizes
+or types keep unknown output. A partly checked list cannot supply a complete room
+total; an explicitly complete empty list can report absence. Individual corrections
+reopen previous aggregate ratings while retaining immutable observations. Reported
+completeness is distinct from a verified site inventory.
+
+Inspect desktop and phone screenshots of the selected assumption, radiator editor,
+photo upload, improvement result and role handoff. Long lists can push the
+consequence out of sight even when the page fits horizontally; keep selectors
+compact and the active form visible. Active journey topics use no accordions.
+Run the room-assessment, planning, installation/store/proposal and HTTP/file browser
+suites documented in ROOM-LED-PLANNING.md. Regenerate the proposal after JS changes,
+preserve earlier proposal archives, and verify source hashes before committing.
