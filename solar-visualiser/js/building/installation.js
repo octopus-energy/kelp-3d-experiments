@@ -23,12 +23,14 @@ function validateHousehold(h,data){
  const record=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
  const ids=new Set(data.geometry.geometry.rooms.map(r=>r.id));
  if(!record(h)||!['balanced','running','changes'].includes(h.priority)||!Array.isArray(h.preserve)||h.preserve.some(id=>!ids.has(id))||new Set(h.preserve).size!==h.preserve.length||typeof h.noKitchenCylinder!=='boolean'||typeof h.coldRooms!=='string'||typeof h.notes!=='string')throw Error('Invalid household priorities');
+ if(h.priorityDiscussed!==undefined&&typeof h.priorityDiscussed!=='boolean')throw Error('Invalid priority answer');
+ if(h.preserveDiscussed!==undefined&&(!Array.isArray(h.preserveDiscussed)||h.preserveDiscussed.some(id=>!ids.has(id))))throw Error('Invalid radiator preference answer');
  if(h.roomDesign!==undefined&&!record(h.roomDesign))throw Error('Invalid room design preference');
  if(h.roomFeedback!==undefined&&!record(h.roomFeedback))throw Error('Invalid room comfort feedback');
  if(h.sitePreferences!==undefined&&(!Array.isArray(h.sitePreferences)||new Set(h.sitePreferences.map(q=>q?.id)).size!==h.sitePreferences.length))throw Error('Invalid outdoor preference');
  for(const [id,d] of Object.entries(h?.roomDesign||{}))if(!record(d)||!ids.has(id)||!['open','panel','columns','vertical','ufh'].includes(d.style))throw Error('Invalid room design preference');
  for(const q of h?.sitePreferences||[])if(!record(q)||!['front','rear'].includes(q.side)||!['prefer','avoid'].includes(q.kind)||![q.u,q.v].every(n=>Number.isFinite(n)&&n>=0&&n<=1)||typeof q.id!=='string'||!q.id.trim())throw Error('Invalid outdoor preference');
- for(const [id,f] of Object.entries(h?.roomFeedback||{}))if(!record(f)||!ids.has(id)||typeof f.cold!=='boolean'||!['usual','daytime','occasional','other'].includes(f.use)||typeof f.note!=='string')throw Error('Invalid room comfort feedback');
+ for(const [id,f] of Object.entries(h?.roomFeedback||{}))if(!record(f)||!ids.has(id)||typeof f.cold!=='boolean'||!['usual','daytime','occasional','other'].includes(f.use)||typeof f.note!=='string'||f.answered!==undefined&&(!record(f.answered)||Object.entries(f.answered).some(([k,v])=>!['comfort','use'].includes(k)||typeof v!=='boolean')))throw Error('Invalid room comfort feedback');
 }
 const habitLabels={morning:'Showers mostly in the morning',evening:'Showers mostly in the evening',baths:'Regular baths',overlap:'Showers or baths close together / at the same time','runs-out':'Hot water sometimes runs out',guests:'Regular guests or changing household size'};
 function householdBrief(project){const p=project.choices.preferences;return [(p.occupants?`${p.occupants} ${Number(p.occupants)===1?'person lives':'people live'} here`:'Residents not yet discussed'),...(p.hotWaterHabits||[]).map(k=>habitLabels[k]),p.hotWaterNotes||''].filter(Boolean).join(' · ');}
@@ -172,5 +174,18 @@ function roomGuide(r){
  implication:r.action==='outside-scope'?'This technical scenario excludes the room. Review the scope in the technical workbench before planning its heating.':absent?'No existing emitter capacity is recorded. We’ll check the room and agree suitable heating, its location and cost with you.':r.existingW===null?'No replacement is budgeted just because output is unknown. Tell us what you like; we’ll assess capacity before choosing equipment.':r.action==='retain'?'Keeping them appears possible at this flow setting. Dimensions, room assumptions and on-site performance still need checking.':r.preserve?'We will investigate extra capacity alongside the radiators you want to keep. That still needs space and a product check.':'You can replace the existing radiators, or keep them and explore supplementary capacity. Choose the appearance you would like below.'
  };
 }
-return {roomGuide,photoMatches,matchingQueue,assignPhoto,habitLabels,householdBrief,compareOptions,importProject,technicalResult,create,validate,revise,observe,replay,packages,packageFor,brief,tasks,metrics,sizePanels};
+// Explicit responses are separate from starting assumptions, including false/neutral answers.
+function roomAnswers(project,id){
+ const f=project.household.roomFeedback?.[id];
+ return {comfort:!!(f?.answered?.comfort||f?.cold),use:!!(f?.answered?.use||f&&f.use!=='usual'),preserve:project.household.preserve.includes(id)||(project.household.preserveDiscussed||[]).includes(id),style:!!project.household.roomDesign?.[id]};
+}
+function roomFocus(r){
+ if(r.comfort.cold)return {label:'Comfort concern',why:'Tell us when it feels cold so the survey can investigate.',stage:0,priority:4};
+ if(r.pendingPhotoCount)return {label:'Photos received',why:'Your radiator evidence is waiting for assessment.',stage:1,priority:0};
+ if(r.inventoryVerified)return {label:'Inventory recorded',why:'Explore your heating preferences; no repeat photos needed.',stage:2,priority:0};
+ if(r.existingW===null)return {label:'A photo would help',why:'Existing heating is assumed; its output is unknown.',stage:1,priority:3};
+ if(r.fragile)return {label:'Could avoid a change',why:'Better radiator evidence could change this proposal.',stage:1,priority:2};
+ return {label:'Explore heating ideas',why:'Check the estimate and tell us what you would like to keep.',stage:2,priority:1};
+}
+return {roomAnswers,roomFocus,roomGuide,photoMatches,matchingQueue,assignPhoto,habitLabels,householdBrief,compareOptions,importProject,technicalResult,create,validate,revise,observe,replay,packages,packageFor,brief,tasks,metrics,sizePanels};
 });

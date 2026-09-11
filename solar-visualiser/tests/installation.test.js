@@ -118,3 +118,13 @@ console.log('Inventory evidence ordering, assessment, attribution and replay val
 assert.throws(()=>J.validate({...baseline,selectedFlow:55},D),/history/);
 assert.throws(()=>J.observe(baseline,D,{...o,observer:42}),/who checked/);
 assert.throws(()=>J.observe(baseline,D,{...o,attachments:[null]}),/attachment/);
+
+assert.deepEqual(J.roomAnswers(baseline,living.id),{comfort:false,use:false,preserve:false,style:false},'Defaults are not homeowner answers');
+const neutral=J.revise(baseline,D,{household:{...baseline.household,priorityDiscussed:true,preserveDiscussed:[living.id],roomFeedback:{[living.id]:{cold:false,use:'usual',note:'',answered:{comfort:true,use:true}}}}},'Explicit neutral answers');
+assert.deepEqual(J.roomAnswers(neutral,living.id),{comfort:true,use:true,preserve:true,style:false});
+assert.deepEqual(J.roomAnswers(J.replay(neutral,D,0),living.id),J.roomAnswers(baseline,living.id));
+assert.equal(J.metrics(D,neutral).loadW,J.metrics(D,baseline).loadW);
+assert.equal(J.roomFocus(J.packageFor(D,capture,50).rooms.find(r=>r.id===living.id)).priority,0,'Submitted evidence is not another homeowner photo request');
+assert.equal(J.roomFocus(J.packageFor(D,revised,50).rooms.find(r=>r.id===living.id)).priority,0);
+assert.throws(()=>J.revise(baseline,D,{household:{...baseline.household,preserveDiscussed:['wrong-room']}},'invalid'),/preference/);
+console.log('Explicit answers, neutral responses, replay and focused room guidance passed');

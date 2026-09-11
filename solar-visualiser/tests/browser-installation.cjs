@@ -19,6 +19,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS('delete window.__BROOM_INSTALLATION__');await call('Page.reload');for(let i=0;i<150;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__&&document.querySelector(".saved-archive")'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS(`document.querySelector('#project-storage>details').open&&document.getElementById('project-storage').textContent.includes('recovery-fixture')`),true,'Earlier saved work is discoverable after a revision');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.revision===BROOM_PROPOSAL.revision&&__BROOM_INSTALLATION__.project.events.length===0`),true,'Recovery never relabels or applies old evidence');
+  fs.writeFileSync(path.join(testTmp,'installation-saved-recovery.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`document.querySelector('#project-storage>details').open=false`);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.emitterCost'),2400);
   assert.equal(await evalJS(`[...document.querySelectorAll('#journey-content input:not([type=checkbox]),#journey-content textarea')].filter(e=>!e.closest('details:not([open])')&&e.getBoundingClientRect().height>0).length`),0,'Household starts with visual choices and no visible text fields');
@@ -50,6 +51,9 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
    fs.writeFileSync(path.join(testTmp,'installation-'+step+'.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   }
   await evalJS(`__BROOM_INSTALLATION__.go(2)`);
+  assert.equal(await evalJS(`document.querySelectorAll('.room-overview-card').length`),13,'Every room accessible without a compulsory walkthrough');
+  await evalJS(`document.querySelector('[data-room="0:r0"]').click()`);
+  assert.equal(await evalJS(`document.querySelectorAll('.room-use-choices [aria-pressed=true]').length`),0,'Untouched comfort and use are not preselected');
   assert.equal(await evalJS(`document.querySelectorAll('.room-workspace .room-plan polygon').length>1&&document.querySelectorAll('.room-conversation [data-cold]').length===1`),true,'One room question alongside floor context');
   const displayedPhoto=await evalJS(`document.querySelector('.room-photo-context>.journey-photo img').src`);
   await evalJS(`document.getElementById('room-correct-photo').click()`);
@@ -59,14 +63,14 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await call('Input.insertText',{text:'Cold near the window'});
   const nextRect=await evalJS(`(()=>{const b=document.getElementById('room-guide-next');b.scrollIntoView({block:'center'});const r=b.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
   await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...nextRect});await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...nextRect});
-  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'2. What we need','Typing a note then clicking Next saves and advances with one click');
+  assert.equal(await evalJS(`document.getElementById('active-room-heading').textContent`),'Hall / stairs','Typing a note then clicking Next saves and moves to another room in one click');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['0:r0'].note`),'Cold near the window');
-  await evalJS(`document.querySelector('[data-room-stage="0"]').click();const note=document.querySelector('[data-room-note]');note.value='';note.dispatchEvent(new Event('change'));`);
+  await evalJS(`document.querySelector('[data-room="0:r0"]').click();document.querySelector('[data-room-stage="0"]').click();const note=document.querySelector('[data-room-note]');note.value='';note.dispatchEvent(new Event('change'));`);
   const eventsBeforeWalk=await evalJS('__BROOM_INSTALLATION__.project.events.length');
-  await evalJS(`document.getElementById('room-guide-next').click()`);
-  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'2. What we need');
-  await evalJS(`document.getElementById('room-guide-next').click()`);
-  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'3. Your approach');
+  await evalJS(`document.querySelector('[data-room-stage="1"]').click()`);
+  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'Photos & measurements');
+  await evalJS(`document.querySelector('[data-room-stage="2"]').click()`);
+  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'Heating ideas');
   fs.writeFileSync(path.join(testTmp,'installation-room-approach.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`document.getElementById('room-guide-next').click()`);
   assert.equal(await evalJS(`document.getElementById('room-jump').value`),'0:r10','Next room advances and starts its own discussion');
@@ -108,7 +112,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   for(let i=0;i<50;i++){if(await evalJS('!!__BROOM_INSTALLATION__.project.imports?.length'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.imports.length'),1,'Imported original history archived');
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.observations.length'),2,'Same observations not duplicated on import');
-  await evalJS(`__BROOM_INSTALLATION__.go(2);document.getElementById('room-jump').value='0:r0';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-room-style="0:r0"][data-style="columns"]').click();document.querySelector('[data-room-stage="1"]').click();document.getElementById('homeowner-capture').open=true`);
+  await evalJS(`__BROOM_INSTALLATION__.go(2);document.querySelector('.room-overview-card')?.click();document.getElementById('room-jump').value='0:r0';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-room-style="0:r0"][data-style="columns"]').click();document.querySelector('[data-room-stage="1"]').click();document.getElementById('homeowner-capture').open=true`);
   const evidenceDoc=await call('DOM.getDocument');const upload=await call('DOM.querySelector',{nodeId:evidenceDoc.root.nodeId,selector:'#radiator-evidence-files'});await call('DOM.setFileInputFiles',{nodeId:upload.nodeId,files:[path.join(appRoot,'3broomroad-data/photos/08968f54527a305a14c70973df11894c.jpeg')]});
   await evalJS(`document.getElementById('radiator-width').value=900;document.getElementById('radiator-height').value=600;document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-room-stage="1"]').click()`);
   assert.equal(await evalJS(`document.getElementById('radiator-evidence-files').files.length`),1,'Unsubmitted photo survives stage navigation');
@@ -126,7 +130,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.sitePreferences[0].side`),'front');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.choices.outdoor`),'courtyard','Photo preference does not invent a new route');
   // Household controls have downstream effects and survive reload; fixtures stay in this isolated profile.
-  await evalJS(`__BROOM_INSTALLATION__.go(2);document.getElementById('room-jump').value='1:r01';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-cold="1:r01"]').click()`);
+  await evalJS(`__BROOM_INSTALLATION__.go(2);document.querySelector('.room-overview-card')?.click();document.getElementById('room-jump').value='1:r01';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-cold="1:r01"]').click()`);
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['1:r01'].cold`),true);
   assert.equal(await evalJS(`document.querySelector('[data-cold="1:r01"]').getAttribute('aria-pressed')`),'true');
 
@@ -155,7 +159,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`document.querySelector('[data-basement]')===null&&document.getElementById('baths')===null`),true,'No unnecessary heating scope or busy-hour question');
   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:2,mobile:true});
   for(let step=0;step<6;step++){await evalJS('__BROOM_INSTALLATION__.go('+step+')');await new Promise(r=>setTimeout(r,75));assert.equal(await evalJS('document.documentElement.scrollWidth<=innerWidth'),true,'Phone fits '+step);}
-  await evalJS(`__BROOM_INSTALLATION__.go(2)`);assert.equal(await evalJS('document.documentElement.scrollWidth<=innerWidth'),true,'Expanded household controls fit phone');fs.writeFileSync(path.join(testTmp,'installation-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await evalJS(`__BROOM_INSTALLATION__.go(2);document.querySelector('.room-overview-card')?.click()`);assert.equal(await evalJS('document.documentElement.scrollWidth<=innerWidth'),true,'Expanded household controls fit phone');fs.writeFileSync(path.join(testTmp,'installation-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`document.querySelector('.room-conversation').scrollIntoView()`);await new Promise(r=>setTimeout(r,150));fs.writeFileSync(path.join(testTmp,'installation-room-cards-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`__BROOM_INSTALLATION__.go(0);document.getElementById('start-matching').click()`);
   assert.equal(await evalJS(`(()=>{const b=document.getElementById('match-photo').getBoundingClientRect(),d=document.getElementById('photo-matching');return b.top>=0&&b.bottom<=innerHeight&&d.scrollWidth<=innerWidth;})()`),true,'Matching save and image fit phone viewport');

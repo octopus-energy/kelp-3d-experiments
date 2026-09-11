@@ -888,3 +888,18 @@ draft storage. Mobile browsers can terminate pages without a beforeunload event.
 Verify same-property archive discovery over HTTP and file URLs, exact raw recovery,
 rejection of cross-revision application, and stale-tab protection. Run
 `tests/installation-store.test.js` alongside the installation and browser suites.
+
+### Selective room conversations and explicit answers
+
+The homeowner entry must explain the proposed collaboration before asking for
+household data. Offer the starting options and a visual room chooser. Focus prompts
+on comfort concerns, missing output evidence and estimates that could change a
+replacement decision; stop asking for the same photos while assessment is pending.
+All rooms and all topics stay accessible. Moving to another room neither records
+an answer nor completes a survey check.
+
+Default false/neutral values must not appear as homeowner confirmations. Optional
+answer markers distinguish an explicit comfortable/usual/open-to-change response
+from an untouched default and travel with household snapshots in the existing
+replay. Legacy affirmative preferences remain visible; do not infer a neutral
+answer from old default values. These markers do not alter heating scope or demand.
