@@ -23,19 +23,30 @@ function validate(project,data){
 }
 function validateFeedback(h,data){
  const ids=new Set(data.geometry.geometry.rooms.map(r=>r.id));
+ for(const [id,d] of Object.entries(h?.roomDesign||{}))if(!ids.has(id)||!['open','panel','columns','vertical','ufh'].includes(d.style))throw Error('Invalid room design preference');
+ for(const q of h?.sitePreferences||[])if(!['front','rear'].includes(q.side)||!['prefer','avoid'].includes(q.kind)||![q.u,q.v].every(n=>Number.isFinite(n)&&n>=0&&n<=1)||typeof q.id!=='string')throw Error('Invalid outdoor preference');
  for(const [id,f] of Object.entries(h?.roomFeedback||{}))if(!ids.has(id)||typeof f.cold!=='boolean'||!['usual','daytime','occasional','other'].includes(f.use)||typeof f.note!=='string')throw Error('Invalid room comfort feedback');
 }
 const habitLabels={morning:'Showers mostly in the morning',evening:'Showers mostly in the evening',baths:'Regular baths',overlap:'Showers or baths close together / at the same time','runs-out':'Hot water sometimes runs out',guests:'Regular guests or changing household size'};
 function householdBrief(project){const p=project.choices.preferences;return [(p.occupants?`${p.occupants} people live here`:'Residents not yet discussed'),...(p.hotWaterHabits||[]).map(k=>habitLabels[k]),p.hotWaterNotes||''].filter(Boolean).join(' · ');}
+// Confidence is about room identity, independent of uncertain radiator output.
+function photoMatches(data,project){return (data.interiorPhotos||[]).map((im,index)=>{
+ const manual=Object.hasOwn(project.choices.photoRooms||{},im.id),roomId=P.photoRoom(data,project.choices,im.id);
+ const records=data.emitterEstimates.emitters.filter(e=>e.imageId===im.id);
+ const confident=!!roomId&&records.length>0&&records.every(e=>e.attribution==='supported'&&e.roomId===roomId);
+ return {...im,index,roomId,status:manual?(roomId?'matched':'deferred'):confident?'automatic':'needs-help',basis:manual?'Recorded room assignment':confident?'Existing evidence supports this room identity':'Room identity needs your help'};
+});}
+function matchingQueue(data,project){return photoMatches(data,project).filter(i=>i.status==='needs-help');}
 function assignPhoto(project,data,imageId,roomId,role='homeowner'){
  const name=data.geometry.geometry.rooms.find(r=>r.sourceRoomId===roomId)?.name||'Not sure / room not listed';
  return observe(project,data,{id:'photo-room-'+(project.events.length+1)+'-'+Date.now(),at:new Date().toISOString(),kind:'photo-room',target:imageId,roomId,role:role==='surveyor'?'surveyor':'homeowner',observer:role==='surveyor'?'Surveyor in room-matching workspace':'Homeowner in room-matching workspace',note:'Matched listing photo to: '+name});
 }
 function validateObservation(o,data){
- if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water'].includes(o.kind)||!['surveyor','homeowner'].includes(o.role)||!o.observer?.trim()||!o.note?.trim()||!o.at||!o.id)throw Error('Record who checked it and the evidence / measurement source.');
+ if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water','radiator-evidence'].includes(o.kind)||!['surveyor','homeowner'].includes(o.role)||!o.observer?.trim()||!o.note?.trim()||!o.at||!o.id)throw Error('Record who checked it and the evidence / measurement source.');
  if(o.kind==='photo-room'&&(!(data.interiorPhotos||[]).some(i=>i.id===o.target)||o.roomId!==null&&!data.geometry.geometry.rooms.some(r=>r.sourceRoomId===o.roomId)))throw Error('Choose a valid photo and room');
  if(o.kind==='hot-water'&&o.target!=='household')throw Error('Invalid household review');
  const room=data.geometry.geometry.rooms.find(r=>r.id===o.target);
+ if(o.kind==='radiator-evidence'&&(!room||!o.attachments?.length||[o.widthMm,o.heightMm].some(n=>n!==null&&(!Number.isFinite(n)||n<=0||n>10000))))throw Error('Add a radiator photo and valid optional dimensions');
  if(o.kind==='comfort'&&!room)throw Error('Choose a valid room for comfort feedback');
  if(o.kind==='emitter'&&(!room||!Number.isFinite(o.output50)||o.output50<0||o.output50>100000||!Number.isFinite(o.exponent)||o.exponent<1||o.exponent>2||o.complete!==true))throw Error('A room total needs a complete emitter inventory, a valid DT50 rating and exponent.');
  if(o.kind==='envelope'&&!data.thermalEvidence.groups.find(g=>g.id===o.target&&g.options[o.value]&&o.value!=='unknown'))throw Error('Choose a supported wall or glazing observation.');
@@ -65,11 +76,11 @@ function packageFor(data,project,flow){
   const supplied=action==='inventory'?null:action==='retain'?existing:action==='supplement'?existing+supply50*factor:supply50*factor;
   const allowance=panels.length*state.rates.radiatorChange;
   const alternatives=room.rangeW,fragile=!!alternatives&&alternatives[0]<room.loadW&&alternatives[1]>=room.loadW;
-  return {id:room.id,name:room.name,sourceRoomId:room.sourceRoomId,levelIdx:room.levelIdx,action,preserve,loadW:room.loadW,existingW:room.availableW,heatingPresence:!room.included?'outside-scope':known?(room.availableW>0?'evidenced-present':'reported-absent'):'assumed-present',capacityResolved:known,panels,proposedW:supplied,allowance,inventoryVerified:!!surveyCurrent,fragile,photos:room.photos||[],comfort:copy(project.household.roomFeedback?.[room.id]||{cold:false,use:'usual',note:''}),sourceEvidence:room.estimates.map(e=>({id:e.id,imageId:e.imageId,bbox:e.bbox})),basis:room.basis};
+  return {id:room.id,name:room.name,sourceRoomId:room.sourceRoomId,levelIdx:room.levelIdx,action,preserve,loadW:room.loadW,existingW:room.availableW,heatingPresence:!room.included?'outside-scope':known?(room.availableW>0?'evidenced-present':'reported-absent'):'assumed-present',capacityResolved:known,panels,proposedW:supplied,allowance,inventoryVerified:!!surveyCurrent,fragile,photos:room.photos||[],design:copy(project.household.roomDesign?.[room.id]||{style:'open'}),homeownerEvidence:project.observations.filter(o=>o.kind==='radiator-evidence'&&o.target===room.id),comfort:copy(project.household.roomFeedback?.[room.id]||{cold:false,use:'usual',note:''}),sourceEvidence:room.estimates.map(e=>({id:e.id,imageId:e.imageId,bbox:e.bbox})),basis:room.basis};
  });
  const emitterCost=rooms.reduce((n,r)=>n+r.allowance,0),gross=r.routing.length===null?null:(r.budget.base+r.budget.route+emitterCost)*(1+state.rates.contingency/100),grant=gross===null?null:Math.min(gross,state.grantIncluded?data.operatingAssumptions.grant.amount:0);
  const blocked=project.household.noKitchenCylinder&&state.cylinder==='kitchen';
- return {flow,title:flow===45?(state.operating.spf45>=Math.max(state.operating.spf50,state.operating.spf55)?'Lower running costs':'Lower design flow'):flow===55?'Smaller new radiators':'Balanced starting point',rooms,emitterCost,gross,grant,net:gross===null?null:gross-grant,annual:r.running.selected.annualCost,annualRange:r.running.selected.range,loadW:r.scenario.totalW,changedRooms:rooms.filter(r=>['replace','supplement'].includes(r.action)).length,unknownRooms:rooms.filter(r=>r.action==='inventory').length,panelCount:rooms.reduce((n,r)=>n+r.panels.length,0),fragileRooms:rooms.filter(r=>r.fragile).length,blocked,geometryPending:project.observations.some(o=>o.kind==='geometry'),routing:r.routing,status:blocked?'conflicts-with-preference':'provisional',result:r};
+ return {flow,title:flow===45?(state.operating.spf45>=Math.max(state.operating.spf50,state.operating.spf55)?'Lower running costs':'Lower design flow'):flow===55?'Smaller new radiators':'Balanced starting point',rooms,emitterCost,gross,grant,net:gross===null?null:gross-grant,annual:r.running.selected.annualCost,annualRange:r.running.selected.range,loadW:r.scenario.totalW,changedRooms:rooms.filter(r=>['replace','supplement'].includes(r.action)).length,unknownRooms:rooms.filter(r=>r.action==='inventory').length,panelCount:rooms.reduce((n,r)=>n+r.panels.length,0),fragileRooms:rooms.filter(r=>r.fragile).length,blocked,geometryPending:project.observations.some(o=>o.kind==='geometry'),designPending:rooms.some(r=>['columns','vertical','ufh'].includes(r.design.style)),routing:r.routing,status:blocked?'conflicts-with-preference':'provisional',result:r};
 }
 function packages(data,project){return [45,50,55].map(flow=>packageFor(data,project,flow));}
 function compareOptions(a,b){
@@ -94,7 +105,7 @@ function observe(project,data,observation){
  if(o.kind==='photo-room')choices.photoRooms={...choices.photoRooms,[o.target]:o.roomId};
  const patch=Object.fromEntries(Object.entries(choices).filter(([k,v])=>k!=='events'&&JSON.stringify(v)!==JSON.stringify(project.choices[k])));
  if(Object.keys(patch).length)choices=P.change(project.choices,data,patch,o.at);
- return revise(project,data,{choices,observations:[...project.observations,o]},o.kind==='geometry'?'Room measurement recorded — geometry rebuild needed':o.kind==='access'?'Equipment-space evidence recorded — technical review needed':o.kind==='photo-room'?o.note:'Evidence applied: '+o.kind,o.role,o.at);
+ return revise(project,data,{choices,observations:[...project.observations,o]},o.kind==='geometry'?'Room measurement recorded — geometry rebuild needed':o.kind==='access'?'Equipment-space evidence recorded — technical review needed':o.kind==='photo-room'?o.note:o.kind==='radiator-evidence'?'Radiator photos received — output assessment needed':'Evidence applied: '+o.kind,o.role,o.at);
 }
 function replay(project,data,index){
  validate(project,data);if(index<0||index>project.events.length)throw Error('Invalid replay position');
@@ -114,6 +125,11 @@ function tasks(data,project){
  out.sort((a,b)=>(b.impactW/b.effort)-(a.impactW/a.effort));
  const feedback=Object.entries(project.household.roomFeedback||{}).filter(([,f])=>f.cold||f.use!=='usual'||f.note.trim());
  out.unshift(...feedback.map(([id,f])=>({id:'comfort-'+id,kind:'comfort',target:id,title:(f.cold?'Investigate why ':'Review how ')+current.rooms.find(r=>r.id===id).name+(f.cold?' feels cold':' is used'),owner:'Surveyor',impactW:null,why:'Homeowner report: '+(f.cold?'feels cold. ':'')+'Use: '+f.use+'. '+f.note,method:'Discuss when the problem occurs; check draughts, insulation, controls, balancing and radiator output. Agree comfort needs before changing design temperatures. This report does not itself increase calculated heat loss.'})));
+ for(const r of current.rooms){
+ if(r.homeownerEvidence.length)out.push({id:'review-photos-'+r.id,kind:'comfort',target:r.id,title:'Assess new radiator evidence in '+r.name,owner:'Remote surveyor',impactW:null,why:r.homeownerEvidence.length+' homeowner photo records received. No new output has been assumed.',method:'Identify each physical radiator once, inspect its type and dimensions, resolve duplicate views and derive sourced output ranges before updating the room inventory.'});
+ if(r.design.style!=='open')out.push({id:'design-'+r.id,kind:'comfort',target:r.id,title:'Explore '+r.design.style+' heating in '+r.name,owner:'Designer / homeowner',impactW:null,why:'Homeowner style preference. Current sizes and allowances remain the standard-panel reference.',method:r.design.style==='ufh'?'Check usable floor area, floor construction, insulation, finishes, available build-up, disruption and room demand. Compare a supported floor system before substituting output or price.':'Shortlist actual products and finishes; compare output at the selected flow, available wall space and installed cost. Show an in-room preview before agreeing the appearance.'});
+ }
+ if((project.household.sitePreferences||[]).length)out.push({id:'site-preferences',kind:'access',target:'courtyard',title:'Review your preferred and avoid locations',owner:'Designer / homeowner',impactW:null,why:project.household.sitePreferences.length+' photo markers recorded. These are preferences, not approved siting zones or new pipe routes.',method:'Register the markers to a surveyed site plan. Model the front and rear near-house areas, access, openings, boundaries and services; explain which candidate locations pass, fail or need evidence, then agree the choice.'});
  const prefs=project.choices.preferences;
  if(prefs.occupants||(prefs.hotWaterHabits||[]).length||prefs.hotWaterNotes)out.push({id:'hot-water',kind:'hot-water',target:'household',title:'Plan hot water around your household',owner:'Surveyor / homeowner',impactW:null,why:householdBrief(project),method:'Check shower flow, bathing patterns, simultaneous use, recovery and available cylinder space. Agree capacity and timing with the household. These answers have not changed the annual hot-water energy assumption or selected a cylinder.'});
  out.push({id:'geometry',kind:'geometry',target:data.geometry.geometry.rooms.find(r=>r.sourceRoomId==='f-bed3')?.id||current.rooms[0].id,title:'Resolve the plan, rear heights and basement extent',owner:'Surveyor / modeller',impactW:null,why:'EPC 146 m² and model gross coverage 167 m² have different or unresolved scope. Roof and room shapes remain provisional.',method:'Measure net room area and clear height, record sloping ceilings and party contact. Measurements trigger model review; they do not scale every surface automatically.'});
@@ -131,5 +147,16 @@ function technicalResult(data,project,choices=project.choices){
  const verified=p.rooms.filter(x=>x.inventoryVerified).reduce((n,x)=>n+x.allowance,0),unverified=p.emitterCost-verified;
  return {...r,budget:{...r.budget,total:p.gross,netTotal:p.net,grantDeduction:p.grant,upgrades:verified,reserve:unverified,reservedRooms:p.rooms.filter(x=>!x.inventoryVerified&&x.panels.length).length,low:p.gross,high:p.gross,netLow:p.net,netHigh:p.net},installationPackage:p};
 }
-return {assignPhoto,habitLabels,householdBrief,compareOptions,importProject,technicalResult,create,validate,revise,observe,replay,packages,packageFor,brief,tasks,metrics,sizePanels};
+// Guide from actual room evidence, never from the absence of a photo alone.
+function roomGuide(r){
+ const received=r.homeownerEvidence.length>0,verified=r.inventoryVerified;
+ return {
+ status:verified?'Inventory recorded':received?'Photos received · assessment pending':r.existingW===null?'Output still unknown':'Photo estimate · to verify',
+ request:verified?'We have a rated inventory for this room':received?'Thank you — we’ll assess these photos':r.existingW===null?'Help us see the heating in this room':'Help us check the radiator type and size',
+ evidence:verified?'No need to photograph the same inventory again unless it has changed. We still need to check physical fit and room assumptions.':received?'Your photos are attached to this room. Add more only if something is missing; they have not yet changed the output estimate.':r.existingW===null?'We assume this room is heated, but cannot size its radiators from the current evidence. A clear front and side photo of each radiator will help.':'The listing photo gives us a starting estimate, not a complete measured inventory. A front and side photo, plus width and height if practical, would help verify it.',
+ approach:r.action==='outside-scope'?'Review the heated scope first':r.existingW===null?'Keep your options open while we check output':r.action==='retain'?'The current estimate suggests these could stay':'We may need more heat-emitting capacity here',
+ implication:r.action==='outside-scope'?'This technical scenario excludes the room. Review the scope in the technical workbench before planning its heating.':r.existingW===null?'No replacement is budgeted just because output is unknown. Tell us what you like; we’ll assess capacity before choosing equipment.':r.action==='retain'?'Keeping them appears possible at this flow setting. Dimensions, room assumptions and on-site performance still need checking.':r.preserve?'We will investigate extra capacity alongside the radiators you want to keep. That still needs space and a product check.':'You can replace the existing radiators, or keep them and explore supplementary capacity. Choose the appearance you would like below.'
+ };
+}
+return {roomGuide,photoMatches,matchingQueue,assignPhoto,habitLabels,householdBrief,compareOptions,importProject,technicalResult,create,validate,revise,observe,replay,packages,packageFor,brief,tasks,metrics,sizePanels};
 });

@@ -157,3 +157,29 @@ when requested. Explain the direct effect in a short caption. Detailed method an
 source information can remain in expandable sections and the technical workspace.
 These presentation changes must preserve the underlying household and assignment
 records, and must not introduce new thermal assumptions.
+
+## Focused matching and homeowner design — 2026-09-11
+
+Matching now precedes comfort. `photoMatches` distinguishes automatic (supported
+source attribution), needs-help, matched and deferred. A small uncertainty queue
+opens in a native modal with image/choices side by side, persistent actions and
+save-and-advance; all matches can be reviewed and overridden. Explicit deferrals
+stay out of the queue. Automatic room identity never increases output confidence.
+
+Room changes now accepts `radiator-evidence` uploads with optional measured width
+and height; the typed evidence is captured without requiring an output rating or
+changing the calculation. Review copies are resized locally through the offline
+image resolver. `household.roomDesign` captures preferred style/UFH investigations;
+`household.sitePreferences` captures normalised front/rear preferred/avoid photo
+markers. Both create design checks and remain separate from selected products,
+engineering constraints, 3D route selection and priced scope. See
+[HOMEOWNER-DESIGN.md](HOMEOWNER-DESIGN.md) for the broader design and preview plan.
+
+The Your rooms step now uses the full page for a guided room walkthrough. Listing
+photos and the selected floor layout sit beside three small stages: comfort/routine,
+evidence request and heating approach. Users can jump between rooms, correct photo
+matches, submit radiator photos, retain existing emitters and choose a style or UFH.
+Next room advances without asserting technical completion. On phones, a compact
+room-photo header keeps the active room identifiable while answering questions.
+`installation.roomGuide` derives prompts from evidence status; received photos do
+not become verified wattages. Kitchen cylinder exclusion now lives in Places & routes.

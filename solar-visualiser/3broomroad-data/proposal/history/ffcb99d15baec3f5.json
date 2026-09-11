@@ -3,7 +3,7 @@
   "propertyId": "3broomroad",
   "address": "3 Broom Road, Hale",
   "postcode": "WA15 9AR",
-  "revision": "20b8a596f585a41e",
+  "revision": "ffcb99d15baec3f5",
   "status": "remote-discussion-only",
   "designApproved": false,
   "geometry": {
@@ -33995,7 +33995,7 @@
     "js/building/geometry.js": "ff5e8572ca688fbd19a291abe5ffd3c3a25c417ca6b18c0340338ab3262659ba",
     "js/building/heat-loss.js": "10cf4fa485f9cfe771ae066871a7eb0d059a6faaa995d3a18902504de8eb510b",
     "js/building/installation-store.js": "f047516e5f0dc0de5af2c16fb1490e0a93ec13a2263ce4e75726fa156d677018",
-    "js/building/installation-ui.js": "2d7fb4845d22cb32976d8cd42fe23a778def0afd6783a05be5341ada8e020da0",
+    "js/building/installation-ui.js": "ba2825ec5499726c1b58a8b9411929cf8e2ddd57a6efc8375ee3e9ea2313f060",
     "js/building/installation.js": "f7d598494787541313a8d71b80972589b3e4fd660d32085a05759dd8bd77731a",
     "js/building/openings.js": "0f7d4242b6a2cdd17b8a0597267833e209561ef466582f1089464e64bd8b8596",
     "js/building/photomatch-ui.js": "5d86089645ea41ce9f4c4c419e4c704ee1624fa9b757df8f9e435748e124ad71",

@@ -15,6 +15,7 @@ window.SolarViz = window.SolarViz || {};
 // (tainted-canvas rules) — which frustum thumbnails, the floorplan
 // underlay and facade baking all need.
 window.SolarViz.imageUrl = function (im) {
+  if (im && typeof im.dataUrl === 'string' && /^data:image\/(jpeg|png|webp);base64,/.test(im.dataUrl)) return im.dataUrl;
   const blobs = window.__IMAGE_DATAURLS__;
   if (blobs && im && blobs[im.id]) return blobs[im.id];
   const base = (window.IMAGE_DATA && window.IMAGE_DATA.basePath) || '';

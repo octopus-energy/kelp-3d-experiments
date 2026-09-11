@@ -68,3 +68,25 @@ const measured=J.observe(matched,D,{...o,id:'measured-bedroom',target:room2.id})
 assert.equal(J.packageFor(D,moved,50).rooms.find(r=>r.id===room2.id).basis,'entered');assert.equal(J.packageFor(D,moved,50).rooms.find(r=>r.id===room2.id).inventoryVerified,false,'Changed attribution flags measured room inventory for review');
 assert.equal(J.importProject(baseline,D,corrected).choices.photoRooms[image],'f-bed3');
 console.log('Household comfort, hot-water brief, photo attribution, correction, unknowns, inventory precedence and replay passed');
+
+const matches=J.photoMatches(D,baseline),queue=J.matchingQueue(D,baseline);
+assert(matches.some(i=>i.status==='automatic'));assert(queue.length>0&&queue.length<matches.length);
+assert(queue.some(i=>i.id==='35f17817024aeb5a833ac4f0ed4d592a'),'Heated status does not establish exact room identity');
+assert(!queue.some(i=>i.id==='80c683d944553f0ea65667c4d3965e6c'),'Supported hall attribution needs no repeated question');
+assert(!J.matchingQueue(D,matched).some(i=>i.id===image));assert(!J.matchingQueue(D,unresolved).some(i=>i.id===image),'Explicitly deferred photo is not asked again');
+const styled=J.revise(baseline,D,{household:{...baseline.household,roomDesign:{[living.id]:{style:'ufh'}},sitePreferences:[{id:'front-test',side:'front',kind:'prefer',u:.5,v:.8}]}},'Design ideas');
+assert(J.packageFor(D,styled,50).designPending);assert.equal(J.metrics(D,styled).loadW,J.metrics(D,baseline).loadW);assert.equal(J.metrics(D,styled).net,J.metrics(D,baseline).net,'Style request is not a fictitious priced product');
+assert(J.tasks(D,styled).some(t=>t.id==='design-'+living.id));assert(J.tasks(D,styled).some(t=>t.id==='site-preferences'));
+const capture=J.observe(baseline,D,{id:'capture-test',at:o.at,kind:'radiator-evidence',target:living.id,role:'homeowner',observer:'Fixture',note:'Test evidence',widthMm:900,heightMm:null,attachments:[{name:'test.jpg',dataUrl:'data:image/jpeg;base64,AAAA'}]});
+assert.equal(J.metrics(D,capture).loadW,J.metrics(D,baseline).loadW);assert.equal(J.metrics(D,capture).net,J.metrics(D,baseline).net);assert(J.tasks(D,capture).some(t=>t.id==='review-photos-'+living.id));
+assert.throws(()=>J.observe(baseline,D,{...capture.observations[0],widthMm:-1}),/optional dimensions/);
+console.log('Confident match queue, homeowner design requests and unmeasured photo evidence passed');
+
+const guideUnknown=J.roomGuide(J.packageFor(D,baseline,50).rooms.find(r=>r.existingW===null));
+assert.equal(guideUnknown.status,'Output still unknown');assert(guideUnknown.implication.includes('No replacement is budgeted'));
+const guidePhoto=J.roomGuide(J.packageFor(D,capture,50).rooms.find(r=>r.id===living.id));
+assert.equal(guidePhoto.status,'Photos received · assessment pending');assert(guidePhoto.evidence.includes('not yet changed'));
+const guideMeasured=J.roomGuide(J.packageFor(D,measured,50).rooms.find(r=>r.id===room2.id));
+assert.equal(guideMeasured.status,'Inventory recorded');assert(guideMeasured.evidence.includes('No need to photograph'));
+assert(J.roomGuide(J.packageFor(D,moved,50).rooms.find(r=>r.id===room2.id)).status!=='Inventory recorded','Changed attribution must reopen the evidence request');
+console.log('Room guide distinguishes missing, submitted, rated and reopened evidence');

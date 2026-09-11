@@ -821,3 +821,35 @@ when requested. Explain the direct effect in a short caption. Detailed method an
 source information can remain in expandable sections and the technical workspace.
 These presentation changes must preserve the underlying household and assignment
 records, and must not introduce new thermal assumptions.
+
+### Co-design instead of repeated confirmation — 2026-09-11
+
+Match uncertain photos before room-comfort questions. Room-identity confidence is
+independent of radiator-size confidence. Supported attributions can skip the help
+queue; all remain reviewable. Save advances only after persistence succeeds. A
+native modal keeps the image, room choices and save action together; check actual
+viewport positions on desktop and phone, not just document overflow.
+
+Capture homeowner radiator photos as append-only room evidence, not complete rated
+inventories. Keep appearance and UFH requests separate from the panel benchmark.
+Record preferred/avoid outdoor spots as image-space preferences until registered
+to a site model and screened. Never present photo markers as feasible siting zones.
+See [Homeowner-led design](HOMEOWNER-DESIGN.md) for the intended yard modelling,
+product-shortlist and geometry-grounded generative-preview workflow and its limits.
+
+### A room is the unit of homeowner discussion — 2026-09-11
+
+Do not detach preservation, comfort or style preferences from their room evidence.
+Use a guided room workspace with the photo, matched/suggested identity, selected
+floor-plan region, specific evidence gap and proposed response together. Separate
+how the room feels, what evidence would help and the homeowner's preferred approach.
+Keep navigation and technical approval distinct: Next room records no observation
+and does not close a survey task. Choices persist in the existing replay history.
+
+Derive evidence prompts from current state: unknown output calls for clear radiator
+photos; submitted photos await assessment; a valid rated inventory avoids requesting
+the same evidence again. Attribution changes that reopen inventory review must also
+reopen the guidance. Unknown output must never imply an absent radiator or an
+automatic replacement. Keep cylinder/storage exclusions with equipment locations.
+Verify next-room/reset behaviour, photo changes, saved room preferences and uploads,
+as well as desktop and phone context, over HTTP and file URLs.
