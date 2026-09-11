@@ -1,8 +1,10 @@
 # Guided installation project
 
 `proposal.html` starts with an explanation and a choice of useful next actions.
-The six areas are Start here, Compare options, Your rooms, Places & routes, Survey,
-and Review together. A photo-backed room overview supports selective contributions. The technical
+The six areas are Your home, Your rooms, Equipment & routes, Costs & payments,
+Checks & survey, and Review together. See [ROOM-LED-PLANNING.md](ROOM-LED-PLANNING.md)
+for the room comparisons, existing-service evidence, gas/payment scenarios and
+scoped document register. A photo-backed room overview supports selective contributions. The technical
 workbench remains available at `proposal.html?view=technical`. Both use one
 property/evidence-revision-scoped installation project. The Homeowner, Remote adviser and Site surveyor workspace
 switch changes the presentation and default evidence role; it is not authentication
@@ -178,13 +180,14 @@ engineering constraints, 3D route selection and priced scope. See
 [HOMEOWNER-DESIGN.md](HOMEOWNER-DESIGN.md) for the broader design and preview plan.
 
 The Your rooms step uses the full page for a guided room walkthrough. Listing
-photos and the selected floor layout sit beside three small stages: comfort/routine,
-evidence request and heating approach. Users can jump between rooms, correct photo
+photos and the selected floor layout sit beside five optional topics: room heat
+loss/construction, existing radiators, flow/output, options and comfort. Users can jump between rooms, correct photo
 matches, submit radiator photos, retain existing emitters and choose a style or UFH.
 Next room advances without asserting technical completion. On phones, a compact
 room-photo header keeps the active room identifiable while answering questions.
 `installation.roomGuide` derives prompts from evidence status; received photos do
-not become verified wattages. Kitchen cylinder exclusion lives in Places & routes.
+not become verified wattages. Kitchen cylinder exclusion lives in Equipment & routes, alongside existing-service
+records and photo preferences.
 
 The current review, concrete answer effects and verification are documented in
 [JOURNEY-REVIEW.md](JOURNEY-REVIEW.md). Earlier implementation notes below the state

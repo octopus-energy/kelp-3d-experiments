@@ -81,3 +81,38 @@ access control or cloud sync. Unsubmitted evidence is retained during in-page
 navigation and warns before leaving, but is not a durable draft. Mobile process
 termination can bypass that warning. Earlier-revision projects can be recovered,
 but migration still requires a reviewed comparison of evidence and identities.
+
+
+## Room-led extension — 11 September 2026
+
+The room comparison now shows working demand beside output at 45/50/55°C with
+photo-output uncertainty. Existing glazing and adjoining-wall observations are
+collected in their room and affect the existing adapter. The homeowner sees all
+rooms affected by a shared group before saving. Extension accounts are retained
+as evidence, not converted into insulation performance.
+
+Glazing what-ifs visibly compare demand and the remaining output gap without
+rewriting installed construction or the baseline radiator budget. Wall-insulation
+and glazing preferences join radiator/UFH ideas in the survey handoff. Existing
+boiler, cylinder, meter and consumer-unit descriptions/photos appear beside the
+site access check. The adviser and joint review can read the same planning brief.
+Gas fixed charges and illustrative borrowing are separate from energy estimates.
+Document records distinguish receipt, review and review needed after changes.
+
+Screenshots from HTTP and file:// walkthroughs showed the first document register
+pushing actual survey work too far down the page. The register now uses compact
+cards, with full-width forms only when opened. Phone room navigation avoids a
+large sticky multi-row tab block. Monthly payments show pence, and exported recaps
+include monthly payment, upfront payment, interest and total paid.
+
+`browser-planning.cjs` exercises real room construction, proposed glazing, service
+photo capture, gas and loan forms, review invalidation and reload. Its file:// pass
+disables networking. Desktop and 390 px phone screenshots were inspected for room
+heat loss, flow comparison, fabric options, existing services, payment results and
+document reviews. Data are isolated synthetic fixtures, not property observations.
+The established installation and technical proposal browser regressions also pass.
+
+Remaining product boundaries: no automatic equipment choice, acoustic compliance,
+service-route design, insulation specification, finance offer or certificate
+verification. Glazing scenarios are useful comparisons, not adopted design packages;
+UFH, fabric work and nonstandard emitters still need scoped products and prices.

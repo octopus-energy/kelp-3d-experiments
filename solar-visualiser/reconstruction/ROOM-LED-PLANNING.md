@@ -29,7 +29,10 @@ store. Load both as classic scripts in the documented order in `proposal.html`.
 Preferences and payment/gas scenarios live in `household.planning`, included in
 every existing installation event snapshot. Existing services, construction
 accounts and document reviews are append-only `observations`; corrections append.
-Old same-revision projects without these optional fields remain valid. Export,
+A homeowner can reopen a construction answer as uncertain: the previous observation
+remains immutable, the model returns to its labelled working assumption, and the
+survey task stays open. Old same-revision projects without these optional fields
+remain valid. Export,
 import, local saves, stale-tab protection and read-only event replay retain them.
 
 A document record stores the current scope fingerprint. Evidence, geometry revision,
@@ -71,3 +74,10 @@ Run `tests/installation-planning.test.js`, installation/store/proposal suites an
 The browser harness uses isolated profiles with synthetic inputs, desktop/390 px
 phone viewports, HTTP and `file://`; it saves screenshots for visual inspection.
 The room-led checks exercise actual forms and persistence, not only pure functions.
+
+
+Final reviewed revision: `8b27a5966ce18dd9`. HTTP and offline-with-network-disabled
+planning forms, service-image capture, uncertainty reopening, desktop/phone layout,
+local reload and replay passed. The guided installation and technical proposal
+browser regressions also passed. Final screenshots are produced by the reproducible
+browser command above; inspect them after any UI changes.

@@ -21,8 +21,8 @@ function validate(h,data){
   if(!data.geometry.geometry.rooms.some(r=>r.id===id)||!record(r)||!Array.isArray(r.improvements)||r.improvements.some(v=>!Object.hasOwn(improvementLabels,v))||new Set(r.improvements).size!==r.improvements.length||r.improvements.includes('none')&&r.improvements.length>1)throw Error('Invalid room improvement preference');
   for(const [group,value] of Object.entries(r.glazing||{}))if(!data.thermalEvidence.groups.some(g=>g.id===group&&g.kind==='opening'&&g.roomIds.includes(id)&&Number.isFinite(g.options[value]?.u)))throw Error('Invalid glazing comparison');
  }
- if(p.gas){const g=p.gas;if(!record(g)||!['unknown','keep','explore'].includes(g.intent)||!text(g.appliances)||!text(g.source)||g.standingPence!==null&&(!Number.isFinite(g.standingPence)||g.standingPence<0||g.standingPence>1000))throw Error('Enter a valid gas bill standing charge or leave it unknown');}
- if(p.finance){const f=p.finance;if(!record(f)||!text(f.source)||!['cash','loan'].includes(f.method)||!['deposit','apr','months','extra'].every(k=>f[k]===null||Number.isFinite(f[k])&&f[k]>=0)||f.deposit>1000000||f.extra>1000000||f.apr>100||f.months!==null&&(!Number.isInteger(f.months)||f.months<1||f.months>360))throw Error('Enter valid payment assumptions; leave unknown amounts blank');}
+ if(p.gas!==undefined){const g=p.gas;if(!record(g)||!['unknown','keep','explore'].includes(g.intent)||!text(g.appliances)||!text(g.source)||g.standingPence!==null&&(!Number.isFinite(g.standingPence)||g.standingPence<0||g.standingPence>1000))throw Error('Enter a valid gas bill standing charge or leave it unknown');}
+ if(p.finance!==undefined){const f=p.finance;if(!record(f)||!text(f.source)||!['cash','loan'].includes(f.method)||!['deposit','apr','months','extra'].every(k=>f[k]===null||Number.isFinite(f[k])&&f[k]>=0)||f.deposit>1000000||f.extra>1000000||f.apr>100||f.months!==null&&(!Number.isInteger(f.months)||f.months<1||f.months>360))throw Error('Enter valid payment assumptions; leave unknown amounts blank');}
 }
 function validateObservation(o,data){
  if(o.kind==='room-context'&&(!data.geometry.geometry.rooms.some(r=>r.id===o.target)||!['unknown','original','extension','mixed'].includes(o.extension)))throw Error('Choose a room and its reported construction context');
@@ -44,7 +44,7 @@ function finance(net,f){
  if(f.method==='cash')return {ready:true,total,upfront:total,monthly:0,interest:0,repay:0,borrowed:0};
  if([f.deposit,f.apr,f.months].some(v=>v===null))return {ready:false,reason:'Enter a deposit, annual rate and term to compare monthly payments.'};
  if(f.deposit>total)return {ready:false,reason:'The deposit exceeds this scenario’s total cost.'};
- const borrowed=total-f.deposit,rate=f.apr/1200,monthly=borrowed===0?0:rate===0?borrowed/f.months:borrowed*rate/(1-Math.pow(1+rate,-f.months)),repay=monthly*f.months;
+ const borrowed=total-f.deposit,rate=f.apr/1200,monthly=borrowed===0?0:rate===0?borrowed/f.months:borrowed*rate/-Math.expm1(-f.months*Math.log1p(rate)),repay=monthly*f.months;
  return {ready:true,total,upfront:f.deposit,borrowed,monthly,repay,interest:repay-borrowed,totalPaid:f.deposit+repay};
 }
 // Conservative scope fingerprint: any evidence or design change requires renewed document review.
@@ -57,7 +57,7 @@ function signature(project,target){
  let a=2166136261,b=2246822519;for(let i=0;i<text.length;i++){a=Math.imul(a^text.charCodeAt(i),16777619);b=Math.imul(b^text.charCodeAt(i),3266489917);}
  return 'scope-v1:'+text.length+':'+(a>>>0).toString(16)+':'+(b>>>0).toString(16);
 }
-function checks(project){return checkDefinitions.map(c=>{const evidence=project.observations.filter(o=>o.kind==='planning-check'&&o.target===c.id).at(-1),stale=!!evidence&&evidence.signature!==signature(project,c.id);return {...c,evidence,stale,status:stale?'needs-review':evidence?.status||'not-recorded'};});}
+function checks(project){const physical=signature(project,'physical'),financial=signature(project,'quote');return checkDefinitions.map(c=>{const evidence=project.observations.filter(o=>o.kind==='planning-check'&&o.target===c.id).at(-1),stale=!!evidence&&evidence.signature!==(c.id==='quote'?financial:physical);return {...c,evidence,stale,status:stale?'needs-review':evidence?.status||'not-recorded'};});}
 function latestService(project,key){return project.observations.filter(o=>o.kind==='service'&&o.target===key).at(-1)||null;}
 function pending(data,project){
  const out=[];

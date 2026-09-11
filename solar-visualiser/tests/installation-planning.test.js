@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),K=require('../js/building/installation-planning'),J=require('../js/building/installation'),D=require('../3broomroad-data/proposal/proposal.json');
 const baseline=J.create(D),id='0:r11',f={method:'loan',extra:0,deposit:2000,apr:6,months:60,source:'Synthetic fixed-rate example'};
-const loan=K.finance(12000,f);assert(Math.abs(loan.monthly-193.328)<.01);assert(Math.abs(loan.totalPaid-13599.68)<.1);assert.equal(K.finance(12000,{...f,apr:0}).interest,0);assert.equal(K.finance(12000,{...f,deposit:12000}).monthly,0);assert.equal(K.finance(12000,{...f,deposit:13000}).ready,false);assert.equal(K.finance(null,f).ready,false);assert.equal(K.finance(12000,{...f,extra:null}).ready,false);assert.equal(K.finance(12000,{...f,apr:null}).ready,false);
+const loan=K.finance(12000,f);assert(Math.abs(loan.monthly-193.328)<.01);assert(Math.abs(loan.totalPaid-13599.68)<.1);assert.equal(K.finance(12000,{...f,apr:0}).interest,0);assert(Number.isFinite(K.finance(12000,{...f,apr:1e-15}).monthly));assert.equal(K.finance(12000,{...f,deposit:12000}).monthly,0);assert.equal(K.finance(12000,{...f,deposit:13000}).ready,false);assert.equal(K.finance(null,f).ready,false);assert.equal(K.finance(12000,{...f,extra:null}).ready,false);assert.equal(K.finance(12000,{...f,apr:null}).ready,false);
 const stamp={at:'2026-09-11T12:00:00Z',role:'homeowner',observer:'Synthetic fixture',note:'Test data only'};
 const single=J.observe(baseline,D,{...stamp,id:'glass',kind:'envelope',target:'bay-lower',value:'single'}),before=JSON.stringify(single),comparison=K.roomComparison(D,single,id,{'bay-lower':'double'});
 for(const row of comparison){assert(row.proposed.loadW<row.current.loadW);assert.equal(row.current.availableW,row.proposed.availableW);}
@@ -18,3 +18,8 @@ for(const finance of [{...f,apr:-1},{...f,months:1.2},{...f,extra:NaN}])assert.t
 assert.throws(()=>J.validate({...baseline,household:{...baseline.household,planning:{rooms:[]}}},D));assert.throws(()=>J.observe(p,D,{...stamp,id:'invalid',kind:'service',target:'boiler',presence:'present',location:''}),/Describe/);
 const imported=J.importProject(baseline,D,moved);assert.equal(imported.household.planning.rooms[id].glazing['bay-lower'],'double');assert.equal(imported.observations.length,moved.observations.length);assert.equal(K.checks(imported).find(c=>c.id==='siting').stale,true);
 console.log('Room planning: factual vs proposed glazing, flow physics, null-aware finance, service provenance, append-only review, invalidation, import and replay passed');
+
+assert(J.evidenceForTask(D,p,{id:'access',kind:'access',target:'utility'}).some(o=>o.kind==='service'),'Existing services are visible beside the technical access check');
+
+const reopened=J.observe(single,D,{...stamp,id:'glass-reopened',kind:'envelope-uncertain',target:'bay-lower',note:'Earlier pane count is uncertain'});
+assert.equal(reopened.choices.envelope['bay-lower'],undefined);assert.equal(J.metrics(D,reopened).loadW,J.metrics(D,baseline).loadW);assert.equal(reopened.observations[0].value,'single');assert.equal(J.replay(reopened,D,1).choices.envelope['bay-lower'].choice,'single');assert(J.tasks(D,reopened).some(t=>t.id==='envelope-bay-lower'));

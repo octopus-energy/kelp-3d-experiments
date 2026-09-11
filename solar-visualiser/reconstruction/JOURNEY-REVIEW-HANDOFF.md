@@ -7,12 +7,15 @@ Existing screens, step names and layouts are implementation choices, not require
 ## Implemented review and current verification
 
 Read [JOURNEY-REVIEW.md](JOURNEY-REVIEW.md) for the independent three-role findings,
-implemented changes, answer-effect trace and remaining limits. The navigation now
-reads Start here, Compare options, Your rooms, Places & routes, Survey, Review
-together. Rooms open through a visual chooser; their three topics are optional and
-Next room advances directly. Remote adviser and Site surveyor are separate views.
-Earlier saved projects are discoverable for original-data recovery, without automatic
-migration. The review conversation records a conditional direction, never approval.
+implemented changes, answer-effect trace and remaining limits. The current
+room-led extension is documented in [ROOM-LED-PLANNING.md](ROOM-LED-PLANNING.md).
+Navigation follows Your home, Your rooms, Equipment & routes, Costs & payments,
+Checks & survey, Review together. Each room keeps its photos and plan beside five
+optional topics: Room & heat loss, My radiators, Flow & output, Options and Comfort.
+Existing construction and proposed improvements have distinct consequences.
+Service evidence, gas discussion, illustrative payments and a scoped document
+register feed the adviser brief, site check and joint review. Earlier saved projects
+remain recoverable without automatic migration; no form or review issues approval.
 
 ## Purpose and intended relationship
 
@@ -98,11 +101,11 @@ Entry points, relative to the served `solar-visualiser/` directory:
 - `survey.html`: broader survey evidence recorder; its legacy packet is not silently
   merged into the installation project's typed observation pathway.
 
-The earlier guided navigation had six steps: Your priorities, Your plan,
-Your rooms, Places & routes, Survey, What changed. Matching is launched from
-priorities before the room walkthrough. Each room has How it feels, What we need
-and Your approach. Review whether this hierarchy and sequence are actually helpful;
-there is permission to refactor the whole tool.
+The current sequence and calculation boundaries are described in
+[ROOM-LED-PLANNING.md](ROOM-LED-PLANNING.md). Matching starts in Your home and remains
+available in each room. Five optional room topics connect evidence, heat loss,
+existing output, improvements and comfort. Existing screens are still open to
+review; their presence does not make them a product requirement.
 
 Implemented capabilities:
 

@@ -4,7 +4,11 @@ The homeowner is a collaborator with knowledge of their home, tastes and priorit
 Their job is to recognise, choose and contribute useful evidence. The system's job
 is to do the interpretation, explain consequences, and ask only consequential questions.
 
-For the reviewed experience and answer effects, read [JOURNEY-REVIEW.md](JOURNEY-REVIEW.md).
+For the reviewed experience and answer effects, read [JOURNEY-REVIEW.md](JOURNEY-REVIEW.md)
+and the current [room-led planning contract](ROOM-LED-PLANNING.md). Existing glazing
+and wall accounts update supported assumptions; proposed fabric improvements
+remain separately labelled comparisons. Rooms lead into equipment, gas, costs,
+payments and a scoped assessment/certificate register.
 For product direction and the working map, read
 [JOURNEY-REVIEW-HANDOFF.md](JOURNEY-REVIEW-HANDOFF.md).
 
