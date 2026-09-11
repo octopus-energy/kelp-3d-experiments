@@ -869,3 +869,22 @@ through the walkthrough. Save errors must appear beside the active capture or
 matching controls, and must not advance the queue. A successful photo save clears
 that draft. Radiator records group photos and optional dimensions for one physical
 radiator; a complete room rating still requires accounting for every emitter.
+
+### Saved discussions and revision recovery
+
+A newly generated proposal must not hide earlier discussions. The installation
+store lists earlier projects for the same property, exposes their recorded event
+and observation summaries, and downloads the original data without changing its
+revision or applying it to the current model. A changed room identity, assumption
+or source still needs review before migration; downloading is recovery, not migration.
+Unreadable records remain downloadable and unrelated properties stay out of the list.
+
+Distinguish starting assumptions from successfully persisted answers. Storage is
+browser/device/origin scoped; the interface must explain export for handoff and
+backup. Evidence forms keep their selections during in-page navigation, but warn
+before leaving with unfinished entries. This warning is a safeguard, not durable
+draft storage. Mobile browsers can terminate pages without a beforeunload event.
+
+Verify same-property archive discovery over HTTP and file URLs, exact raw recovery,
+rejection of cross-revision application, and stale-tab protection. Run
+`tests/installation-store.test.js` alongside the installation and browser suites.

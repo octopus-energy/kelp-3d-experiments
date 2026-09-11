@@ -14,6 +14,12 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await call('Page.navigate',{url:root+'/proposal.html'});
   for(let i=0;i<150;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('!!window.__BROOM_INSTALLATION__'),true,'Guided journey starts');
+  assert.equal(await evalJS(`document.getElementById('journey-revision').textContent.includes('no answers saved')`),true,'Starting assumptions are not labelled saved answers');
+  await evalJS(`localStorage.setItem('kelp:installation:'+BROOM_PROPOSAL.propertyId+':recovery-fixture',JSON.stringify({...__BROOM_INSTALLATION__.project,revision:'recovery-fixture'}))`);
+  await evalJS('delete window.__BROOM_INSTALLATION__');await call('Page.reload');for(let i=0;i<150;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__&&document.querySelector(".saved-archive")'))break;await new Promise(r=>setTimeout(r,100));}
+  assert.equal(await evalJS(`document.querySelector('#project-storage>details').open&&document.getElementById('project-storage').textContent.includes('recovery-fixture')`),true,'Earlier saved work is discoverable after a revision');
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.revision===BROOM_PROPOSAL.revision&&__BROOM_INSTALLATION__.project.events.length===0`),true,'Recovery never relabels or applies old evidence');
+  await evalJS(`document.querySelector('#project-storage>details').open=false`);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.emitterCost'),2400);
   assert.equal(await evalJS(`[...document.querySelectorAll('#journey-content input:not([type=checkbox]),#journey-content textarea')].filter(e=>!e.closest('details:not([open])')&&e.getBoundingClientRect().height>0).length`),0,'Household starts with visual choices and no visible text fields');
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.rooms.filter(r=>r.action==="inventory").every(r=>r.heatingPresence==="assumed-present"&&r.allowance===0&&r.proposedW===null)'),true);
@@ -85,7 +91,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`document.getElementById('replay-back').click()`);assert.equal(await evalJS('__BROOM_INSTALLATION__.cursor===__BROOM_INSTALLATION__.project.events.length-1'),true);
   await evalJS(`document.getElementById('replay-forward').click()`);
   fs.writeFileSync(path.join(testTmp,'installation-measurement-replay.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
-  await call('Page.reload');for(let i=0;i<100;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
+  await evalJS('delete window.__BROOM_INSTALLATION__');await call('Page.reload');for(let i=0;i<100;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.observations.length'),1);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.summary().includes("Browser test fixture")'),true);
   await call('Page.navigate',{url:root+'/proposal.html?view=technical'});for(let i=0;i<120;i++){if(await evalJS('!!window.__BROOM_PROPOSAL__'))break;await new Promise(r=>setTimeout(r,100));}
@@ -143,7 +149,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`document.querySelector('#journey-content .evidence-record img').src.startsWith('data:image/')`),true,'Replay includes matched source photo');
   await evalJS(`document.getElementById('replay-back').click()`);
   assert.equal(await evalJS(`SolarViz.installation.replay(__BROOM_INSTALLATION__.project,BROOM_PROPOSAL,__BROOM_INSTALLATION__.cursor).choices.photoRooms['8d1cee4f0ff1f1632f03ce295d77e9eb']`),'f-bed2');
-  await call('Page.reload');for(let i=0;i<100;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
+  await evalJS('delete window.__BROOM_INSTALLATION__');await call('Page.reload');for(let i=0;i<100;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.choices.photoRooms['8d1cee4f0ff1f1632f03ce295d77e9eb']`),'f-bed3');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['1:r01'].cold`),true);
   assert.equal(await evalJS(`document.querySelector('[data-basement]')===null&&document.getElementById('baths')===null`),true,'No unnecessary heating scope or busy-hour question');

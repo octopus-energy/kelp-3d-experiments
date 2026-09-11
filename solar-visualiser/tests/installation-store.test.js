@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+const J=require('../js/building/installation'),P=require('../js/building/proposal'),D=require('../3broomroad-data/proposal/proposal.json');
+const records=new Map(),localStorage={get length(){return records.size;},key:i=>[...records.keys()][i],getItem:k=>records.get(k)??null,setItem:(k,v)=>records.set(k,v)};
+function store(){const context={window:{BROOM_PROPOSAL:D},SolarViz:{installation:J,proposal:P},localStorage};vm.runInNewContext(fs.readFileSync(require.resolve('../js/building/installation-store'),'utf8'),context);return context.SolarViz.installationStore;}
+const s=store(),fresh=s.load();assert.equal(s.persisted,false);
+const old={...fresh,revision:'prior-evidence'},oldKey='kelp:installation:'+D.propertyId+':prior-evidence',raw=JSON.stringify(old);
+records.set(oldKey,raw);records.set('kelp:installation:another-home:old',raw);
+assert.equal(s.archives().length,1);assert.equal(s.archiveRaw(oldKey),raw);
+assert.throws(()=>s.archiveRaw('kelp:installation:another-home:old'),/not found/);
+assert.equal(s.load().revision,D.revision);assert.equal(s.persisted,false);
+s.save(fresh);assert.equal(s.persisted,true);assert.equal(records.get(oldKey),raw);
+const other=store();other.load();s.save(J.revise(fresh,D,{household:{...fresh.household,notes:'First tab'}},'First tab'));
+assert.throws(()=>other.save(fresh),/another tab/);
+const corruptKey='kelp:installation:'+D.propertyId+':broken';records.set(corruptKey,'{broken');
+assert.equal(s.archives().find(a=>a.key===corruptKey).project,null);assert.equal(s.archiveRaw(corruptKey),'{broken');
+assert.throws(()=>J.validate(old,D),/revision/);
+console.log('Saved projects: revision isolation, exact recovery, corrupt data preservation and stale-tab protection passed');
