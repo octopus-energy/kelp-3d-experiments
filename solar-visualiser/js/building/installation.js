@@ -1,5 +1,5 @@
 // Versioned installation decisions. Pure UMD; calculations use the proposal engine adapter.
-(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'),require('./installation-planning'));else(root.SolarViz=root.SolarViz||{}).installation=factory(root.SolarViz.proposal,root.SolarViz.installationPlanning);})(typeof window==='undefined'?globalThis:window,function(P,K){
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'),require('./installation-planning'),require('./room-assessment'));else(root.SolarViz=root.SolarViz||{}).installation=factory(root.SolarViz.proposal,root.SolarViz.installationPlanning,root.SolarViz.roomAssessment);})(typeof window==='undefined'?globalThis:window,function(P,K,A){
 'use strict';
 const copy=x=>JSON.parse(JSON.stringify(x));
 function create(data,choices=P.defaults(data)){return {schemaVersion:1,kind:'installation-project',propertyId:data.propertyId,revision:data.revision,choices:copy(choices),household:{priority:'balanced',preserve:[],noKitchenCylinder:false,coldRooms:'',roomFeedback:{},notes:''},observations:[],events:[],selectedFlow:choices.flow};}
@@ -50,8 +50,10 @@ function assignPhoto(project,data,imageId,roomId,role='homeowner'){
  return observe(project,data,{id:'photo-room-'+(project.events.length+1)+'-'+Date.now(),at:new Date().toISOString(),kind:'photo-room',target:imageId,roomId,role:['surveyor','adviser'].includes(role)?role:'homeowner',observer:role==='surveyor'?'Surveyor in room-matching workspace':role==='adviser'?'Remote adviser in room-matching workspace':'Homeowner in room-matching workspace',note:'Matched listing photo to: '+name});
 }
 function validateObservation(o,data){
- if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water','radiator-evidence','discussion','room-context','service','planning-check','envelope-uncertain'].includes(o.kind)||!['surveyor','homeowner','adviser'].includes(o.role)||['observer','note','at','id'].some(k=>typeof o[k]!=='string'||!o[k].trim())||!Number.isFinite(Date.parse(o.at)))throw Error('Record who checked it and the evidence / measurement source.');
+ if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water','radiator-evidence','discussion','room-context','service','planning-check','envelope-uncertain','surface-assumption','radiator-inventory'].includes(o.kind)||!['surveyor','homeowner','adviser'].includes(o.role)||['observer','note','at','id'].some(k=>typeof o[k]!=='string'||!o[k].trim())||!Number.isFinite(Date.parse(o.at)))throw Error('Record who checked it and the evidence / measurement source.');
  K.validateObservation(o,data);
+ if(o.kind==='surface-assumption'){if(o.value!==null)A.validateSurfaceOverrides({[o.target]:o.value},data);else if(!A.surfaceInfo(data,o.target,data.geometry.geometry.rooms[0].id))throw Error('Unknown surface');}
+ if(o.kind==='radiator-inventory'){if(!data.geometry.geometry.rooms.some(r=>r.id===o.target))throw Error('Unknown room');A.validateInventory(o.inventory,data);}
  if(o.kind==='photo-room'&&(!(data.interiorPhotos||[]).some(i=>i.id===o.target)||o.roomId!==null&&!data.geometry.geometry.rooms.some(r=>r.sourceRoomId===o.roomId)))throw Error('Choose a valid photo and room');
  if(o.kind==='discussion'&&(o.target!=='household'||!['preferred-direction','questions-open'].includes(o.outcome)))throw Error('Record the discussion outcome');
  if(o.kind==='hot-water'&&o.target!=='household')throw Error('Invalid household review');
@@ -80,7 +82,7 @@ function packageFor(data,project,flow){
   const preserve=project.household.preserve.includes(room.id),observed=project.observations.filter(o=>o.kind==='emitter'&&o.target===room.id).at(-1);
   const observedIndex=project.observations.indexOf(observed),photos=project.observations.filter(o=>o.kind==='radiator-evidence'&&o.target===room.id);
   const laterEvidence=project.observations.slice(observedIndex+1).some(o=>{
-   if(o.kind==='radiator-evidence')return o.target===room.id;
+   if(['radiator-evidence','radiator-inventory'].includes(o.kind))return o.target===room.id;
    if(o.kind!=='photo-room')return false;
    const before=project.events.find(e=>e.beforeState.observationCount<=project.observations.indexOf(o)&&e.afterState.observationCount>project.observations.indexOf(o))?.beforeState.choices;
    const previousRoom=P.photoRoom(data,before||state,o.target);
@@ -123,6 +125,8 @@ function observe(project,data,observation){
  if(o.kind==='emitter')choices.emitters[o.target]={output50:o.output50,exponent:o.exponent,source:o.observer+': '+o.note,basis:o.role==='surveyor'?'site-inventory':o.role==='adviser'?'remote-assessment':'homeowner-reported'};
  if(o.kind==='envelope')choices.envelope[o.target]={choice:o.value,basis:o.role==='surveyor'?'survey-observed':o.role==='adviser'?'call-assumption':'homeowner-reported',note:o.observer+': '+o.note};
  if(o.kind==='envelope-uncertain')delete choices.envelope[o.target];
+ if(o.kind==='surface-assumption'){choices.surfaceOverrides={...choices.surfaceOverrides};if(o.value===null)delete choices.surfaceOverrides[o.target];else choices.surfaceOverrides[o.target]={...o.value,source:o.observer+': '+o.note,basis:o.role==='surveyor'?'survey-observed':o.role==='adviser'?'call-assumption':'homeowner-reported'};}
+ if(o.kind==='radiator-inventory'){choices.radiatorInventories={...choices.radiatorInventories,[o.target]:o.inventory};delete choices.emitters[o.target];}
  if(o.kind==='basement')choices.basement=o.value;
  if(o.kind==='photo-room')choices.photoRooms={...choices.photoRooms,[o.target]:o.roomId};
  const patch=Object.fromEntries(Object.entries(choices).filter(([k,v])=>k!=='events'&&JSON.stringify(v)!==JSON.stringify(project.choices[k])));

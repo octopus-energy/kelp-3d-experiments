@@ -81,3 +81,27 @@ planning forms, service-image capture, uncertainty reopening, desktop/phone layo
 local reload and replay passed. The guided installation and technical proposal
 browser regressions also passed. Final screenshots are produced by the reproducible
 browser command above; inspect them after any UI changes.
+
+## Individual elements and radiator inventory
+
+`room-assessment.js` classifies every engine surface row into walls, openings,
+floors or ceilings for the room being viewed; internal floors are ceilings for the
+room below. Signed heat transfer is retained. The breakdown plus ventilation and
+junction allowance reconciles with the engine's unclamped room result.
+
+Explicit surface U-value overrides run after generated boundary/glazing effects,
+using the same area × U × signed temperature difference and truncation as the
+Python adapter. Shared surfaces have a single identity and affect both rooms.
+Geometry, boundary temperatures and the junction allowance are unchanged by a
+U-only override. This is an explicit extension to the precomputed scenarios,
+not a new inferred construction or a geometry correction.
+
+`choices.radiatorInventories` keeps stable individual identities, type, dimensions,
+section count and whether the list is complete. Photo hypotheses can seed the
+editable list, but source dimensions stay labelled. A supported catalogue analogue
+requires an exact represented type and height; unsupported dimensions/types keep
+output unknown. Each radiator is derated with its own exponent. An incomplete
+list or unknown item never becomes a complete room rating. Complete empty lists
+explicitly report no emitters. Corrections append inventory observations and replay
+restores each prior list. A new inventory supersedes a prior aggregate rating until
+that rating is assessed again. `tests/room-assessment.test.js` covers these contracts.

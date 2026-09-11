@@ -1,10 +1,11 @@
 // Pure discussion decisions: no DOM, network, installation approval or source edits.
-(function(root,factory){if(typeof module!=='undefined'&&module.exports)module.exports=factory();else(root.SolarViz=root.SolarViz||{}).proposal=factory();})(typeof window!=='undefined'?window:globalThis,function(){
+(function(root,factory){if(typeof module!=='undefined'&&module.exports)module.exports=factory(require('./room-assessment'));else(root.SolarViz=root.SolarViz||{}).proposal=factory(root.SolarViz.roomAssessment);})(typeof window!=='undefined'?window:globalThis,function(A){
 'use strict';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const rates={equipment:4000,cylinder:1100,electrical:450,commissioning:350,routePerM:35,radiatorChange:300,radiatorLabour:125,radiatorPerW:.125,contingency:15};
 function defaults(data){return {schemaVersion:1,propertyId:data.propertyId,revision:data.revision,flow:50,fabric:'central',basement:'warm',outdoor:'courtyard',cylinder:'utility',usePhotoEstimates:true,photoRooms:{},envelope:{},emitters:{},rates:{...rates},grantIncluded:true,operating:clone(data.operatingAssumptions.defaults),reserve:4,preferences:{occupants:'',hotWaterHabits:[],hotWaterNotes:'',baths:'',comfort:'',priorities:'',notes:''},events:[]};}
 function validate(state,data){
+ A.validateChoices(state,data);
  if(state?.propertyId!==data.propertyId||state?.revision!==data.revision||state.schemaVersion!==1)throw Error('This discussion belongs to another property or evidence revision.');
  if(![45,50,55].includes(state.flow)||!['lower','central','higher'].includes(state.fabric)||!['warm','cool'].includes(state.basement)||!['courtyard','garden'].includes(state.outdoor)||!['utility','kitchen','unresolved'].includes(state.cylinder))throw Error('Invalid discussion choice');
  for(const k of Object.keys(rates))if(!Number.isFinite(state.rates?.[k])||state.rates[k]<0||state.rates[k]>100000)throw Error('Budget allowances must be finite and non-negative');
@@ -77,6 +78,7 @@ function thermalScenario(data,state,fabric=state.fabric){
    for(const row of delta.surfaces){const index=r.surfaces.findIndex(s=>s.identifier===row.identifier);if(index<0)throw Error('Unknown thermal surface');r.surfaces[index]=clone(row);}
   }
  }
+ A.applySurfaces(scenario,state.surfaceOverrides);
  for(const r of scenario.rooms){if(r.bridgeRawW!==undefined){const floor=Math.floor(r.bridgeRawW),fraction=r.bridgeRawW-floor;r.bridgeW=Math.abs(fraction-.5)<1e-9?floor+(floor%2):Math.round(r.bridgeRawW);}r.loadW=r.included?Math.max(0,r.fabricW+r.ventilationW+r.bridgeW):null;}
  scenario.totalW=scenario.rooms.reduce((sum,r)=>sum+(r.loadW||0),0);return scenario;
 }
@@ -96,9 +98,10 @@ function evaluate(data,state){
  validate(state,data);const scenario=thermalScenario(data,state),routing=route(data,state);
  const rooms=scenario.rooms.map(r=>{const g=data.geometry.geometry.rooms.find(g=>g.id===r.id),e=state.emitters[r.id],dt=state.flow-2.5-r.temperature,n=e?.exponent||1.3,factor=Math.pow(dt/50,n),output=e?.output50;
   const estimates=photoEmitters(data,state.flow,r.temperature,g.sourceRoomId,state.photoRooms),photoEstimate=photoTotal(estimates),usePhoto=!e&&state.usePhotoEstimates!==false&&!!photoEstimate;
-  const known=output!==null&&output!==undefined&&!!e?.source?.trim(),available=known?output*factor:usePhoto?photoEstimate.availableW:null,required=r.loadW===null?null:Math.ceil(r.loadW/factor/50)*50;
-  const status=!r.included?'unheated':known?(available>=r.loadW?'keep':'upgrade'):usePhoto?(photoEstimate.rangeW[1]<r.loadW?'estimated-shortfall':photoEstimate.rangeW[0]>=r.loadW?'estimated-sufficient':'estimated-borderline'):'unknown';
-  return {...r,...g,photos:roomPhotos(data,state,g.sourceRoomId),required50:required,availableW:available,status,factor,output50:known?output:usePhoto?photoEstimate.output50:null,source:known?e.source:usePhoto?'Photo estimate; catalogue analogues, unmeasured':'',basis:known?'entered':usePhoto?'photo-estimate':'unknown',estimates,photoEstimate,rangeW:usePhoto?photoEstimate.rangeW:null,n,allowance:required===null?0:Math.round(state.rates.radiatorLabour+state.rates.radiatorPerW*required),observations:data.emitters.filter(o=>o.roomId===g.sourceRoomId)};
+  const inventory=state.radiatorInventories?.[r.id]?A.inventoryOutput(data,state.radiatorInventories[r.id],state.flow,r.temperature):null;
+  const known=output!==null&&output!==undefined&&!!e?.source?.trim(),available=known?output*factor:inventory?inventory.availableW:usePhoto?photoEstimate.availableW:null,required=r.loadW===null?null:Math.ceil(r.loadW/factor/50)*50;
+  const status=!r.included?'unheated':inventory&&!known?(available===null?'unknown':available>=r.loadW?'estimated-sufficient':'estimated-shortfall'):known?(available>=r.loadW?'keep':'upgrade'):usePhoto?(photoEstimate.rangeW[1]<r.loadW?'estimated-shortfall':photoEstimate.rangeW[0]>=r.loadW?'estimated-sufficient':'estimated-borderline'):'unknown';
+  return {...r,...g,photos:roomPhotos(data,state,g.sourceRoomId),required50:required,availableW:available,status,factor,output50:known?output:inventory?inventory.output50:usePhoto?photoEstimate.output50:null,inventory,source:known?e.source:inventory?inventory.source:usePhoto?'Photo estimate; catalogue analogues, unmeasured':'',basis:known?'entered':inventory?'reported-inventory':usePhoto?'photo-estimate':'unknown',estimates,photoEstimate,rangeW:!inventory&&usePhoto?photoEstimate.rangeW:null,n,allowance:required===null?0:Math.round(state.rates.radiatorLabour+state.rates.radiatorPerW*required),observations:data.emitters.filter(o=>o.roomId===g.sourceRoomId)};
  });
  const estimated=rooms.filter(r=>r.status.startsWith('estimated-')),unverified=rooms.filter(r=>r.status==='unknown'||r.status.startsWith('estimated-'));
  const unknown=rooms.filter(r=>r.status==='unknown'),upgrade=rooms.filter(r=>r.status==='upgrade'),keep=rooms.filter(r=>r.status==='keep');
