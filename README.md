@@ -10,6 +10,16 @@ A browser-based 3D viewer for solar panel site surveys, built with [three.js](ht
 
 **Running it:** it's a static site with no build step — just open `solar-visualiser/index.html` in a browser (`file://` works fine — all imagery is embedded as data URLs precisely so it does), or serve the folder with any static file server.
 
+**Deploying on Vercel:** keep the project's **Root Directory** at the repository
+root (empty/default). The root `vercel.json` selects the **Other** framework,
+skips installation and building, and serves `solar-visualiser/` as the output
+directory. Push the configuration and deploy that commit; redeploying an older
+commit will not pick it up. Do not also set Root Directory to `solar-visualiser`,
+since the output path is relative to the project root. The deployed `/` opens
+the 3D viewer; `/proposal.html` opens the homeowner journey, and `/replay.html`
+opens the reconstruction replay. Generated data bundles are committed and served
+as-is; Vercel does not run Blender or the local reconstruction/heat-loss pipeline.
+
 **What you see:**
 - A 3D scene of the property: terrain from a digital surface model, draped with the actual aerial photo, plus the roof faces, solar panels, and any obstructions (chimneys, vents, etc.)
 - A sidebar with site summary stats — suitability outcome, confidence, storeys, ridge height, panel count, estimated annual output — and a legend colour-coding roof faces by orientation (N/S/E/W)
