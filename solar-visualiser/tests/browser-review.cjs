@@ -8,7 +8,7 @@ function banner(child,pattern,stream){return new Promise((resolve,reject)=>{let 
 (async()=>{
  const server=start(process.env.PYTHON_BIN||'python3',['-u','-m','http.server','0','--bind','127.0.0.1'],{cwd:appRoot,stdio:['ignore','pipe','pipe']});
  const port=await banner(server,/port (\d+)/,'stdout');
- const scripts=['browser-reconstruction.cjs','browser-survey.cjs','browser-ashp-workflow.cjs','browser-replay.cjs','browser-proposal.cjs','browser-installation.cjs'],requested=process.argv.slice(2);
+ const scripts=['browser-reconstruction.cjs','browser-survey.cjs','browser-ashp-workflow.cjs','browser-replay.cjs','browser-proposal.cjs','browser-installation.cjs','browser-planning.cjs'],requested=process.argv.slice(2);
  if(requested.some(s=>!scripts.includes(s)))throw Error('Unknown browser check');
  for(const script of requested.length?requested:scripts){
  const browser=start(chrome,['--headless=new','--no-first-run','--no-default-browser-check','--allow-file-access-from-files','--remote-debugging-port=0','--user-data-dir='+path.join(profile,script),'about:blank'],{stdio:['ignore','ignore','pipe']});

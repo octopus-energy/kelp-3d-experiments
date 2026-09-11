@@ -6,7 +6,11 @@
 `?view=technical` opens the detailed calculation workbench. Both use the same
 revision-scoped project through `installation-store.js`. Pure `installation.js`
 derives explicit room capacity schedules, typed evidence updates and read-only
-change replay; `installation-ui.js` presents them. See
+change replay; `installation-ui.js` presents them.
+`installation-planning.js` is a pure UMD dependency loaded before installation;
+`installation-planning-ui.js` renders room/fabric comparisons, existing services,
+gas/payment scenarios and document checks before the main installation UI.
+See [ROOM-LED-PLANNING.md](reconstruction/ROOM-LED-PLANNING.md). See
 [INSTALLATION-JOURNEY.md](reconstruction/INSTALLATION-JOURNEY.md) for scope,
 limitations and tests. The former four-room budget reserve is replaced in both
 views by named panel provisions; legacy pure proposal pricing remains available.

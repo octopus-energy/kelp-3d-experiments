@@ -1,5 +1,20 @@
 # Reproducible property reconstruction and heat-pump survey workflow
 
+## Room-led planning — 11 September 2026
+
+The guided installation journey now starts with rooms and their source photos,
+then existing services, equipment routes, costs/payments and a document-review
+register. See [ROOM-LED-PLANNING.md](ROOM-LED-PLANNING.md) for the answer-effect trace,
+persistence, scope invalidation and verification contract.
+
+Keep existing construction separate from proposed improvements. A saved glazing
+what-if must not rewrite the home's observed windows or silently reduce radiator
+sizing. An extension label cannot supply an insulation value. A service location
+in a note cannot become a surveyed route. Unknown costs must remain unknown in
+payment illustrations, and zero gas consumption cannot imply zero standing charge.
+Named document reviews need renewed review after relevant proposal changes; they
+must not close independent evidence tasks or imply authenticated certification.
+
 ## Pre-survey discussion release — 10 September 2026
 
 The user has expanded the scope from geometry preparation to conditional heat-loss

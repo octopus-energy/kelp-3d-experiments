@@ -53,7 +53,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   }
   await evalJS(`__BROOM_INSTALLATION__.go(2)`);
   assert.equal(await evalJS(`document.querySelectorAll('.room-overview-card').length`),13,'Every room accessible without a compulsory walkthrough');
-  await evalJS(`document.querySelector('[data-room="0:r0"]').click()`);
+  await evalJS(`document.querySelector('[data-room="0:r0"]').click();document.querySelector('[data-room-stage="0"]').click()`);
   assert.equal(await evalJS(`document.querySelectorAll('.room-use-choices [aria-pressed=true]').length`),0,'Untouched comfort and use are not preselected');
   await evalJS(`document.querySelector('[data-comfort="warm"]').click();document.querySelector('[data-room-use="0:r0"][data-use="usual"]').click()`);
   assert.equal(await evalJS(`SolarViz.installation.roomAnswers(__BROOM_INSTALLATION__.project,'0:r0').comfort&&SolarViz.installation.roomAnswers(__BROOM_INSTALLATION__.project,'0:r0').use`),true,'Explicit neutral answers are saved distinctly');
@@ -71,9 +71,9 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`document.querySelector('[data-room="0:r0"]').click();document.querySelector('[data-room-stage="0"]').click();const note=document.querySelector('[data-room-note]');note.value='';note.dispatchEvent(new Event('change'));`);
   const eventsBeforeWalk=await evalJS('__BROOM_INSTALLATION__.project.events.length');
   await evalJS(`document.querySelector('[data-room-stage="1"]').click()`);
-  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'Photos & measurements');
+  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'My radiators');
   await evalJS(`document.querySelector('[data-room-stage="2"]').click()`);
-  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'Heating ideas');
+  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'Options');
   fs.writeFileSync(path.join(testTmp,'installation-room-approach.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`document.getElementById('room-guide-next').click()`);
   assert.equal(await evalJS(`document.getElementById('room-jump').value`),'0:r10','Next room advances and starts its own discussion');
@@ -154,7 +154,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   fs.writeFileSync(path.join(testTmp,'installation-homeowner-recap.html'),await evalJS(`__BROOM_INSTALLATION__.summary()`));
   fs.writeFileSync(path.join(testTmp,'installation-review-together.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   // Household controls have downstream effects and survive reload; fixtures stay in this isolated profile.
-  await evalJS(`__BROOM_INSTALLATION__.go(2);document.querySelector('.room-overview-card')?.click();document.getElementById('room-jump').value='1:r01';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-cold="1:r01"]').click()`);
+  await evalJS(`__BROOM_INSTALLATION__.go(2);document.querySelector('.room-overview-card')?.click();document.getElementById('room-jump').value='1:r01';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="0"]').click();document.querySelector('[data-cold="1:r01"]').click()`);
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['1:r01'].cold`),true);
   assert.equal(await evalJS(`SolarViz.installation.discussionStatus(__BROOM_INSTALLATION__.project).needsReview`),true,'Later changes reopen the joint review');
   assert.equal(await evalJS(`document.querySelector('[data-cold="1:r01"]').getAttribute('aria-pressed')`),'true');

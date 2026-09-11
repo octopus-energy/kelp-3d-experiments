@@ -1,5 +1,5 @@
 // Versioned installation decisions. Pure UMD; calculations use the proposal engine adapter.
-(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'));else(root.SolarViz=root.SolarViz||{}).installation=factory(root.SolarViz.proposal);})(typeof window==='undefined'?globalThis:window,function(P){
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./proposal'),require('./installation-planning'));else(root.SolarViz=root.SolarViz||{}).installation=factory(root.SolarViz.proposal,root.SolarViz.installationPlanning);})(typeof window==='undefined'?globalThis:window,function(P,K){
 'use strict';
 const copy=x=>JSON.parse(JSON.stringify(x));
 function create(data,choices=P.defaults(data)){return {schemaVersion:1,kind:'installation-project',propertyId:data.propertyId,revision:data.revision,choices:copy(choices),household:{priority:'balanced',preserve:[],noKitchenCylinder:false,coldRooms:'',roomFeedback:{},notes:''},observations:[],events:[],selectedFlow:choices.flow};}
@@ -20,6 +20,7 @@ function validate(project,data){
  return project;
 }
 function validateHousehold(h,data){
+ K.validate(h,data);
  const record=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
  const ids=new Set(data.geometry.geometry.rooms.map(r=>r.id));
  if(!record(h)||!['balanced','running','changes'].includes(h.priority)||!Array.isArray(h.preserve)||h.preserve.some(id=>!ids.has(id))||new Set(h.preserve).size!==h.preserve.length||typeof h.noKitchenCylinder!=='boolean'||typeof h.coldRooms!=='string'||typeof h.notes!=='string')throw Error('Invalid household priorities');
@@ -49,7 +50,8 @@ function assignPhoto(project,data,imageId,roomId,role='homeowner'){
  return observe(project,data,{id:'photo-room-'+(project.events.length+1)+'-'+Date.now(),at:new Date().toISOString(),kind:'photo-room',target:imageId,roomId,role:['surveyor','adviser'].includes(role)?role:'homeowner',observer:role==='surveyor'?'Surveyor in room-matching workspace':role==='adviser'?'Remote adviser in room-matching workspace':'Homeowner in room-matching workspace',note:'Matched listing photo to: '+name});
 }
 function validateObservation(o,data){
- if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water','radiator-evidence','discussion'].includes(o.kind)||!['surveyor','homeowner','adviser'].includes(o.role)||['observer','note','at','id'].some(k=>typeof o[k]!=='string'||!o[k].trim())||!Number.isFinite(Date.parse(o.at)))throw Error('Record who checked it and the evidence / measurement source.');
+ if(!o||!['emitter','envelope','basement','geometry','access','photo-room','comfort','hot-water','radiator-evidence','discussion','room-context','service','planning-check'].includes(o.kind)||!['surveyor','homeowner','adviser'].includes(o.role)||['observer','note','at','id'].some(k=>typeof o[k]!=='string'||!o[k].trim())||!Number.isFinite(Date.parse(o.at)))throw Error('Record who checked it and the evidence / measurement source.');
+ K.validateObservation(o,data);
  if(o.kind==='photo-room'&&(!(data.interiorPhotos||[]).some(i=>i.id===o.target)||o.roomId!==null&&!data.geometry.geometry.rooms.some(r=>r.sourceRoomId===o.roomId)))throw Error('Choose a valid photo and room');
  if(o.kind==='discussion'&&(o.target!=='household'||!['preferred-direction','questions-open'].includes(o.outcome)))throw Error('Record the discussion outcome');
  if(o.kind==='hot-water'&&o.target!=='household')throw Error('Invalid household review');
@@ -115,7 +117,7 @@ function revise(project,data,patch,label,role='homeowner',at=new Date().toISOStr
  return next;
 }
 function observe(project,data,observation){
- const o=copy(observation);validateObservation(o,data);if(project.observations.some(x=>x.id===o.id))throw Error('Observation already recorded');
+ const o=copy(observation);if(o.kind==='planning-check')o.signature=K.signature(project,o.target);validateObservation(o,data);if(project.observations.some(x=>x.id===o.id))throw Error('Observation already recorded');
  let choices=copy(project.choices);
  if(o.kind==='emitter')choices.emitters[o.target]={output50:o.output50,exponent:o.exponent,source:o.observer+': '+o.note,basis:o.role==='surveyor'?'site-inventory':o.role==='adviser'?'remote-assessment':'homeowner-reported'};
  if(o.kind==='envelope')choices.envelope[o.target]={choice:o.value,basis:o.role==='surveyor'?'survey-observed':o.role==='adviser'?'call-assumption':'homeowner-reported',note:o.observer+': '+o.note};
@@ -132,7 +134,7 @@ function replay(project,data,index){
  return validate({...copy(project),choices:copy(state.choices),household:copy(state.household),selectedFlow:state.selectedFlow,observations:copy(project.observations.slice(0,state.observationCount)),events:copy(project.events.slice(0,index))},data);
 }
 function tasks(data,project){
- const current=packageFor(data,project,project.selectedFlow),out=[];
+ const current=packageFor(data,project,project.selectedFlow),out=K.pending(data,project);
  for(const g of data.thermalEvidence.groups){
   const entry=project.choices.envelope[g.id];if(entry?.basis==='survey-observed')continue;
   const values=Object.keys(g.options).map(choice=>P.thermalScenario(data,{...project.choices,envelope:{...project.choices.envelope,[g.id]:{choice,basis:'call-assumption',note:''}}}).totalW);
