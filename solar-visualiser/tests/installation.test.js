@@ -128,3 +128,35 @@ assert.equal(J.roomFocus(J.packageFor(D,capture,50).rooms.find(r=>r.id===living.
 assert.equal(J.roomFocus(J.packageFor(D,revised,50).rooms.find(r=>r.id===living.id)).priority,0);
 assert.throws(()=>J.revise(baseline,D,{household:{...baseline.household,preserveDiscussed:['wrong-room']}},'invalid'),/preference/);
 console.log('Explicit answers, neutral responses, replay and focused room guidance passed');
+
+// Remote assessment never acquires site provenance or closes the site inventory.
+const remote=J.observe(baseline,D,{...o,id:'remote-rating',role:'adviser'});
+assert.equal(remote.observations[0].role,'adviser');assert.equal(remote.choices.emitters[living.id].basis,'remote-assessment');
+assert.equal(J.packageFor(D,remote,50).rooms.find(r=>r.id===living.id).inventoryVerified,false);
+assert(J.tasks(D,remote).some(t=>t.id==='emitter-'+living.id));
+assert.equal(J.assignPhoto(baseline,D,image,'f-bed2','adviser').observations[0].role,'adviser');
+const remoteWall=J.observe(baseline,D,{id:'remote-wall',kind:'envelope',at:o.at,target:'rear-neighbour-ground',value:'heated',role:'adviser',observer:'Remote test fixture',note:'Hypothesis from synthetic evidence'});
+assert.equal(remoteWall.choices.envelope['rear-neighbour-ground'].basis,'call-assumption');
+assert(J.tasks(D,remoteWall).some(t=>t.target==='rear-neighbour-ground'));
+const evidenceTask=J.tasks(D,capture).find(t=>t.id==='emitter-'+living.id);
+assert.deepEqual(J.evidenceForTask(D,capture,evidenceTask),capture.observations);
+assert.equal(J.evidenceForTask(D,capture,{target:room2.id}).length,0);
+const discussion=J.observe(remote,D,{id:'discussion-test',at:o.at,kind:'discussion',target:'household',role:'surveyor',observer:'Homeowner and surveyor test fixtures',note:'Synthetic preference for retained radiators; access still to check',outcome:'preferred-direction'});
+assert.equal(J.discussionStatus(discussion).needsReview,false);assert.equal(J.brief(D,discussion).designApproved,false);
+assert.deepEqual(J.metrics(D,discussion),J.metrics(D,remote),'Discussion is not a calculation or approval');
+const later=J.revise(discussion,D,{household:{...discussion.household,notes:'A later preference'}},'Later preference');
+assert.equal(J.discussionStatus(later).needsReview,true);
+assert.equal(J.discussionStatus(J.replay(later,D,discussion.events.length)).needsReview,false);
+assert.equal(J.discussionStatus(J.replay(discussion,D,remote.events.length)).observation,null);
+assert.throws(()=>J.observe(remote,D,{...discussion.observations.at(-1),outcome:'approved'}),/outcome/);
+console.log('Remote/site provenance, room evidence, conditional discussion and renewed review passed');
+const remoteAfterPhotos=J.observe(capture,D,{...o,id:'remote-after-photos',role:'adviser'}),remoteRoom=J.packageFor(D,remoteAfterPhotos,50).rooms.find(r=>r.id===living.id);
+assert.equal(remoteRoom.pendingPhotoCount,0);assert.equal(remoteRoom.remoteAssessed,true);assert.equal(remoteRoom.inventoryVerified,false);
+assert(!J.tasks(D,remoteAfterPhotos).some(t=>t.id==='review-photos-'+living.id));
+assert(J.tasks(D,remoteAfterPhotos).some(t=>t.id==='emitter-'+living.id));
+assert.equal(J.roomFocus(remoteRoom).priority,0);
+const afterRemote=J.observe(remoteAfterPhotos,D,{...capture.observations[0],id:'changed-photo-after-remote'});
+assert.equal(J.packageFor(D,afterRemote,50).rooms.find(r=>r.id===living.id).remoteAssessed,false);
+assert.equal(J.packageFor(D,afterRemote,50).rooms.find(r=>r.id===living.id).inventoryNeedsReview,true);
+assert.equal(J.evidenceForTask(D,measurement,{id:'geometry',kind:'geometry',target:room2.id}).some(o=>o.kind==='geometry'&&o.target===living.id),true,'Whole-house geometry checks retain measurements for other rooms');
+console.log('Remote photo assessment clears repeat requests while retaining site checks and reopening on new evidence');

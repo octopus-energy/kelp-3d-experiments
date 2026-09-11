@@ -10,7 +10,7 @@ function archives(){
  for(let i=0;i<localStorage.length;i++){
   const k=localStorage.key(i);if(!k.startsWith(prefix)||k===key)continue;
   const raw=localStorage.getItem(k);let project=null;
-  try{const p=JSON.parse(raw);if(p.kind==='installation-project'&&p.propertyId===D.propertyId&&p.revision===k.slice(prefix.length)&&Array.isArray(p.events)&&Array.isArray(p.observations))project=p;}catch(e){}
+  try{const p=JSON.parse(raw);if(p.kind==='installation-project'&&p.propertyId===D.propertyId&&p.revision===k.slice(prefix.length)&&Array.isArray(p.events)&&p.events.every(e=>e&&typeof e.label==='string'&&typeof e.at==='string')&&Array.isArray(p.observations)&&p.observations.every(o=>o&&typeof o.observer==='string'&&typeof o.note==='string'))project=p;}catch(e){}
   items.push({key:k,revision:k.slice(prefix.length),project});
  }
  return items.sort((a,b)=>String(b.project?.events.at(-1)?.at||'').localeCompare(String(a.project?.events.at(-1)?.at||'')));

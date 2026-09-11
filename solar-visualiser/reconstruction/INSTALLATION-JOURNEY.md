@@ -1,9 +1,10 @@
 # Guided installation project
 
-`proposal.html` now starts with the household. The six steps are priorities, plan,
-room changes, equipment spaces, survey, and recorded changes. The technical
+`proposal.html` starts with an explanation and a choice of useful next actions.
+The six areas are Start here, Compare options, Your rooms, Places & routes, Survey,
+and Review together. A photo-backed room overview supports selective contributions. The technical
 workbench remains available at `proposal.html?view=technical`. Both use one
-property/evidence-revision-scoped installation project. The homeowner and adviser
+property/evidence-revision-scoped installation project. The Homeowner, Remote adviser and Site surveyor workspace
 switch changes the presentation and default evidence role; it is not authentication
 or a multi-user collaboration service.
 
@@ -77,6 +78,7 @@ onto a new geometry revision.
 ```
 python scripts/prepare-proposal.py
 node tests/installation.test.js
+node tests/installation-store.test.js
 node tests/proposal.test.js
 python scripts/test_proposal.py
 node tests/browser-review.cjs browser-installation.cjs
@@ -183,3 +185,7 @@ Next room advances without asserting technical completion. On phones, a compact
 room-photo header keeps the active room identifiable while answering questions.
 `installation.roomGuide` derives prompts from evidence status; received photos do
 not become verified wattages. Kitchen cylinder exclusion lives in Places & routes.
+
+The current review, concrete answer effects and verification are documented in
+[JOURNEY-REVIEW.md](JOURNEY-REVIEW.md). Earlier implementation notes below the state
+contract describe the sequence of previous versions; the review describes the current UI.

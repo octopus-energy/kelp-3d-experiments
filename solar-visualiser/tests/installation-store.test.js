@@ -15,3 +15,6 @@ const corruptKey='kelp:installation:'+D.propertyId+':broken';records.set(corrupt
 assert.equal(s.archives().find(a=>a.key===corruptKey).project,null);assert.equal(s.archiveRaw(corruptKey),'{broken');
 assert.throws(()=>J.validate(old,D),/revision/);
 console.log('Saved projects: revision isolation, exact recovery, corrupt data preservation and stale-tab protection passed');
+const malformedKey='kelp:installation:'+D.propertyId+':malformed';records.set(malformedKey,JSON.stringify({...old,revision:'malformed',events:[null]}));
+assert.equal(s.archives().find(a=>a.key===malformedKey).project,null,'Malformed history cannot break the recovery interface');
+assert.equal(s.archiveRaw(malformedKey),records.get(malformedKey));

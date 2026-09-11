@@ -4,7 +4,8 @@ The homeowner is a collaborator with knowledge of their home, tastes and priorit
 Their job is to recognise, choose and contribute useful evidence. The system's job
 is to do the interpretation, explain consequences, and ask only consequential questions.
 
-For the current implementation, review priorities and working map, read
+For the reviewed experience and answer effects, read [JOURNEY-REVIEW.md](JOURNEY-REVIEW.md).
+For product direction and the working map, read
 [JOURNEY-REVIEW-HANDOFF.md](JOURNEY-REVIEW-HANDOFF.md).
 
 ## The experience

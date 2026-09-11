@@ -4,6 +4,16 @@ This is the current product brief for a fresh review of the Broom Road journey.
 Use the running application and source evidence to assess the experience independently.
 Existing screens, step names and layouts are implementation choices, not requirements.
 
+## Implemented review and current verification
+
+Read [JOURNEY-REVIEW.md](JOURNEY-REVIEW.md) for the independent three-role findings,
+implemented changes, answer-effect trace and remaining limits. The navigation now
+reads Start here, Compare options, Your rooms, Places & routes, Survey, Review
+together. Rooms open through a visual chooser; their three topics are optional and
+Next room advances directly. Remote adviser and Site surveyor are separate views.
+Earlier saved projects are discoverable for original-data recovery, without automatic
+migration. The review conversation records a conditional direction, never approval.
+
 ## Purpose and intended relationship
 
 Before the site survey, a customer-operations colleague calls the homeowner with an
@@ -88,7 +98,7 @@ Entry points, relative to the served `solar-visualiser/` directory:
 - `survey.html`: broader survey evidence recorder; its legacy packet is not silently
   merged into the installation project's typed observation pathway.
 
-The guided navigation currently has six steps: Your priorities, Your plan,
+The earlier guided navigation had six steps: Your priorities, Your plan,
 Your rooms, Places & routes, Survey, What changed. Matching is launched from
 priorities before the room walkthrough. Each room has How it feels, What we need
 and Your approach. Review whether this hierarchy and sequence are actually helpful;

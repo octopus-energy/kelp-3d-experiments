@@ -47,6 +47,7 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
    assert.equal(await evalJS('document.getElementById("journey-content").textContent.includes("undefined")'),false);
    assert.equal(await evalJS(`(()=>{const v=__BROOM_INSTALLATION__.view,l=v.services.getObjectByName('hydraulic-route'),r=__BROOM_INSTALLATION__.brief.selected.routing;return !!l&&l.geometry.attributes.position.count===r.points.length;})()`),true,'Actual route exists at step '+step);
    if(step!==2)assert.equal(await evalJS(`(()=>{const v=__BROOM_INSTALLATION__.view;v.render();const gl=v.renderer.getContext(),p=new Uint8Array(gl.drawingBufferWidth*gl.drawingBufferHeight*4);gl.readPixels(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight,gl.RGBA,gl.UNSIGNED_BYTE,p);let orange=0;for(let i=0;i<p.length;i+=4)if(p[i]>150&&p[i]>p[i+1]*1.4&&p[i+1]>p[i+2]*1.3)orange++;return orange>100;})()`),true,'Orange route visibly renders at step '+step);
+   if(step===1){const annualBefore=await evalJS('__BROOM_INSTALLATION__.brief.selected.annual');await evalJS(`document.getElementById('journey-grant').click()`);assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.net===__BROOM_INSTALLATION__.brief.selected.gross'),true);assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.annual'),annualBefore);await evalJS(`document.getElementById('journey-grant').click()`);}
    if(step===1)assert.equal(await evalJS(`document.getElementById('option-comparison').textContent.includes('Both options schedule 8 radiator changes/additions at £300 each')`),true);
    fs.writeFileSync(path.join(testTmp,'installation-'+step+'.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   }
@@ -54,6 +55,8 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`document.querySelectorAll('.room-overview-card').length`),13,'Every room accessible without a compulsory walkthrough');
   await evalJS(`document.querySelector('[data-room="0:r0"]').click()`);
   assert.equal(await evalJS(`document.querySelectorAll('.room-use-choices [aria-pressed=true]').length`),0,'Untouched comfort and use are not preselected');
+  await evalJS(`document.querySelector('[data-comfort="warm"]').click();document.querySelector('[data-room-use="0:r0"][data-use="usual"]').click()`);
+  assert.equal(await evalJS(`SolarViz.installation.roomAnswers(__BROOM_INSTALLATION__.project,'0:r0').comfort&&SolarViz.installation.roomAnswers(__BROOM_INSTALLATION__.project,'0:r0').use`),true,'Explicit neutral answers are saved distinctly');
   assert.equal(await evalJS(`document.querySelectorAll('.room-workspace .room-plan polygon').length>1&&document.querySelectorAll('.room-conversation [data-cold]').length===1`),true,'One room question alongside floor context');
   const displayedPhoto=await evalJS(`document.querySelector('.room-photo-context>.journey-photo img').src`);
   await evalJS(`document.getElementById('room-correct-photo').click()`);
@@ -85,14 +88,15 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`__BROOM_INSTALLATION__.go(0);document.querySelector('[data-priority="running"]').click();__BROOM_INSTALLATION__.go(3);document.getElementById('no-kitchen').click();__BROOM_INSTALLATION__.go(2);document.querySelector('[data-room="0:r11"]').click();document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-keep="yes"]').click()`);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.suggested.flow'),45);
   await evalJS('__BROOM_INSTALLATION__.go(3)');assert.equal(await evalJS(`document.querySelector('[data-location="cylinder"][data-value="kitchen"]').disabled`),true);
-  await evalJS(`document.querySelector('header [data-role="adviser"]').click();__BROOM_INSTALLATION__.go(4);document.querySelector('[data-task="emitter-0:r11"]').click()`);
+  await evalJS(`document.querySelector('header [data-role="surveyor"]').click();__BROOM_INSTALLATION__.go(4);document.querySelector('[data-task="emitter-0:r11"]').click()`);
   await evalJS(`document.getElementById('observation-role').value='surveyor';document.getElementById('observation-observer').value='Browser test fixture';document.getElementById('observation-note').value='Synthetic complete inventory for regression, not actual survey';document.getElementById('observation-output').value=9000;document.getElementById('inventory-complete').checked=true;document.getElementById('observation-form').requestSubmit()`);
-  for(let i=0;i<50;i++){if(await evalJS('__BROOM_INSTALLATION__.step===5'))break;await new Promise(r=>setTimeout(r,100));}
+  for(let i=0;i<50;i++){if(await evalJS('!!document.getElementById("survey-receipt")'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.observations.length'),1);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.rooms.find(r=>r.id==="0:r11").action'),'retain');
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.events.at(-1).before.loadW===__BROOM_INSTALLATION__.project.events.at(-1).after.loadW'),true);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.events.at(-1).after.net<__BROOM_INSTALLATION__.project.events.at(-1).before.net'),true);
-  await evalJS(`document.getElementById('replay-back').click()`);assert.equal(await evalJS('__BROOM_INSTALLATION__.cursor===__BROOM_INSTALLATION__.project.events.length-1'),true);
+  assert.equal(await evalJS('__BROOM_INSTALLATION__.step'),4,'Saving a site finding stays in the survey');
+  await evalJS(`__BROOM_INSTALLATION__.go(5);document.getElementById('replay-back').click()`);assert.equal(await evalJS('__BROOM_INSTALLATION__.cursor===__BROOM_INSTALLATION__.project.events.length-1'),true);
   await evalJS(`document.getElementById('replay-forward').click()`);
   fs.writeFileSync(path.join(testTmp,'installation-measurement-replay.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS('delete window.__BROOM_INSTALLATION__');await call('Page.reload');for(let i=0;i<100;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
@@ -103,8 +107,8 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`__BROOM_PROPOSAL__.select(1);document.querySelector('[data-choice="flow"][data-value="55"]').click()`);
   await call('Page.navigate',{url:root+'/proposal.html'});for(let i=0;i<120;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.choices.flow'),55,'Technical edits come back into guided view');
-  await evalJS(`document.querySelector('header [data-role="adviser"]').click();__BROOM_INSTALLATION__.go(4);document.querySelector('[data-task="geometry"]').click();document.getElementById('observation-observer').value='Browser geometry fixture';document.getElementById('observation-height').value=2.7;document.getElementById('observation-area').value=22;document.getElementById('observation-note').value='Synthetic geometry discrepancy for regression';document.getElementById('observation-form').requestSubmit()`);
-  for(let i=0;i<50;i++){if(await evalJS('__BROOM_INSTALLATION__.step===5'))break;await new Promise(r=>setTimeout(r,100));}
+  await evalJS(`document.querySelector('header [data-role="surveyor"]').click();__BROOM_INSTALLATION__.go(4);document.querySelector('[data-task="geometry"]').click();document.getElementById('observation-observer').value='Browser geometry fixture';document.getElementById('observation-height').value=2.7;document.getElementById('observation-area').value=22;document.getElementById('observation-note').value='Synthetic geometry discrepancy for regression';document.getElementById('observation-form').requestSubmit()`);
+  for(let i=0;i<50;i++){if(await evalJS('!!document.getElementById("survey-receipt")'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.selected.geometryPending'),true);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.events.at(-1).before.loadW===__BROOM_INSTALLATION__.project.events.at(-1).after.loadW'),true);
   const installationExport={project:await evalJS('__BROOM_INSTALLATION__.project')};fs.writeFileSync(path.join(testTmp,'installation-export.json'),JSON.stringify(installationExport));
@@ -126,12 +130,33 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.observations.find(o=>o.kind==='radiator-evidence').role`),'surveyor','Evidence retains the selected workspace role');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.observations.find(o=>o.kind==='radiator-evidence').attachments[0].dataUrl.startsWith('data:image/jpeg;')`),true);
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.brief.selected.designPending`),true);
+  await evalJS(`document.querySelector('header [data-role="adviser"]').click();document.querySelector('[data-task="review-photos-0:r0"]').click()`);
+  assert.equal(await evalJS(`document.querySelector('.task-evidence').textContent.includes('900 mm')&&document.querySelector('.task-evidence .evidence-images img').naturalWidth>0`),true,'Remote adviser sees submitted photos and measured dimensions beside the check');
+  assert.equal(await evalJS(`document.getElementById('observation-role').value`),'adviser','Remote mode never defaults to site attribution');
+  await evalJS(`document.querySelector('.task-evidence [data-inspect-src]').click()`);
+  assert.equal(await evalJS(`document.getElementById('image-inspector').open&&document.getElementById('inspector-image').src.startsWith('data:image/')`),true,'Uploaded evidence can be inspected offline');
+  await evalJS(`document.getElementById('zoom-inspector').click()`);
+  assert.equal(await evalJS(`document.getElementById('image-inspector').classList.contains('zoomed')`),true);
+  fs.writeFileSync(path.join(testTmp,'installation-evidence-inspector.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await evalJS(`document.getElementById('close-inspector').click();document.querySelector('.task-evidence').scrollIntoView()`);
+  fs.writeFileSync(path.join(testTmp,'installation-adviser-evidence.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await evalJS(`document.querySelector('header [data-role="surveyor"]').click()`);
+  assert.equal(await evalJS(`document.getElementById('observation-role').value`),'surveyor');
+
   await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-site-side="front"]').click();`);await evalJS(`new Promise(resolve=>{const im=document.querySelector('#site-preference-photo img');if(im.complete&&im.naturalWidth)resolve();else im.onload=resolve;})`);await evalJS(`const im=document.querySelector('#site-preference-photo img'),r=im.getBoundingClientRect();im.dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:r.left+r.width*.5,clientY:r.top+r.height*.8}));`);
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.sitePreferences[0].side`),'front');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.choices.outdoor`),'courtyard','Photo preference does not invent a new route');
+
+  await evalJS(`__BROOM_INSTALLATION__.go(5);document.getElementById('record-discussion').open=true;document.getElementById('discussion-people').value='Homeowner and surveyor browser fixtures';document.getElementById('discussion-note').value='Synthetic preference for retained radiators; access and products remain open';document.getElementById('discussion-outcome').value='preferred-direction';document.getElementById('discussion-form').requestSubmit()`);
+  assert.equal(await evalJS(`SolarViz.installation.discussionStatus(__BROOM_INSTALLATION__.project).observation.outcome`),'preferred-direction');
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.brief.designApproved`),false);
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.summary().includes('Synthetic preference')&&__BROOM_INSTALLATION__.summary().includes('900 mm')`),true,'Recap carries the discussion, complete handoff and evidence dimensions');
+  fs.writeFileSync(path.join(testTmp,'installation-homeowner-recap.html'),await evalJS(`__BROOM_INSTALLATION__.summary()`));
+  fs.writeFileSync(path.join(testTmp,'installation-review-together.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   // Household controls have downstream effects and survive reload; fixtures stay in this isolated profile.
   await evalJS(`__BROOM_INSTALLATION__.go(2);document.querySelector('.room-overview-card')?.click();document.getElementById('room-jump').value='1:r01';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-cold="1:r01"]').click()`);
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['1:r01'].cold`),true);
+  assert.equal(await evalJS(`SolarViz.installation.discussionStatus(__BROOM_INSTALLATION__.project).needsReview`),true,'Later changes reopen the joint review');
   assert.equal(await evalJS(`document.querySelector('[data-cold="1:r01"]').getAttribute('aria-pressed')`),'true');
 
   await evalJS(`document.querySelector('[data-room-use="1:r01"][data-use="daytime"]').click()`);assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['1:r01'].use`),'daytime');
@@ -165,10 +190,40 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS(`(()=>{const b=document.getElementById('match-photo').getBoundingClientRect(),d=document.getElementById('photo-matching');return b.top>=0&&b.bottom<=innerHeight&&d.scrollWidth<=innerWidth;})()`),true,'Matching save and image fit phone viewport');
   fs.writeFileSync(path.join(testTmp,'installation-matching-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await evalJS(`document.getElementById('close-matching').click()`);
+  await evalJS(`document.querySelector('header [data-role="adviser"]').click();document.querySelector('[data-task="review-photos-0:r0"]').click()`);
+  assert.equal(await evalJS(`document.documentElement.scrollWidth<=innerWidth`),true,'Remote evidence workspace fits a phone');
+  await evalJS(`document.querySelector('.task-evidence').scrollIntoView()`);
+  fs.writeFileSync(path.join(testTmp,'installation-adviser-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await evalJS(`document.querySelector('.task-evidence [data-inspect-src]').click()`);
+  assert.equal(await evalJS(`(()=>{const b=document.getElementById('close-inspector').getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.bottom<=innerHeight;})()`),true,'Evidence inspector close remains visible on phone');
+  fs.writeFileSync(path.join(testTmp,'installation-inspector-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await evalJS(`document.getElementById('close-inspector').click()`);
+  await call('Emulation.setDeviceMetricsOverride',{width:1280,height:800,deviceScaleFactor:1,mobile:false});
+  await evalJS(`document.querySelector('header [data-role="surveyor"]').click();document.querySelector('[data-task="geometry"]').click()`);
+  assert.equal(await evalJS(`document.querySelector('.task-evidence').textContent.includes('Synthetic geometry discrepancy')`),true,'A geometry check retains earlier room measurements');
+  assert.equal(await evalJS(`document.documentElement.scrollWidth<=innerWidth`),true,'Site workspace fits a small laptop');
+  await evalJS(`document.querySelector('.survey-workspace').scrollIntoView()`);
+  fs.writeFileSync(path.join(testTmp,'installation-surveyor-laptop.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:2,mobile:false});
-  await evalJS(`document.getElementById('model-detail').open=true;__BROOM_INSTALLATION__.view.render()`);
+  await evalJS(`__BROOM_INSTALLATION__.go(0);document.getElementById('model-detail').open=true;__BROOM_INSTALLATION__.view.render()`);
   assert.equal(await evalJS(`(()=>{const v=__BROOM_INSTALLATION__.view;v.render();const gl=v.renderer.getContext(),w=gl.drawingBufferWidth,h=gl.drawingBufferHeight,p=new Uint8Array(w*h*4);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,p);let dark=0;for(let i=0;i<p.length;i+=16)if(p[i]<180&&p[i+1]<180)dark++;return dark>100;})()`),true,'Model renders in expanded host at DPR 2');
   assert.equal(await evalJS('Array.from(document.querySelectorAll(".journey-photo img")).every(im=>im.complete&&im.naturalWidth>0)'),true,'Evidence images load offline');
+  await evalJS(`document.querySelector('header [data-role="adviser"]').click();document.querySelector('[data-task="review-photos-0:r0"]').click();document.querySelector('.task-evidence [data-open-task]').click();document.getElementById('observation-observer').value='Remote browser fixture';document.getElementById('observation-note').value='Synthetic sourced inventory for regression; site validation pending';document.getElementById('observation-output').value=9000;document.getElementById('inventory-complete').checked=true;document.getElementById('observation-form').requestSubmit()`);
+  for(let i=0;i<80;i++){if(await evalJS(`__BROOM_INSTALLATION__.project.observations.at(-1).observer==='Remote browser fixture'`))break;await new Promise(r=>setTimeout(r,100));}
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.observations.at(-1).role`),'adviser');
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.brief.selected.rooms.find(r=>r.id==='0:r0').remoteAssessed&&!__BROOM_INSTALLATION__.brief.selected.rooms.find(r=>r.id==='0:r0').inventoryVerified`),true);
+  assert.equal(await evalJS(`SolarViz.installation.tasks(BROOM_PROPOSAL,__BROOM_INSTALLATION__.project).some(t=>t.id==='review-photos-0:r0')`),false,'Assessed photos are not requested again');
+  assert.equal(await evalJS(`SolarViz.installation.tasks(BROOM_PROPOSAL,__BROOM_INSTALLATION__.project).some(t=>t.id==='emitter-0:r0')`),true,'Remote assessment retains site inventory check');
+  fs.writeFileSync(path.join(testTmp,'installation-homeowner-recap.html'),await evalJS(`__BROOM_INSTALLATION__.summary()`));
+  await call('Page.navigate',{url:pathToFileURL(path.join(testTmp,'installation-homeowner-recap.html')).href});
+  for(let i=0;i<100;i++){if(await evalJS(`document.querySelector('body>h1')?.textContent==='Your heat pump plan'`))break;await new Promise(r=>setTimeout(r,100));}
+  assert.equal(await evalJS(`document.querySelectorAll('.evidence-images button').length`),0,'Standalone recap uses native expandable photos');
+  await evalJS(`document.querySelectorAll('.evidence-images details').forEach(d=>d.open=true);document.querySelector('.review-together').scrollIntoView()`);
+  fs.writeFileSync(path.join(testTmp,'installation-recap-desktop.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:2,mobile:true});
+  assert.equal(await evalJS(`document.documentElement.scrollWidth<=innerWidth`),true,'Recap including embedded evidence fits phone');
+  fs.writeFileSync(path.join(testTmp,'installation-recap-phone.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
+  await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:2,mobile:false});
   console.log(root+': guided options, preferences, real capture flow, replay, shared workbench, persistence, photos and phone layout passed');
  }
  assert.deepEqual(errors,[]);await send('Target.closeTarget',{targetId});ws.close();

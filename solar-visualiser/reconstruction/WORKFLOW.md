@@ -903,3 +903,36 @@ answer markers distinguish an explicit comfortable/usual/open-to-change response
 from an untouched default and travel with household snapshots in the existing
 replay. Legacy affirmative preferences remain visible; do not infer a neutral
 answer from old default values. These markers do not alter heating scope or demand.
+
+### Remote assessment, site evidence and the joint review
+
+Keep remote advisers and site surveyors distinct in presentation and attribution.
+The role switch is not authentication. `adviser` observations retain remote
+provenance; complete sourced ratings can update scenarios, but only current site
+inventories close site validation. Remote wall/glazing assessments remain working
+assumptions. An explicit homeowner report remains a separate evidence type.
+
+Display existing records next to the relevant task, including grouped radiator
+photos, optional dimensions, source role/date and homeowner preferences. General
+geometry and service checks must expose measurements recorded for their component
+rooms/locations. Inspect the source image at a useful size before asking for repeat
+capture. Uploaded review copies are not original images or automatically rated
+emitters. Evidence notes do not close a technical check merely because they exist.
+
+Saving a finding should keep the surveyor in their work and explain the calculation
+effect. Raw geometry/access evidence can leave quantities unchanged. The review
+conversation compares current metrics with the remote starting point, records
+participants and a preferred direction or open questions, and retains the exact
+choices and evidence position in append-only history. Later changes require another
+conversation. No discussion outcome sets technical approval or confirms a quotation.
+
+The portable recap includes all outstanding checks and embedded evidence, with
+native expandable photographs that work without app scripts. Inspect the exported
+HTML as well as the live page. See [the journey review](JOURNEY-REVIEW.md) for the
+three-role findings, answer-effect trace, browser coverage and remaining limits.
+
+Remote photo assessment and site inventory verification are separate completion
+states. A complete, sourced remote rating resolves the received-photo assessment
+request while retaining the site-inventory check. Later photos or changed room
+attribution reopen assessment. Replaying the earlier state must recover both the
+rating and its then-current review status.
