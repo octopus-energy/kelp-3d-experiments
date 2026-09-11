@@ -4,6 +4,9 @@ The homeowner is a collaborator with knowledge of their home, tastes and priorit
 Their job is to recognise, choose and contribute useful evidence. The system's job
 is to do the interpretation, explain consequences, and ask only consequential questions.
 
+For the current implementation, review priorities and working map, read
+[JOURNEY-REVIEW-HANDOFF.md](JOURNEY-REVIEW-HANDOFF.md).
+
 ## The experience
 
 1. **Recognise my home.** Automatically use supported room identities. Ask about the
@@ -38,7 +41,7 @@ is to do the interpretation, explain consequences, and ask only consequential qu
   in reviewed emitter evidence. This is separate from low confidence in radiator
   dimensions. Other associations still need help; merely having a suggested label
   is not sufficient. Overrides and deferrals take precedence and are replayable.
-- Homeowners can add radiator images and optional dimensions in Room changes.
+- Homeowners can add radiator images and optional dimensions in Your rooms.
   Images are locally resized for review and attached to a named room. The record
   retains original pixel dimensions and identifies the processing. Originals remain
   on the homeowner's device. New images create an assessment task, not a made-up
@@ -92,4 +95,4 @@ keep the old artifact in the design replay.
 A model-backed yard feasibility map, real product shortlist and generated in-room
 previews are **not implemented in this release**. The current style sketches are
 illustrations, and photo pins are homeowner preferences. These are the next layer
-on top of the now-persisted choices and evidence, not simulated completed features.
+on top of the persisted choices and evidence, not simulated completed features.
