@@ -1,5 +1,30 @@
 # Reproducible property reconstruction and heat-pump survey workflow
 
+## Pre-survey discussion release — 10 September 2026
+
+The user has expanded the scope from geometry preparation to conditional heat-loss
+and installation-budget scenarios. `proposal.html` now provides the guided call
+experience; [its reproducible contract](PRE-SURVEY-PROPOSAL.md) supersedes earlier
+statements below that no heat-loss or emitter comparison is implemented. Design
+release, complete survey verification and actual equipment selection remain open.
+
+Latest exact-address EPC evidence is selected by lodgement datetime, not CSV order.
+Preserve contradictions between certificates and differences from reconstructed
+floor area. Never convert an EPC annual metric straight into design kW. Unknown
+emitters stay unknown; a planning cost reserve is not a replacement decision.
+
+Engine integration revealed two regression risks: fixed party-wall ΔT and clipping
+negative room-to-room transfer. The explicit surface adapter corrects those
+policies and tests conservation. Keep baseline engine provenance and distinguish
+the adapter from upstream engine behaviour. Derive sloping volume from the room
+model, not the first wall height. Do not infer annual running costs from unaudited
+engine outputs or infer product suitability from a room heat-demand total.
+
+Every proposal records evidence/model/code revision, assumptions and call choices.
+Changed evidence starts a new draft; previous discussions stay archived. Survey
+measurements and homeowner preferences remain separate. The current proposal is
+an offline recorded-model snapshot; saved workbench edits are not yet live inputs.
+
 This is the operating procedure for progressing from an incomplete dataset to a
 reviewed installation design. Geometry, evidence and design decisions have separate
 records. A plausible mesh is not sufficient evidence for a heat-loss calculation.
@@ -522,3 +547,277 @@ ground and high neighbouring terrain. The HTTP/file:// browser workflow now coun
 remaining elevated triangles inside the frontage region with the basement cutaway
 **off**, then captures the default context view. Require that check when changing
 DSM replacement; an attractive optional cutaway screenshot is insufficient.
+
+## Visible reconstruction replay — 2026-09-10
+
+`replay.html` presents thirteen curated Broom Road milestones, exact recorded model
+snapshots, photo projections, original aerial/OS and plan evidence, and hash-checked
+normal/depth previews. Read [REPLAY.md](REPLAY.md) for regeneration and the future
+live event contract requested by the user. Run `prepare_replay.py` after a new fit.
+
+Do not fabricate intermediate solver states or imply that displayed depth drove
+geometry. Preserve the user-attributed rear roof correction, failed camera checks,
+rejected trial and partially validated final outcome in any narrative. Playback
+pacing is editorial, not measured solver time. The future per-property event stream
+is documented only; it does not yet reconstruct or replay arbitrary datasets.
+
+### Blank replay on Retina displays — 2026-09-10
+
+The first replay could show an empty model pane because the canvas's intrinsic
+DPR-scaled buffer dimensions contributed to its flex parent's minimum size.
+ResizeObserver then doubled the host height on each render at DPR 2; reproduction
+reached a 33-million-pixel pane. DPR-1 screenshots of later steps missed this.
+The shared reconstruction renderer now positions the canvas absolutely inside its
+explicitly sized host, with CSS width/height independent of buffer resolution.
+Zero-sized hidden hosts are skipped. Regression checks load the first aerial step
+at DPR 2, assert bounded host/canvas dimensions, read rendered pixels to verify
+model surfaces exist, and capture the initial view over HTTP and file://.
+
+### Photo-visible rear windows omitted — 2026-09-10
+
+User feedback identified two missing recessed main-wall openings and a too-wide
+rear-wing sash. An initial response treated occlusion too broadly and relied on
+user marks for presence. On magnified source review, frame/glazing segments are
+visible: partial occlusion does not mean the opening is unknowable. Record visible
+segments, then distinguish hidden extents and metric scale from observed presence.
+
+`opening-corrections.json` now retains traced near/far source regions, observation
+roles and frame proportions alongside the original user-annotated screenshot.
+The `rear-openings` stage adds two windows and changes the rear-bedroom rectangle
+from the previous broad estimate to a narrower/taller envelope. Storey positions,
+full widths and scale remain inferred. Shell, front, lower glazed frame and cameras
+are unchanged. The current upper-wall projection does not line up with these new
+observations: display that disagreement. In particular, do not assign the large
+window on the neighbouring gable to the target rear wing just because the current
+projection lands there. The lower-frame diagnostic pass is not an upper-window pass.
+
+Every geometry change must now ship with its evidence-linked replay stage. The
+complete `run.py` archives the previous run by content hash, reruns the reconstruction,
+appends `revise_openings.py`, regenerates evidence, then regenerates the replay.
+`prepare_replay.py` and `tests/replay.test.js` reject a replay that ends on a different
+stage from the recommended candidate. Previous stages, user marks, observed source
+regions and provisional dimensions remain available for subsequent correction.
+
+
+## Photo-based radiator output hypotheses — 2026-09-10
+
+With the user's explicit authorisation, estimate outputs where visible proportions
+support a useful hypothesis. Keep the original observations intact and record the
+new interpretation in `3broomroad-data/radiator-estimates.json`; regenerate the
+proposal with `scripts/prepare-proposal.py`. Source photo hashes, rating tables,
+assumptions and the earlier proposal revision remain available for replay/review.
+This is a proposal evidence revision; it does not change the geometry replay.
+
+Lessons from reviewing every Broom Road interior photograph:
+
+- Search all views for emitters, including bays and behind furniture. The original
+  four observations missed hall and bedroom columns and the living bay radiator.
+  A dining-room view repeats that bay radiator; do not create a second emitter.
+- A possible radiator behind the sofa could be upholstery. Preserve the ambiguity
+  and leave output unknown. Partial visibility can support an estimate when actual
+  radiator sections are discernible; vague white shapes alone do not establish one.
+- Count sections horizontally separately from columns front-to-back. Output tables
+  quote watts per section for a specified height/depth; multiplying by columns again
+  overstates output. Label section count, dimensions, material and finish as inferred
+  when no measurement or model label exists. Cropping increases the range.
+- Use primary manufacturer water-side DT50 tables, not electrical-element wattage.
+  Record source URL/date, row and unit. Brand resemblance is not identification.
+  Exponent n belongs to the selected analogue; carry each alternative through the
+  water-temperature correction before adding emitter outputs within a room.
+- A towel frame needs its own small-output analogue, not a panel or column rating.
+  Furniture, covers, towels and poor flow can reduce actual delivered heat; these
+  estimates assume unobstructed nominal emission and do not bound hydraulic faults.
+- Separate radiator identity from room attribution. Do not add the pink bedroom's
+  estimated radiator to both possible rooms. Mark lower-ground attribution tentative.
+  Unknown inventory is not absence. Catalogue/type ranges are scenario bounds, not
+  statistical confidence intervals, and missing emitters may lie outside them.
+- Keep photo-derived comparisons distinct from entered catalogue ratings, site
+  measurements and approved replacements. Both unknown and photo-estimated rooms
+  remain eligible for the budget reserve until the inventory is validated.
+
+Survey capture should record every emitter's room, width/height, section count and
+front-to-back column count (or panel/convector count), manufacturer/model where
+available, obstructions, valve/pipe sizes, and a front plus side/end photo. Prioritise
+large apparent deficits, uncertain assignments and incomplete inventories. Reconcile
+room demand assumptions at the same time; avoid solving a geometry error with an
+oversized radiator. No new generic image-to-radiator automation is implied by this
+reviewed Broom Road adapter.
+
+Regression: `tests/proposal.test.js` checks per-section units, per-variant exponents,
+room totals, exclusion of unassigned emitters, overrides and reserve preservation.
+`tests/browser-review.cjs browser-proposal.cjs` checks toggle/outputs, evidence image
+loading, readable export and phone layout over HTTP and file://.
+
+
+## Party-wall display mismatch and unresolved glazing — 2026-09-10
+
+The homeowner questioned missing party-wall treatment. Audit the actual surface
+schedule before promising a reduction: the proposal already treated 113.8 m² as
+party and its 12.192 kW baseline would have been 17.216 kW if those walls were outside.
+The separate ASHP geometry review displayed some of those same walls as unclassified.
+It now shares `geometryPrep.boundaryHypotheses` with the proposal; explicit edits and
+accepted survey evidence retain precedence. Tests cover property isolation and both
+browser coordinate frames. A rendered DSM gap is not evidence of air exposure.
+
+A neighbour-facing wall is not necessarily party: distinguish a shared heated wall,
+an air gap, an unheated conservatory and partial-height/length contact. OS confirms
+mid-terrace connections but does not classify every rear wall. Keep rear contact
+uncertain and compare scenarios until contact extent is established. Split partial
+contact for the surveyed model instead of assigning the entire run to its warmest
+neighbour. Main-party temperature assumptions can create heat gains in cooler rooms;
+matching room temperature removes gains as well as losses.
+
+Do not infer single/double glazing from white frames, sash style or distant reflections.
+Record observed frame/opening geometry separately from pane count and thermal performance.
+Broom Road photos do not resolve spacer/edge details enough for confirmation. EPC
+'some double glazing' cannot assign types by room. The call UI now records opening/bay
+choices, explicit assumed U-values, who confirmed them and a source note. Homeowner
+reports remain separate from survey observations and a product-specific whole-window
+rating. Window type changes conduction only; draught assumptions require their own evidence.
+
+`thermal-evidence.json` is the reviewed property adapter; `prepare-proposal.py` regenerates
+all option effects through heatloss_engine, archives the prior proposal and fingerprints
+OS, aerial, floorplan, photos and thermal evidence. Effects update room/surface results,
+radiator needs and budget together. Geometry snapshots are unchanged, and call histories
+preserve the new thermal choices. Read PRE-SURVEY-PROPOSAL.md for current audit quantities
+and the confirmation workflow. Test joint changes against the engine, not just individual
+option deltas. Verify coloured party boundaries and confirmation persistence over HTTP
+and file://; generic boundary inference must not leak into other properties.
+
+
+## Upfront price, BUS and running-cost trade-offs — 2026-09-10
+
+The user directed a roughly 50% reduction in installation allowances and subtraction
+of the £7,500 BUS grant. Apply that to gross monetary allowances first; keep the
+contingency percentage unchanged, then deduct BUS once. Show gross / assumed grant /
+net contribution separately, preserve unknown totals, cap the deduction at cost and
+provide a no-grant comparison. This is a user-directed budget, not researched supplier
+pricing. Check current official grant values; do not mark eligibility or award as
+confirmed. Previous discussion revisions remain archived.
+
+Separate design heat loss (kW), annual useful heat (kWh), purchased electricity (kWh)
+and money (£). Until bills and product performance are available, the proposal uses
+an explicit editable equivalent-hours proxy plus editable seasonal SPF assumptions.
+Do not use a single cold-day COP as annual efficiency or imply that design flow is
+maintained year-round. Compare equal heat/comfort across flow settings and require
+adequate emitter capacity. Separate hot-water demand/efficiency and auxiliary loads;
+avoid counting auxiliaries twice if an actual SPF already includes them. Changing
+BUS changes the upfront contribution only, never annual savings.
+
+`operating-assumptions.json` and PRE-SURVEY-PROPOSAL.md define initial values, scope,
+sensitivity and reproducible arithmetic. The UI contrasts upfront allowances with
+annual electricity cost at 45/50/55°C, keeps assumptions behind details and exports
+the full basis. Entered annual useful heat is explicitly independent of subsequent
+geometry/scope changes; blank restores the model proxy. EPC primary energy and historic
+costs are not converted to design heat or current bills. Refine consumption using
+homeowner bills, occupancy, chosen equipment and commissioning evidence.
+
+The survey promise is now part of the page: first check the important uncertainties,
+then sit down with the homeowner to agree the approach, options and scope. Agreement
+is distinct from technical approval and from the evidence measurements themselves.
+
+## Guided installation, explicit scope and evidence replay — 2026-09-10
+
+The default proposal now leads with household priorities and retains source photos
+next to the proposed room changes. `INSTALLATION-JOURNEY.md` describes the shared
+project and six-step journey. The technical workbench and guided view must use the
+same current choices and room capacity schedule; independent visible budgets are a
+regression even when each calculation is internally consistent.
+
+A fixed reserve for four unverified rooms is not a physical installation package.
+Name each proposed panel and separate unknown-inventory provisions from observed
+absence. Price that exact schedule once. Keeping a radiator means supplementary
+capacity if needed, with each new emitter's own exponent. A higher design flow may
+reduce panel sizes without reducing the number of changed rooms; do not label the
+option “fewer changes” when its schedule does not support that claim.
+
+Record actual survey evidence only. Regression fixtures must stay in isolated
+browser profiles and be explicitly labelled synthetic. Complete inventory ratings,
+supported adjacency/glazing categories and heating scope can update the current
+engine-backed scenarios immediately. Raw area/height measurements need geometry
+reconciliation, not proportional scaling of every wall or fictitious recalculation.
+Capture those measurements, keep the previous model, and flag the downstream review.
+
+Replay before/after decisions against the exact evidence revision. Imports preserve
+incoming history separately, never rewrite an earlier observation under the same ID,
+and reject mismatched revisions. A filled survey form, observed construction category,
+or selected customer preference does not approve equipment or physical installation.
+
+## Typical radiator change price and existing heating — 2026-09-10
+
+User clarified a typical £300 per radiator change and that most rooms should be
+assumed already heated. Use an editable flat supply-and-fitting allowance per
+scheduled radiator, before contingency. Do not add the earlier per-watt supply
+allowance or separate labour again. Larger sizes may cost the same in this budget;
+only a change in scheduled count changes the default emitter price.
+
+Separate heated scope, heating presence and usable output. All 13 spaces remain
+in the default heated model; an explicitly cool basement remains outside scope.
+Missing radiator imagery means assumed existing heating with unknown output, not
+zero output, confirmed adequacy, or a full-room replacement provision. Exclude
+unknown inventories from scheduled work until evidence supports a change; retain
+them as survey checks and state that additional work may follow. Explicit measured
+absence (complete inventory at zero output) still introduces required capacity.
+
+At the unchanged central warm geometry, the current schedules carry 10 / 8 / 8
+radiators at 45 / 50 / 55°C, costing £3,000 / £2,400 / £2,400 before contingency.
+They concern evidence-indicated changes; the seven unknown room outputs remain
+to check. This assumption change does not lower calculated heat loss or validate
+low-temperature comfort. Previous project packages and evidence remain preserved.
+
+### Customer-journey consistency checks (2026-09-11)
+
+- Established facts must not reappear as unanswered priority questions merely because
+  their counterfactual has a large heat-loss effect. The lower-ground photo
+  `35f17817024aeb5a833ac4f0ed4d592a` shows a finished room with a radiator; the user
+  confirms regular heating. Keep it in the heated scope. An explicitly selected
+  cool scenario needs review, while unknown radiator output remains a separate check.
+- A panel promising an installation route must render the route wherever the panel
+  appears. Test actual coloured route pixels and route geometry across all journey
+  steps, not just that the house renders. Unknown cylinder endpoints must remove the
+  connection and explain what is missing. These are indicative hydraulic routes;
+  electrical and drainage routes remain unresolved.
+- Flat per-radiator allowances can produce identical upfront prices with different
+  panel dimensions. Explain the count, rate, size change and running-cost difference;
+  do not invent a discount to distinguish options.
+- Replay must capture panel dimensions, even when counts and prices are unchanged.
+  Keep technical and homeowner survey priorities derived from the same task source.
+
+### Household knowledge must have an explicit downstream use (2026-09-11)
+
+- Do not ask whether the Broom Road lower ground is heated, even as an optional
+  homeowner question. It is established living space. Preserve old cool scenarios
+  as history; show their conflict and an explicit restore action if one is loaded.
+- Store comfort feedback against stable room IDs: cold flag, usage and free-text
+  details. These create room-specific comfort checks and appear in room views,
+  replay and the recap. They are not measured heat loss, nor permission to exclude
+  occasionally used rooms. Check controls, draughts, balancing and emitter output.
+- Ask how many people live in the home and about everyday bathing routines. Make
+  the answers visible in the hot-water survey brief. They do not currently select
+  a cylinder or recalculate annual DHW energy; those require a supported model.
+- A homeowner can confirm or correct a listing photo's room attribution. Persist
+  this as an append-only, revision-scoped observation; never overwrite the source
+  manifest. Apply the assignment to existing identified radiator records once per
+  emitter ID, removing it from the previous room. Explicitly unresolved matches
+  take precedence over source suggestions. A photo without a numeric estimate
+  contributes context only. Repeat photographs do not create additional emitters.
+- Room matching does not validate radiator size, manufacturer, output or inventory
+  completeness. Entered totals retain precedence; later changes to their photo
+  attribution flag inventory review. Replays must show the source photo and the
+  matching state before and after correction. Browser checks must actually save
+  and correct matches, reload them, and exercise the offline floorplan reference.
+
+### Visual household interaction — 2026-09-11
+
+Prefer visual selection to form filling in the homeowner journey. Use resident
+count buttons, illustrated habit cards, photo-backed room cards (label suggested
+versus matched imagery), and floor-layout silhouettes where photos are missing.
+Photo matching uses a thumbnail strip and room-plan tiles, with a separate save
+action so a suggestion is never treated as confirmation. Preserve unresolved
+choices, keyboard operation, visible selected states and the evidence history.
+
+Keep optional text for exceptional routines and specific context; reveal it only
+when requested. Explain the direct effect in a short caption. Detailed method and
+source information can remain in expandable sections and the technical workspace.
+These presentation changes must preserve the underlying household and assignment
+records, and must not introduce new thermal assumptions.

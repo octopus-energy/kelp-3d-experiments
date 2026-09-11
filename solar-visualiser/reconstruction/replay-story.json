@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "kind": "recorded-reconstruction-replay",
+  "title": "How Broom Road took shape",
+  "description": "A narrated replay of saved experiments, not a recording of agent reasoning or every optimiser step. Playback timing is editorial. The final model is only partially validated.",
+  "events": [
+    {
+      "id": "intake",
+      "label": "Locate",
+      "title": "Start with the property, not the roof",
+      "stageId": "plan",
+      "evidence": "aerial",
+      "view": "above",
+      "status": "Evidence",
+      "duration": 8,
+      "text": "The aerial and OS outline establish the property and its context. The white building outline and cyan site extent describe different things; neither is a room boundary.",
+      "sources": [
+        "osdata.json",
+        "aerial.png"
+      ],
+      "dsm": false,
+      "openings": false
+    },
+    {
+      "id": "plan",
+      "label": "Hypothesise",
+      "title": "Turn the plan into a first house hypothesis",
+      "stageId": "plan",
+      "evidence": "plan",
+      "view": "front",
+      "status": "Assumed geometry",
+      "duration": 8,
+      "text": "Printed plan dimensions anchor a parametric shell. Vertical walls and simple roof planes reduce the unknowns. This first recorded model still contains the wrong rear roof form.",
+      "sources": [
+        "floorplan.png",
+        "reconstruction/run.json#stages/plan"
+      ],
+      "openings": true
+    },
+    {
+      "id": "front-before",
+      "label": "Compare",
+      "title": "Project the first model into a listing photo",
+      "stageId": "plan",
+      "imageId": "655c2e755834a41b23f260899a2fe835",
+      "evidence": "photo",
+      "view": "front",
+      "status": "Fitting evidence",
+      "duration": 7,
+      "text": "Gold edges are the model projected through the fitted camera. Cyan points are labelled photo observations. The red connectors reveal the disagreement before refinement.",
+      "sources": [
+        "reconstruction-observations.json",
+        "reconstruction/run.json#stages/plan"
+      ]
+    },
+    {
+      "id": "front-fit",
+      "label": "Fit front",
+      "title": "Adjust the bay, openings and camera together",
+      "stageId": "photos",
+      "previousStageId": "plan",
+      "imageId": "655c2e755834a41b23f260899a2fe835",
+      "evidence": "photo",
+      "view": "front",
+      "status": "Recorded update",
+      "duration": 9,
+      "text": "The front fitting error falls as dimensions and camera parameters change. The faint previous shape shows what moved. This is the saved result of the fit, not synthetic intermediate solver steps.",
+      "sources": [
+        "reconstruction/run.json#stages/photos"
+      ]
+    },
+    {
+      "id": "front-check",
+      "label": "Check",
+      "title": "A good fitting photo is not enough",
+      "stageId": "photos",
+      "imageId": "88a6310f77aee7b99e0c2e18136d4b78",
+      "evidence": "photo",
+      "view": "front",
+      "status": "Diagnostic check",
+      "duration": 8,
+      "text": "A separate photo tests window positions excluded from fitting. Green points expose the remaining mismatch. These checks were inspected during development; they are not an untouched benchmark.",
+      "sources": [
+        "reconstruction/run.json#stages/photos"
+      ]
+    },
+    {
+      "id": "dsm",
+      "label": "Add DSM",
+      "title": "Use height samples where they support a plane",
+      "stageId": "mono-across",
+      "previousStageId": "photos",
+      "imageId": "655c2e755834a41b23f260899a2fe835",
+      "evidence": "photo",
+      "view": "above",
+      "status": "Recorded update",
+      "duration": 8,
+      "text": "Cyan 3D points show the original DSM over the roofs. Broad slopes gain height constraints, but noisy edges and small faces cannot establish detailed roof geometry.",
+      "sources": [
+        "dsm.asc",
+        "reconstruction/run.json#stages/mono-across"
+      ],
+      "dsm": true
+    },
+    {
+      "id": "rear-mistake",
+      "label": "Challenge",
+      "title": "The rear photo contradicts the roof hypothesis",
+      "stageId": "mono-across",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "evidence": "photo",
+      "view": "rear",
+      "status": "Wrong roof form",
+      "duration": 9,
+      "text": "The first pass gave the upper rear wing two slopes. The user identified both rear extensions as mono-pitch in this photo. No calibrated rear projection is available for this stage.",
+      "sources": [
+        "photos/b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+        "reconstruction/WORKFLOW.md#rear-gable-mistake"
+      ]
+    },
+    {
+      "id": "rear-correct",
+      "label": "Revise roof",
+      "title": "Change the rear form; preserve the front fit",
+      "stageId": "rear-corrected",
+      "previousStageId": "mono-across",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "evidence": "photo",
+      "view": "rear",
+      "status": "Failed rear check",
+      "duration": 9,
+      "text": "The wing becomes mono-pitch. Yet its provisional camera reaches the field-of-view limit and the excluded corner still misses. A subsequent rear trial was rejected; its geometry was not adopted.",
+      "sources": [
+        "rear-observations.json",
+        "reconstruction/rear-trial.json",
+        "reconstruction/run.json#previousRearReview"
+      ]
+    },
+    {
+      "id": "depth",
+      "label": "Inspect depth",
+      "title": "Depth adds a view of relative separation",
+      "stageId": "rear-corrected",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "evidence": "depth",
+      "view": "rear",
+      "status": "Diagnostic only",
+      "duration": 8,
+      "text": "Blend the predicted depth with the photo and projected edges to inspect overlap and foreground separation. These values are relative log depth, not metres. Depth did not drive any recorded geometry update.",
+      "sources": [
+        "reconstruction/MARIGOLD-REVIEW.md",
+        "reconstruction/run.json#previousRearReview"
+      ]
+    },
+    {
+      "id": "normals",
+      "label": "Inspect normals",
+      "title": "Use surface direction to challenge the camera fit",
+      "stageId": "rear-corrected",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "evidence": "normals",
+      "view": "rear",
+      "status": "Weak orientation evidence",
+      "duration": 8,
+      "text": "Normal colours encode surface direction. The purple brick patch supplies one weak orientation constraint in the next experiment. Correlated pixels do not count as independent measurements.",
+      "sources": [
+        "reconstruction/exterior-observations.json",
+        "reconstruction/monocular-regions.json"
+      ]
+    },
+    {
+      "id": "rear-refine",
+      "label": "Refine rear",
+      "title": "Fit the lower roof and sloping glazed frame",
+      "stageId": "exterior-refined",
+      "previousStageId": "rear-corrected",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "evidence": "normals",
+      "view": "rear",
+      "status": "Recorded update",
+      "duration": 10,
+      "text": "Two rear photos and two weak normal constraints guide the lower extension. Its low edge drops and its rise increases. The front and upper wing stay frozen; dashed edges remain unvalidated context.",
+      "sources": [
+        "reconstruction/exterior-pass.json",
+        "reconstruction/exterior-observations.json"
+      ]
+    },
+    {
+      "id": "rear-check",
+      "label": "Check rear",
+      "title": "Test the revision in the other rear photo",
+      "stageId": "exterior-refined",
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "evidence": "photo",
+      "view": "rear",
+      "status": "Partial diagnostic pass",
+      "duration": 9,
+      "text": "Excluded frame and fascia points now agree more closely. Switch to normals to inspect the second patch. This supports the visible lower extension, not the hidden upper wing or surveyed dimensions.",
+      "sources": [
+        "reconstruction/exterior-pass.json",
+        "reconstruction/run.json#rearReview"
+      ]
+    },
+    {
+      "id": "rear-openings",
+      "label": "Complete windows",
+      "title": "Recover the rear windows from visible photo edges",
+      "stageId": "rear-openings",
+      "previousStageId": "exterior-refined",
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "evidence": "photo",
+      "view": "rear",
+      "status": "Photo-observed \u00b7 alignment unresolved",
+      "duration": 12,
+      "text": "Two recessed windows were missing; the rear-wing sash was too wide. Gold regions trace visible frames, even where partly obscured. The corrected shapes use provisional dimensions. Purple projections expose the remaining upper-wall alignment problem; lower-door checks do not validate these windows.",
+      "sources": [
+        "opening-corrections.json",
+        "reconstruction/evidence/rear-window-feedback.png",
+        "reconstruction/opening-pass.json"
+      ],
+      "sourceViewBox": [
+        395,
+        300,
+        160,
+        150
+      ]
+    },
+    {
+      "id": "handover",
+      "label": "Handover",
+      "title": "A useful remote model, with questions still open",
+      "stageId": "rear-openings",
+      "imageId": "655c2e755834a41b23f260899a2fe835",
+      "evidence": "photo",
+      "view": "front",
+      "status": "Remote hypothesis",
+      "duration": 9,
+      "text": "The working candidate now includes the photo-observed rear windows. Front and lower-extension fits are unchanged. Upper-wall alignment, hidden window extents, basement depth and metric dimensions remain open checks for the next geometry pass and survey.",
+      "sources": [
+        "reconstruction/EXTERIOR-PASS.md",
+        "reconstruction/ASHP-WORKBENCH.md"
+      ]
+    }
+  ]
+}

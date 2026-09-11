@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "propertyId": "3broomroad",
-  "revision": "7a474940a9306231a4d0e615db964c58ad630158aa172489bc0bc32bbb5e64da",
-  "modelRevision": "f60263d033e1041a5d0caa36400e9ee4b3476de899d386b0f8b066689c71aca7",
+  "revision": "a5f68d1fab5393cdb94ea425f27b4ea3fa79744e00643b4c70ec6fd2e8afb7d2",
+  "modelRevision": "73fccd39e3e20bd9481f6388346f670dc813b1d640373d59227628f8178004b8",
   "sources": [
     {
       "id": "os",
@@ -73,6 +73,22 @@
       "path": "workflow-observations.json",
       "kind": "workflow-annotation",
       "sha256": "d5ceffda356d6a27a164af6d42d4f0400698a44e030a1fdbf52691504bcb75a3",
+      "status": "provided",
+      "captureDate": null
+    },
+    {
+      "id": "opening-annotation",
+      "path": "opening-corrections.json",
+      "kind": "opening-annotation",
+      "sha256": "6c14e0fa619bf12e30f0c96d847f00ee722deabac508c8e197dcae70c78143f1",
+      "status": "provided",
+      "captureDate": null
+    },
+    {
+      "id": "user-geometry-feedback",
+      "path": "reconstruction/evidence/rear-window-feedback.png",
+      "kind": "user-geometry-feedback",
+      "sha256": "c18df3008d5a717737e78a5b45dbd44c332d450adc74654753b259a02cbc19bb",
       "status": "provided",
       "captureDate": null
     },

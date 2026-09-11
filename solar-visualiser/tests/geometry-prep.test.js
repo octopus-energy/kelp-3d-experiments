@@ -28,3 +28,13 @@ const runSurfaces=[{id:'a',roomA:'r',roomB:null,kind:'wall',bottom:0,edge:[[0,0]
 const runs=P.surfaceRuns(runSurfaces);assert.equal(runs.length,2);assert.equal(runs[0].length,2,'Adjacent collinear fragments grouped; gap remains separate');
 const tasks=P.priorities(geometry,revision,[{id:'missing-level',rank:10000,priority:'critical',title:'Missing basement'},{id:'rooflight',rank:750,priority:'normal',title:'Rooflight area'}]);assert.equal(tasks[0].id,'coverage:missing-level');assert(tasks.findIndex(t=>t.field==='boundary')<tasks.findIndex(t=>t.id==='coverage:rooflight'),'Unknown boundaries precede minor opening checks');
 const unknownUse=P.append(revision,geometry,{...event,id:'unknown-use',field:'heatedStatus',value:'unknown'});assert.throws(()=>P.decide(unknownUse,geometry,'unknown-use','accept','2026-09-10T12:00:00Z'),/unresolved/);
+
+// Same Broom Road party classification feeds proposal and geometry review.
+const broom=require('../scripts/proposal-geometry.cjs')(),empty=P.empty('3broomroad',broom.geometry.signature),review=P.review(broom.geometry,empty);
+assert(review.surfaces.filter(s=>s.current.boundary==='party').reduce((n,s)=>n+s.netArea,0)>110);
+const party=review.surfaces.find(s=>s.current.boundary==='party');empty.surfaces[party.id]={boundary:'external',source:'Survey override'};assert.equal(P.review(broom.geometry,empty).surfaces.find(s=>s.id===party.id).current.boundary,'external','Explicit boundary choices win');
+const raw=JSON.parse(JSON.stringify(broom.geometry));for(const s of raw.surfaces){delete s.boundaryHypothesis;delete s.boundaryGroup;delete s.boundaryBasis;}
+assert(!P.boundaryHypotheses(raw,broom.model.parameters,'original').surfaces.some(s=>s.boundaryHypothesis==='party'),'No Broom Road adjacency on another property');
+assert(broom.geometry.surfaces.filter(s=>s.boundaryGroup?.startsWith('rear-neighbour')).every(s=>s.boundaryHypothesis==='unknown'),'Rear contact remains separate from main party walls');
+
+const signature=broom.geometry.signature;P.boundaryHypotheses(broom.geometry,broom.model.parameters,'3broomroad');assert.equal(broom.geometry.signature,signature,'Adjacency annotation is idempotent');assert.notEqual(signature,broom.geometry.quantitySignature,'Changed boundary evidence invalidates prior survey snapshots');

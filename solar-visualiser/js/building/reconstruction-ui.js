@@ -4,16 +4,21 @@ window.SolarViz=window.SolarViz||{};
 const data=window.BROOM_RECONSTRUCTION,$=id=>document.getElementById(id),R=SV.reconstruction,E=SV.roofEdit,S=SV.buildingSolid,G=SV.buildingGeometry;
 if(!data){$('errors').textContent='Reconstruction bundle is missing. Run reconstruction/run.py first.';return;}
 let stage=data.stages.find(s=>s.id===data.recommendedStage)||data.stages[0];
+let comparisonStage=null;
 const photos=window.IMAGE_DATA.images,refs=[...stage.photos.map(ph=>photos.find(im=>im.id===ph.imageId)),...photos.filter(im=>!stage.photos.some(ph=>ph.imageId===im.id))];
 const rearImage='b3c87cfb9faa2d98b3231da431fae97b',reviewRear=data.reviewFocus==='rear';
 let imageId=reviewRear&&refs.some(im=>im.id===rearImage)?rearImage:refs[0].id;
 for(const s of data.stages)$('stage').add(new Option(s.label,s.id));$('stage').value=stage.id;
 for(const im of refs)$('photo').add(new Option(im.caption+' · '+im.id.slice(0,6)+(stage.photos.some(p=>p.imageId===im.id)?' · '+stage.photos.find(p=>p.imageId===im.id).role:data.rearReview?.photos.some(p=>p.imageId===im.id)?' · rear check':' · reference'),im.id));
 $('photo').value=imageId;
-const scene=new THREE.Scene();scene.background=new THREE.Color('#17222c');const camera=new THREE.PerspectiveCamera(42,1,.05,500),renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));$('view3d').appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#17222c');const camera=new THREE.PerspectiveCamera(42,1,.05,500),renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+// Buffer pixels must never set the flex item's layout size. At DPR 2 that
+// creates a ResizeObserver feedback loop, doubling the host on each render.
+Object.assign(renderer.domElement.style,{position:'absolute',inset:'0',width:'100%',height:'100%',display:'block'});
+$('view3d').appendChild(renderer.domElement);
 const controls=new THREE.OrbitControls(camera,renderer.domElement);controls.target.set(-3,2,0);camera.position.set(...(reviewRear?[-25,15,-12]:[22,18,19]));controls.update();
 scene.add(new THREE.HemisphereLight(0xffffff,0x516277,2));const sun=new THREE.DirectionalLight(0xffffff,2);sun.position.set(10,25,15);scene.add(sun);scene.add(new THREE.GridHelper(50,50,0x6c7b83,0x293b49));let group=new THREE.Group();scene.add(group);
-function render(){const box=$('view3d').getBoundingClientRect();renderer.setSize(box.width,box.height,false);camera.aspect=box.width/box.height;camera.updateProjectionMatrix();renderer.render(scene,camera);}
+function render(){const box=$('view3d').getBoundingClientRect();if(box.width<=0||box.height<=0)return;renderer.setSize(box.width,box.height,false);camera.aspect=box.width/box.height;camera.updateProjectionMatrix();renderer.render(scene,camera);}
 controls.addEventListener('change',render);new ResizeObserver(render).observe($('view3d'));
 const material=(color,opacity=1)=>new THREE.MeshStandardMaterial({color,side:THREE.DoubleSide,roughness:.85,transparent:opacity<1,opacity});
 function line(points,color=0x25303c){const pts=points.map(p=>new THREE.Vector3(...p));pts.push(pts[0]);group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color})));}
@@ -52,13 +57,31 @@ function rebuild(){
   }
   const geom=new THREE.BufferGeometry();geom.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));group.add(new THREE.Points(geom,new THREE.PointsMaterial({color:0x4be6dc,size:.07})));
  }
+ if(comparisonStage){
+  // Recorded predecessor only: no invented intermediate geometry.
+  const old=E.validate(comparisonStage.worldFaces).solid;
+  if(old){
+   const points=[];
+   for(const f of comparisonStage.worldFaces)for(let i=0;i<f.ring.length;i++){
+    const a=f.ring[i],b=f.ring[(i+1)%f.ring.length];points.push(a.x,a.y,a.z,b.x,b.y,b.z);
+   }
+   for(const w of old.wallPanels)points.push(w.a2[0],old.groundY,w.a2[1],w.a2[0],w.topA,w.a2[1]);
+   if($('show-openings').checked)for(const opening of comparisonStage.model.openings){const ring=R.world(opening.ring,comparisonStage.model.parameters);for(let i=0;i<ring.length;i++)points.push(...ring[i],...ring[(i+1)%ring.length]);}
+   const geom=new THREE.BufferGeometry();geom.setAttribute('position',new THREE.Float32BufferAttribute(points,3));
+   const lines=new THREE.LineSegments(geom,new THREE.LineBasicMaterial({color:0xc5a2ff,transparent:true,opacity:.38,depthTest:false}));lines.userData.replayPrevious=true;group.add(lines);
+  }
+ }
  render();
 }
 const ns='http://www.w3.org/2000/svg';function svgNode(tag,attrs){const el=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));$('overlay').appendChild(el);return el;}
 function photoView(){
  const im=photos.find(im=>im.id===imageId),ph=stage.photos.find(ph=>ph.imageId===imageId);$('overlay').replaceChildren();
  svgNode('image',{href:SV.imageUrl(im),x:0,y:0,width:1024,height:683,preserveAspectRatio:'xMidYMid meet'});
- const rearReview=[data.rearReview,data.previousRearReview].find(r=>r?.stageId===stage.id),rear=rearReview?.photos.find(p=>p.imageId===imageId);
+ const rearReview=[data.rearReview,data.previousRearReview].find(r=>r?.stageId===(stage.reviewStageId||stage.id)),rear=rearReview?.photos.find(p=>p.imageId===imageId);
+ if(stage.openingReview&&rear){
+  if($('show-wire').checked)for(const change of stage.openingReview.changes){const q=R.project(change.after.ring,rear.camera);if(q.every(p=>p[2]>0))svgNode('polygon',{points:q.map(p=>p.slice(0,2).join(',')).join(' '),fill:'none',stroke:'#c5a2ff','stroke-width':2,'stroke-dasharray':'6 4','data-opening-projection':change.id});}
+  if($('show-observations').checked)for(const region of stage.openingReview.observations.photos.find(p=>p.imageId===imageId)?.regions||[]){const node=svgNode('polygon',{points:region.pixels.map(p=>p.join(',')).join(' '),fill:'#ffd16622',stroke:'#ffd166','stroke-width':2,'data-opening-observation':region.openingId});const title=document.createElementNS(ns,'title');title.textContent=region.openingId+' · '+region.visibility+' · '+region.observation;node.appendChild(title);}
+ }
  if(rear?.overlayEdges){
   if($('show-wire').checked)for(const edge of rear.overlayEdges){const q=R.project(edge.ring,rear.camera);if(q.some(p=>p[2]<=0))continue;const visible=edge.status==='visible';svgNode('line',{x1:q[0][0],y1:q[0][1],x2:q[1][0],y2:q[1][1],stroke:visible?'#ffd166':'#a4b3be','stroke-width':visible?2:1,'stroke-dasharray':visible?'':'5 5',opacity:visible?1:.6});}
   if($('show-observations').checked){
@@ -67,6 +90,7 @@ function photoView(){
    for(const edge of rear.checkEdges)svgNode('polyline',{points:edge.pixels.map(p=>p.join(',')).join(' '),fill:'none',stroke:edge.use==='check'?'#86ffb0':'#35e2e0','stroke-width':2});
   }
   $('photo-info').textContent=`REAR EXTENSION · ${rear.status} · fitting points ${rear.poseRmsePx.toFixed(1)} px. ${rear.checkRmsePx===null?'This near view supplies fitting evidence.':`Excluded corner/frame checks: ${rear.checkRmsePx.toFixed(1)} px RMSE.`} Fascia edge ${rear.checkEdges[0].meanDistancePx.toFixed(1)} px (${rear.checkEdges[0].use}); surface direction ${rear.normalErrorDeg.toFixed(1)}° from predicted normals. Gold: visible fitted frame/fascia. Dashed grey: unvalidated or occluded roof context. Upper-wing corners remain unverified; this is a partial exterior check, not metric certification.`;
+  if(stage.openingReview)$('photo-info').textContent+=' Opening completeness review: gold source polygons mark visible window frames; dashed purple polygons are provisional opening projections. Their disagreement is unresolved and is not covered by the lower-frame residuals above.';
   return;
  }
  if(rear){
@@ -129,5 +153,11 @@ for(const [id,pos] of [['front',[22,18,19]],['rear',[-25,15,-12]],['above',[-3,3
 $('export').onclick=()=>{const blob=new Blob([JSON.stringify({schemaVersion:1,propertyId:data.propertyId,kind:'reconstruction-candidate',stage,provenance:data.provenance},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='3broomroad-reconstruction-'+stage.id+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 for(const text of data.provenance.limitations){const li=document.createElement('li');li.textContent=text;$('limits').appendChild(li);}
 $('plan').src=SV.imageUrl(window.IMAGE_DATA.floorplan);for(const d of data.evidence.plan.dimensions){const tr=document.createElement('tr');for(const value of [d.room,d.width.toFixed(2)+' × '+d.depth.toFixed(2)+' m',d.note||'']){const td=document.createElement('td');td.textContent=value;tr.appendChild(td);}$('plan-dimensions').appendChild(tr);}
-window.__BROOM_RECONSTRUCTION__={get stage(){return stage;},data,scene,camera,renderer};refresh();
+window.__BROOM_RECONSTRUCTION__={get stage(){return stage;},get imageId(){return imageId;},data,scene,camera,renderer,
+ select(selection){
+  const next=data.stages.find(s=>s.id===selection.stageId);if(!next)throw Error('Unknown reconstruction stage');
+  stage=next;if(selection.imageId){if(!photos.some(p=>p.id===selection.imageId))throw Error('Unknown source photo');imageId=selection.imageId;}
+  comparisonStage=data.stages.find(s=>s.id===selection.previousStageId)||null;
+  $('stage').value=stage.id;$('photo').value=imageId;refresh();
+ },photoView,render};refresh();
 })(window.SolarViz);

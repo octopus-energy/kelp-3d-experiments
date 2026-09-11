@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "checkedAt": "2026-09-10",
+  "defaults": {
+    "electricityPence": 27,
+    "fullLoadHours": 1600,
+    "annualHeatKwh": null,
+    "hotWaterKwh": 3000,
+    "hotWaterSpf": 2.5,
+    "auxiliaryKwh": 150,
+    "spf45": 3.6,
+    "spf50": 3.3,
+    "spf55": 3.0
+  },
+  "grant": {
+    "amount": 7500,
+    "status": "assumed-eligible",
+    "basis": "User requested BUS deduction for this mains-gas replacement. Installer must confirm eligibility and voucher; not an award."
+  },
+  "pricingBasis": "User-directed revision: halve all monetary installation allowances from the earlier prototype; retain 15% contingency. These are editable budget assumptions, not supplier prices.",
+  "sources": [
+    {
+      "title": "GOV.UK: BUS grant amounts",
+      "url": "https://www.gov.uk/apply-boiler-upgrade-scheme/what-you-can-get",
+      "basis": "\u00a37,500 air-to-water heat pump grant for the proposed mains-gas replacement, subject to eligibility."
+    },
+    {
+      "title": "Energy Saving Trust: heat pump efficiency and operation",
+      "url": "https://energysavingtrust.org.uk/heat-pump-questions-answered/",
+      "basis": "Supports seasonal efficiency and weather compensation concepts. The specific 45/50/55\u00b0C SPF values here are illustrative assumptions, not values published by this source."
+    }
+  ],
+  "limits": [
+    "Annual space heat defaults to design kW \u00d7 1,600 equivalent full-load hours; a transparent rough proxy, not an audited annual simulation or EPC-derived demand. Edit annual useful heat when bills/occupancy support a better estimate.",
+    "27 p/kWh is an illustrative flat electricity rate, not a quoted tariff or annual price forecast. No solar or time-of-use saving is assumed.",
+    "Heating SPF assumptions 3.6 / 3.3 / 3.0 correspond to design flow 45 / 50 / 55\u00b0C with weather compensation. Flow is not assumed constant all year. Actual equipment, climate, cycling, defrost and commissioning change performance.",
+    "Hot water is separate: 3,000 kWh/year of heat including assumed cylinder losses, SPF 2.5, plus 150 kWh/year auxiliary/backup electricity outside those SPF assumptions. Neither is a measured household quantity.",
+    "Costs include electricity for space heating, hot water and the auxiliary allowance. Exclude standing charges, non-heating household electricity, servicing, finance and future tariff changes.",
+    "The sensitivity range varies useful heat \u00b125% and both SPFs \u00b115%, with auxiliary electricity fixed. It is a scenario range, not a statistical confidence interval.",
+    "BUS deduction is shown separately after installation contingency. Eligibility and grant confirmation remain open; switching it off restores the gross amount. No grant is counted as running-cost savings."
+  ],
+  "radiatorPricingBasis": "User instruction: \u00a3300 per radiator change, treated as supply and fitting before contingency; editable. Existing heating is assumed in occupied rooms. Unknown output does not imply absence, adequacy at heat-pump temperatures, or an automatic replacement.",
+  "heatedScopeEvidence": {
+    "lowerGround": {
+      "value": "warm",
+      "basis": "Photo-supported; user confirmed 2026-09-11",
+      "imageId": "35f17817024aeb5a833ac4f0ed4d592a",
+      "observation": "Finished lower-ground room with a visible connected radiator. User identifies lower ground as regularly heated living space. Include it in the heated home; exact temperatures, dimensions and outputs remain separately reviewable."
+    }
+  }
+}

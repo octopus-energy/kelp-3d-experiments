@@ -17,13 +17,13 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   for(let i=0;i<100;i++){if(await evalJS('!!window.__BROOM_RECONSTRUCTION__'))break;await new Promise(r=>setTimeout(r,100))}
   assert.equal(await evalJS('!!window.__BROOM_RECONSTRUCTION__'),true);
   assert.equal(await evalJS(`document.getElementById('photo').value`),'b3c87cfb9faa2d98b3231da431fae97b');
-  assert.equal(await evalJS(`document.getElementById('stage').value`),'exterior-refined');
+  assert.equal(await evalJS(`document.getElementById('stage').value`),'rear-openings');
   const saved=await evalJS('JSON.stringify({...localStorage})');
-  for(const stage of ['plan','photos','mono-across','mono-along','rear-corrected','exterior-refined']){
+  for(const stage of ['plan','photos','mono-across','mono-along','rear-corrected','exterior-refined','rear-openings']){
    await evalJS(`document.getElementById('stage').value='${stage}';document.getElementById('stage').dispatchEvent(new Event('change'))`);
    assert.equal(await evalJS(`document.getElementById('errors').textContent`),'');
-   assert.equal(await evalJS(`document.querySelectorAll('#aerial-overlay polygon').length`),['rear-corrected','exterior-refined'].includes(stage)?8:9);
-   assert.equal(await evalJS(`__BROOM_RECONSTRUCTION__.stage.model.openings.length`),14);
+   assert.equal(await evalJS(`document.querySelectorAll('#aerial-overlay polygon').length`),['rear-corrected','exterior-refined','rear-openings'].includes(stage)?8:9);
+   assert.equal(await evalJS(`__BROOM_RECONSTRUCTION__.stage.model.openings.length`),stage==='rear-openings'?16:14);
    assert.equal(await evalJS(`document.querySelectorAll('#aerial-overlay polyline').length`),2);
   }
   await evalJS(`document.getElementById('stage').value=__BROOM_RECONSTRUCTION__.data.recommendedStage;document.getElementById('stage').dispatchEvent(new Event('change'));document.getElementById('show-dsm').click();document.getElementById('rear').click();document.getElementById('show-openings').click();document.getElementById('show-openings').click();document.getElementById('show-dsm').click();document.getElementById('front').click()`);

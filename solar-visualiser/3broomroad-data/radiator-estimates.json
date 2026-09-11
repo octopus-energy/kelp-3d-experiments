@@ -1,0 +1,459 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "method": "Visual hypotheses + representative manufacturer ratings at DT50. User authorized photo estimates; not measurements or product identification.",
+  "references": {
+    "charleston": {
+      "title": "Zehnder Charleston technical datasheet, horizontal table p1",
+      "url": "https://s3.us-east-1.amazonaws.com/bisque-pdf/Technical-Datasheets/Zehnder-Charleston-TDS.pdf",
+      "checkedAt": "2026-09-10",
+      "basis": "Representative painted steel columns, not an identified brand. Per-section outputs derived from listed section counts; nominal section pitch 46 mm."
+    },
+    "charleston-mtm": {
+      "title": "Zehnder Charleston made-to-measure, July 2023, per-section table",
+      "url": "https://s3.us-east-1.amazonaws.com/bisque-pdf/Made-to-Measure-July-2023/ZehnderCharleston-MadeToMeasure-Pricing-JULY2023.pdf",
+      "checkedAt": "2026-09-10",
+      "basis": "Representative 900/1000 mm per-section output only; no prices imported. Exponent 1.3 assumed for these rows."
+    },
+    "compact": {
+      "title": "Stelrad Compact technical specification, W/m at 75/65/20\u00b0C",
+      "url": "https://www.stelradprofessional.com/wp-content/uploads/2020/10/28092_Compact-H_Web.pdf",
+      "checkedAt": "2026-09-10",
+      "basis": "Representative steel panel outputs per metre and published n coefficients; not product identification."
+    },
+    "nobis": {
+      "title": "Zehnder Nobis NOB-100-050 technical datasheet p1",
+      "url": "https://s3.us-east-1.amazonaws.com/bisque-pdf/Technical-Datasheets/Zehnder-Nobis-TDS.pdf",
+      "checkedAt": "2026-09-10",
+      "basis": "965 x 500 mm chrome brass frame, 210 W at DT50, n=1.28. Used only as an analogue for the brass-looking bathroom frame."
+    }
+  },
+  "catalogue": {
+    "c2-500": {
+      "referenceId": "charleston",
+      "output50PerUnit": 38.4,
+      "exponent": 1.25,
+      "heightMm": 492,
+      "type": "2-column",
+      "unit": "section"
+    },
+    "c2-600": {
+      "referenceId": "charleston",
+      "output50PerUnit": 45.3,
+      "exponent": 1.25,
+      "heightMm": 592,
+      "type": "2-column",
+      "unit": "section"
+    },
+    "c2-750": {
+      "referenceId": "charleston-mtm",
+      "output50PerUnit": 55,
+      "exponent": 1.3,
+      "heightMm": 742,
+      "type": "2-column",
+      "unit": "section"
+    },
+    "c3-600": {
+      "referenceId": "charleston",
+      "output50PerUnit": 60.9,
+      "exponent": 1.27,
+      "heightMm": 600,
+      "type": "3-column",
+      "unit": "section"
+    },
+    "c3-750": {
+      "referenceId": "charleston",
+      "output50PerUnit": 74.28571428571429,
+      "exponent": 1.26,
+      "heightMm": 750,
+      "type": "3-column",
+      "unit": "section"
+    },
+    "c3-900": {
+      "referenceId": "charleston-mtm",
+      "output50PerUnit": 87,
+      "exponent": 1.3,
+      "heightMm": 900,
+      "type": "3-column",
+      "unit": "section"
+    },
+    "c4-600": {
+      "referenceId": "charleston",
+      "output50PerUnit": 79.8,
+      "exponent": 1.27,
+      "heightMm": 600,
+      "type": "4-column",
+      "unit": "section"
+    },
+    "c4-750": {
+      "referenceId": "charleston",
+      "output50PerUnit": 97.35714285714286,
+      "exponent": 1.26,
+      "heightMm": 750,
+      "type": "4-column",
+      "unit": "section"
+    },
+    "c4-1000": {
+      "referenceId": "charleston-mtm",
+      "output50PerUnit": 125,
+      "exponent": 1.3,
+      "heightMm": 1000,
+      "type": "4-column",
+      "unit": "section"
+    },
+    "p1-450": {
+      "referenceId": "compact",
+      "output50PerUnit": 756,
+      "exponent": 1.31,
+      "heightMm": 450,
+      "type": "K1 / type 11",
+      "unit": "metre"
+    },
+    "p1-600": {
+      "referenceId": "compact",
+      "output50PerUnit": 980,
+      "exponent": 1.29,
+      "heightMm": 600,
+      "type": "K1 / type 11",
+      "unit": "metre"
+    },
+    "p2-600": {
+      "referenceId": "compact",
+      "output50PerUnit": 1732,
+      "exponent": 1.33,
+      "heightMm": 600,
+      "type": "K2 / type 22",
+      "unit": "metre"
+    },
+    "frame": {
+      "referenceId": "nobis",
+      "output50PerUnit": 210,
+      "exponent": 1.28,
+      "heightMm": 965,
+      "type": "Open brass-frame analogue",
+      "unit": "analogue multiplier"
+    }
+  },
+  "emitters": [
+    {
+      "id": "emitter-study",
+      "roomId": "lg-study",
+      "imageId": "35f17817024aeb5a833ac4f0ed4d592a",
+      "bbox": [
+        0.041,
+        0.645,
+        0.179,
+        0.355
+      ],
+      "title": "Lower-ground column radiator",
+      "observation": "About eight front sections are visible on the exposed brick wall. Bottom is cropped.",
+      "assumptions": "Central guess: 8 sections, about 900 mm high, 3 columns deep (~394 mm wide). Compare 7\u20139 sections, 750\u20131000 mm, 2\u20134 columns. Brick/door scale is approximate; study assignment follows the earlier tentative lower-ground attribution.",
+      "confidence": "low",
+      "attribution": "tentative",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "c2-750",
+          "quantity": 7
+        },
+        {
+          "label": "central",
+          "reference": "c3-900",
+          "quantity": 8
+        },
+        {
+          "label": "upper",
+          "reference": "c4-1000",
+          "quantity": 9
+        }
+      ]
+    },
+    {
+      "id": "emitter-hall",
+      "roomId": "g-hall",
+      "imageId": "80c683d944553f0ea65667c4d3965e6c",
+      "bbox": [
+        0,
+        0.7,
+        0.337,
+        0.3
+      ],
+      "title": "Hall column radiator",
+      "observation": "White tubular sections are visible; near end and lower edge extend beyond the photo.",
+      "assumptions": "Central guess: 18 sections, 600 mm high, 3 columns (~854 mm wide). Plausible alternatives: 14 sections/600 mm/2 columns to 24 sections/750 mm/4 columns. Cropping limits the total count.",
+      "confidence": "low",
+      "attribution": "supported",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "c2-600",
+          "quantity": 14
+        },
+        {
+          "label": "central",
+          "reference": "c3-600",
+          "quantity": 18
+        },
+        {
+          "label": "upper",
+          "reference": "c4-750",
+          "quantity": 24
+        }
+      ]
+    },
+    {
+      "id": "emitter-living-bay",
+      "roomId": "g-living",
+      "imageId": "a40dadd2d6f86d5b4b85593d231f240b",
+      "bbox": [
+        0.582,
+        0.567,
+        0.121,
+        0.11
+      ],
+      "title": "Living-room bay radiator",
+      "observation": "A separate white column radiator is visible below the central bay window, behind the table and chair.",
+      "assumptions": "Central guess: 24 sections, 600 mm high, 3 columns (~1130 mm wide), using the window span as a loose scale cue. Occlusion allows 20 sections/500 mm/2 columns to 30 sections/600 mm/4 columns. Dining photo is a repeat view, not another emitter.",
+      "confidence": "low",
+      "attribution": "supported",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "c2-500",
+          "quantity": 20
+        },
+        {
+          "label": "central",
+          "reference": "c3-600",
+          "quantity": 24
+        },
+        {
+          "label": "upper",
+          "reference": "c4-600",
+          "quantity": 30
+        }
+      ]
+    },
+    {
+      "id": "emitter-kitchen",
+      "roomId": "g-kitchen",
+      "imageId": "08968f54527a305a14c70973df11894c",
+      "bbox": [
+        0.548,
+        0.596,
+        0.059,
+        0.18
+      ],
+      "title": "Kitchen window radiator",
+      "observation": "A narrow part of a white ribbed radiator is visible behind the table/chair below the window.",
+      "assumptions": "Very weak dimensions: central panel hypothesis 600 x 600 mm, K1; alternatives 450 x 400 mm K1 to 600 x 800 mm K2. Panel versus tubular construction cannot be resolved; this is a broad output proxy. The second kitchen photo shows the same position.",
+      "confidence": "low",
+      "attribution": "supported",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "p1-450",
+          "quantity": 0.4
+        },
+        {
+          "label": "central",
+          "reference": "p1-600",
+          "quantity": 0.6
+        },
+        {
+          "label": "upper",
+          "reference": "p2-600",
+          "quantity": 0.8
+        }
+      ]
+    },
+    {
+      "id": "emitter-rear-living",
+      "roomId": "g-kitchen",
+      "imageId": "665a47dfe68e005497291515decd24d8",
+      "bbox": [
+        0.631,
+        0.656,
+        0.157,
+        0.135
+      ],
+      "title": "Rear living-area panel radiator",
+      "observation": "White ribbed panel below the side window, largely hidden by the chair and table; separate from the kitchen-window radiator.",
+      "assumptions": "Central guess: 450 x 1000 mm K1. Compare 450 x 700 mm K1 to 600 x 1200 mm K2; width uses the window as an approximate reference. Rear photograph has no metric camera calibration for emitter sizing.",
+      "confidence": "low",
+      "attribution": "supported",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "p1-450",
+          "quantity": 0.7
+        },
+        {
+          "label": "central",
+          "reference": "p1-450",
+          "quantity": 1
+        },
+        {
+          "label": "upper",
+          "reference": "p2-600",
+          "quantity": 1.2
+        }
+      ]
+    },
+    {
+      "id": "emitter-front-bedroom",
+      "roomId": "f-bed1",
+      "imageId": "892cd7bd9167b815665c02cd81ed99bc",
+      "bbox": [
+        0.706,
+        0.596,
+        0.166,
+        0.14
+      ],
+      "title": "Front-bedroom bay radiator",
+      "observation": "White tubular radiator beneath the central bay window, partly hidden by the chair.",
+      "assumptions": "Front bay identifies Bedroom 1 more strongly than the listing caption alone. Central guess: 28 sections, 600 mm high, 3 columns (~1314 mm wide). Compare 22 sections/500 mm/2 columns to 32 sections/600 mm/4 columns.",
+      "confidence": "low",
+      "attribution": "supported",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "c2-500",
+          "quantity": 22
+        },
+        {
+          "label": "central",
+          "reference": "c3-600",
+          "quantity": 28
+        },
+        {
+          "label": "upper",
+          "reference": "c4-600",
+          "quantity": 32
+        }
+      ]
+    },
+    {
+      "id": "emitter-bath-frame",
+      "roomId": "f-bath",
+      "imageId": "4632731e6e024a0324b73e5f606932e7",
+      "bbox": [
+        0.366,
+        0.385,
+        0.095,
+        0.236
+      ],
+      "title": "Bathroom towel frame",
+      "observation": "Brass-coloured open frame with a few horizontal rails and apparent valve connections, above the bath.",
+      "assumptions": "Approximate 800 x 500 mm frame. Central 180 W DT50, bracket 120\u2013300 W, using a 210 W 965 x 500 mm brass-frame analogue. Multipliers allow different dimensions/finish; this is a heuristic, not validated geometric scaling. Hot-water/electric connection and towel effects need checking.",
+      "confidence": "low",
+      "attribution": "supported",
+      "candidateRoomIds": [],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "frame",
+          "quantity": 0.5714285714285714
+        },
+        {
+          "label": "central",
+          "reference": "frame",
+          "quantity": 0.8571428571428571
+        },
+        {
+          "label": "upper",
+          "reference": "frame",
+          "quantity": 1.4285714285714286
+        }
+      ]
+    },
+    {
+      "id": "emitter-unassigned-bedroom",
+      "roomId": null,
+      "imageId": "8d1cee4f0ff1f1632f03ce295d77e9eb",
+      "bbox": [
+        0.413,
+        0.58,
+        0.095,
+        0.163
+      ],
+      "title": "Unassigned bedroom radiator",
+      "observation": "White column radiator below a sash window beside the bed.",
+      "assumptions": "Central guess: 14 sections/600 mm/3 columns (~670 mm wide). Compare 10 sections/500 mm/2 columns to 20 sections/750 mm/4 columns. Sloping ceiling suggests the rear bedroom, but attribution to Bedroom 2 versus 3 is unresolved; exclude from room totals.",
+      "confidence": "low",
+      "attribution": "unresolved",
+      "candidateRoomIds": [
+        "f-bed2",
+        "f-bed3"
+      ],
+      "inventoryComplete": false,
+      "variants": [
+        {
+          "label": "lower",
+          "reference": "c2-500",
+          "quantity": 10
+        },
+        {
+          "label": "central",
+          "reference": "c3-600",
+          "quantity": 14
+        },
+        {
+          "label": "upper",
+          "reference": "c4-750",
+          "quantity": 20
+        }
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "emitter-living",
+      "roomId": "g-living",
+      "imageId": "a40dadd2d6f86d5b4b85593d231f240b",
+      "bbox": [
+        0.794,
+        0.565,
+        0.14,
+        0.085
+      ],
+      "observation": "Possible radiator behind the right-hand sofa, but upholstery and emitter edges are not reliably separable. Retain the original observation; no numeric estimate and no double counting with the bay radiator.",
+      "output50W": null
+    }
+  ],
+  "reviewedImages": [
+    "08968f54527a305a14c70973df11894c",
+    "0fd2882fa08c1065b617894a2342c16d",
+    "35f17817024aeb5a833ac4f0ed4d592a",
+    "4632731e6e024a0324b73e5f606932e7",
+    "665a47dfe68e005497291515decd24d8",
+    "76e4aee1a9ecc380a4783862c4f59f42",
+    "80c683d944553f0ea65667c4d3965e6c",
+    "892cd7bd9167b815665c02cd81ed99bc",
+    "8d1cee4f0ff1f1632f03ce295d77e9eb",
+    "a40dadd2d6f86d5b4b85593d231f240b",
+    "dd85ffc2fbe1c92a140814bbf153dea7",
+    "e5ccf137f38f3fea774a3f2d86ba7e07",
+    "f27956ac9a67057d086fe7f403a8f073"
+  ],
+  "limits": [
+    "Section counts run across the radiator; column counts describe front-to-back depth. Never confuse them.",
+    "All sizes are photo guesses. Source pixels are not metric measurements and are not independently rectified.",
+    "Photo inventories are partial. A shortfall for visible radiators cannot prove that the entire room requires replacements.",
+    "Manufacturer curves are analogues; the actual installed brands/models and hydronic connection remain unverified.",
+    "Photos with no visible emitter remain unknown; bathroom mirror reflections and repeat room views are not additional emitters."
+  ]
+}

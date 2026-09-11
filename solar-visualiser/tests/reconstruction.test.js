@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..'),dataRoot=path.join(root,'3broomroad-data
 const report=require('../3broomroad-data/reconstruction/run.json');
 const R=require('../js/building/reconstruction.js'),E=require('../js/building/roof-edit.js'),G=require('../js/building/geometry.js');
 assert.equal(report.propertyId,'3broomroad');assert.equal(report.quality.depthUsed,false);assert.equal(report.evidence.depth.status,'not-run');
-assert.equal(report.stages.length,6);assert(report.stages.some(s=>s.id==='mono-across'));assert(report.stages.some(s=>s.id==='mono-along'));
+assert.equal(report.stages.length,7);assert(report.stages.some(s=>s.id==='mono-across'));assert(report.stages.some(s=>s.id==='mono-along'));
 for(const [file,hash] of Object.entries(report.provenance.inputs))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(dataRoot,file))).digest('hex'),hash,file+' input changed: rerun reconstruction');
 const ctx={window:{}};vm.runInNewContext(fs.readFileSync(path.join(dataRoot,'reconstruction/bundle.js'),'utf8'),ctx);assert.deepEqual(JSON.parse(JSON.stringify(ctx.window.BROOM_RECONSTRUCTION)),report,'Offline bundle and JSON agree');
 let identities;
@@ -12,7 +12,7 @@ for(const stage of report.stages){
  const before=JSON.stringify(stage),validation=E.validate(stage.worldFaces);
  assert.deepEqual(validation.errors,[],stage.id+' geometry valid');assert(validation.solid.watertight.closed&&validation.solid.watertight.oriented);
  for(const f of stage.worldFaces){const plane=G.fitPlane(f.ring);for(const p of f.ring)assert(Math.abs(p.y-G.planeY(plane,p.x,p.z))<1e-6,'Roof faces stay planar');}
- const ids=Object.keys(stage.model.landmarks).sort();if(identities)assert.deepEqual(ids,identities,'Landmark identities survive parameter changes');identities=ids;
+ const ids=Object.keys(stage.model.landmarks).sort();if(identities){if(stage.openingReview)assert(identities.every(id=>ids.includes(id)),'New observations only append landmark identities');else assert.deepEqual(ids,identities,'Landmark identities survive parameter changes');}identities=ids;
  for(const photo of stage.photos){
   assert(Math.abs(R.evaluate(stage,photo)-photo.rmsePx)<1e-6,'Browser projection reproduces Python fit residuals');
   const points=R.project(Object.values(stage.model.landmarks),photo.camera);assert(points.every(p=>p.every(Number.isFinite)&&p[2]>0),'Front landmarks remain in front of camera');
@@ -67,7 +67,7 @@ assert(trial.photos[0].points.every(o=>o.use==='fit'),'Near-photo checks explici
 assert(trial.photos[1].points.some(o=>o.use==='check'),'Far-photo corner remains withheld');
 for(const [name,hash] of Object.entries(report.provenance.codeHashes))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'reconstruction',name))).digest('hex'),hash,'Replay code changed: '+name);
 
-const refined=report.stages.find(s=>s.id===report.recommendedStage),pass=report.exteriorPass;
+const refined=report.stages.find(s=>s.id==='exterior-refined'),pass=report.exteriorPass;
 assert.equal(refined.id,'exterior-refined');assert.equal(pass.candidateSelected,true);assert.equal(pass.accuracyValidated,false);
 assert.equal(report.quality.wholeExteriorValidated,false);assert.equal(report.quality.normalConstraintsUsed,true);
 assert.deepEqual(refined.photos,best.photos,'Front camera residuals unchanged');
@@ -97,3 +97,13 @@ function meshArea(g){const p=g.attributes.position,idx=g.index;let area=0;for(le
 assert(Math.abs(meshArea(S.wallGeometry(panel,[{ring:[[1,1],[3,1],[3,3],[1,2]]}]))-22)<1e-6);
 assert(Math.abs(meshArea(S.wallGeometry(panel,[{u0:1,u1:3,v0:1,v1:3}]))-21)<1e-6);
 console.log('all exterior refinement checks passed: preserved front, raw normals, diagnostic separation, sloped frame holes');
+
+const latest=report.stages.find(s=>s.id===report.recommendedStage);assert.equal(latest.id,'rear-openings');
+assert.deepEqual(latest.worldFaces,refined.worldFaces);assert.deepEqual(latest.photos,refined.photos);assert.deepEqual(latest.model.parameters,refined.model.parameters);
+assert.equal(latest.model.openings.length,16);assert.equal(latest.openingReview.status,'provisional-unfitted');
+for(const id of ['main-rear-lower','main-rear-upper','rear-bedroom']){const o=latest.model.openings.find(o=>o.id===id);assert(o);assert.equal(o.dimensionStatus,'assumed-not-measured');}
+for(const o of refined.model.openings.filter(o=>o.id!=='rear-bedroom'))assert.deepEqual(latest.model.openings.find(n=>n.id===o.id),o,'Unrelated openings remain frozen');
+const narrow=latest.model.openings.find(o=>o.id==='rear-bedroom');assert(Math.abs(narrow.ring[1][0]-narrow.ring[0][0])<.8);assert(Math.abs(narrow.ring[0][1]-narrow.ring[3][1])>1.5);
+assert.equal(latest.openingReview.observations.photos[1].regions.length,3,'Visible frames retained despite partial occlusion');
+for(const src of latest.openingReview.observations.sources)assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(dataRoot,src.path))).digest('hex'),src.sha256);
+console.log('all rear opening checks passed: source regions, append-only stage, frozen shell and cameras');

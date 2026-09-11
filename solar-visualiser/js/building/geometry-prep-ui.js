@@ -6,7 +6,9 @@ window.SolarViz.setupGeometryPrep=function({building}){
   const id=()=>crypto.randomUUID(),now=()=>new Date().toISOString();
   function derive(){
     const windows=building.state.windows.flatMap(w=>{const r=O.windowRect(w,building.solid,building.levels);return r?[{id:w.id,kind:w.kind||'window',ring:r.ring.map(([u,y])=>[r.wall.a2[0]+r.wall.dir[0]*u,y,r.wall.a2[1]+r.wall.dir[1]*u])}]:[];});
-    return H.derive({solid:building.solid,levels:building.levels,roomsByLevel:building.roomsByLevel,windows,origin:building.origin});
+    const geo=H.derive({solid:building.solid,levels:building.levels,roomsByLevel:building.roomsByLevel,windows,origin:building.origin});
+    const report=window.BROOM_RECONSTRUCTION,stage=report?.stages?.find(s=>s.id===building.state.geometrySource?.stageId);
+    return P.boundaryHypotheses(geo,stage?.model.parameters,building.state.geometrySource?.propertyId);
   }
   function state(){return building.state.geometryPrep ||= P.empty(SV.currentProperty.id,geometry.signature);}
   function store(next){building.state.geometryPrep=next;building.save();render();}
@@ -22,7 +24,7 @@ window.SolarViz.setupGeometryPrep=function({building}){
   function coverage(){
     const broom=building.state.geometrySource&&SV.currentProperty.id==='3broomroad',items=[];
     if(broom){
-      items.push({id:'basement',rank:10000,priority:'critical',title:building.lowerSolid?'Validate provisional basement depth, extent, heated status and exposed walls.':'Confirm basement extent, heated status and exposed walls; this level is absent from the 3D model.',why:'A missing heated level or incorrect ground-contact boundary changes the envelope.',method:'Confirm intended use with the homeowner; measure a representative clear height and key outline dimensions. Mark exposed/below-ground walls and the basement window on the plan.'});
+      items.push({id:'basement',rank:10000,priority:'critical',title:building.lowerSolid?'Validate provisional basement depth, extent and exposed walls.':'Confirm basement extent and exposed walls; this level is absent from the 3D model.',why:'A missing heated level or incorrect ground-contact boundary changes the envelope.',method:'The lower ground is normally heated living space. Measure a representative clear height and key outline dimensions. Mark exposed/below-ground walls and the basement window on the plan.'});
       items.push({id:'terrace-boundaries',rank:9200,priority:'high',title:'Confirm party-wall runs; DSM gaps do not establish an external wall.',why:'OS describes a mid-terrace house with two connections. The exact shared and exposed lengths still need review.',method:'Mark each adjoining dwelling and any exposed rear returns on the plan. Confirm uncertain boundaries on site and record the extent, not just one whole-house wall type.'});
       items.push({id:'rear-extent',rank:8800,priority:'high',title:'Resolve the upper rear wing / OS-plan footprint disagreement.',why:'The upper wing extent is still inferred; errors affect several rooms and walls.',method:'Confirm which walls belong to this house, take one reliable wing width and length, and photograph the roof/wall junctions. Use a common height datum.'});
     }

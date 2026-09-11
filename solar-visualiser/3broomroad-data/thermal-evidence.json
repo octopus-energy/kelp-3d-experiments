@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "groups": [
+    {
+      "id": "main-left",
+      "kind": "boundary",
+      "title": "Main house \u00b7 left party wall (looking from the street)",
+      "boundaryGroup": "main-left",
+      "default": "heated",
+      "status": "remote-hypothesis",
+      "observation": "OS identifies a mid-terrace house with two connections; aerial and floorplan support shared main-house side walls. Default neighbour temperature 18\u00b0C. The rendered DSM gap is not evidence of outside air.",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "options": {
+        "heated": {
+          "label": "Heated neighbour \u00b7 assume 18\u00b0C",
+          "boundary": "party",
+          "temperature": 18
+        },
+        "same": {
+          "label": "Similar room temperature \u00b7 no net transfer",
+          "boundary": "party",
+          "temperature": "room"
+        },
+        "cool": {
+          "label": "Cool adjoining home \u00b7 assume 10\u00b0C",
+          "boundary": "party",
+          "temperature": 10
+        }
+      }
+    },
+    {
+      "id": "main-right",
+      "kind": "boundary",
+      "title": "Main house \u00b7 right party wall (looking from the street)",
+      "boundaryGroup": "main-right",
+      "default": "heated",
+      "status": "remote-hypothesis",
+      "observation": "OS identifies a mid-terrace house with two connections; aerial and floorplan support shared main-house side walls. Default neighbour temperature 18\u00b0C. The rendered DSM gap is not evidence of outside air.",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "options": {
+        "heated": {
+          "label": "Heated neighbour \u00b7 assume 18\u00b0C",
+          "boundary": "party",
+          "temperature": 18
+        },
+        "same": {
+          "label": "Similar room temperature \u00b7 no net transfer",
+          "boundary": "party",
+          "temperature": "room"
+        },
+        "cool": {
+          "label": "Cool adjoining home \u00b7 assume 10\u00b0C",
+          "boundary": "party",
+          "temperature": 10
+        }
+      }
+    },
+    {
+      "id": "rear-neighbour-ground",
+      "kind": "boundary",
+      "title": "Rear neighbour-side wall \u00b7 ground floor",
+      "boundaryGroup": "rear-neighbour-ground",
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Rear wall on the continuous property-side line. Aerial/rear photo show adjoining structures including a conservatory, but do not establish heated contact over the full wall height. Current conservative assumption: outside. The courtyard-facing wall with windows stays external.",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 retain outside assumption"
+        },
+        "outside": {
+          "label": "Air gap / exposed wall",
+          "boundary": "outside"
+        },
+        "heated": {
+          "label": "Shared with heated room \u00b7 assume 18\u00b0C",
+          "boundary": "party",
+          "temperature": 18
+        },
+        "unheated": {
+          "label": "Enclosed unheated space \u00b7 assume 10\u00b0C",
+          "boundary": "unheated",
+          "temperature": 10
+        }
+      }
+    },
+    {
+      "id": "rear-neighbour-upper",
+      "kind": "boundary",
+      "title": "Rear neighbour-side wall \u00b7 upper floor",
+      "boundaryGroup": "rear-neighbour-upper",
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Rear wall on the continuous property-side line. Aerial/rear photo show adjoining structures including a conservatory, but do not establish heated contact over the full wall height. Current conservative assumption: outside. The courtyard-facing wall with windows stays external.",
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 retain outside assumption"
+        },
+        "outside": {
+          "label": "Air gap / exposed wall",
+          "boundary": "outside"
+        },
+        "heated": {
+          "label": "Shared with heated room \u00b7 assume 18\u00b0C",
+          "boundary": "party",
+          "temperature": 18
+        },
+        "unheated": {
+          "label": "Enclosed unheated space \u00b7 assume 10\u00b0C",
+          "boundary": "unheated",
+          "temperature": 10
+        }
+      }
+    },
+    {
+      "id": "bay-lower",
+      "kind": "opening",
+      "title": "Living-room front bay",
+      "openingIds": [
+        "bay-lower",
+        "bay-lower-side-0",
+        "bay-lower-side-1"
+      ],
+      "imageId": "a40dadd2d6f86d5b4b85593d231f240b",
+      "bbox": [
+        0.5,
+        0.24,
+        0.3,
+        0.37
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Broad white frames suggest replacement units, but shutters obscure the glass edges. Double glazing is plausible, not confirmed. Ask whether all three bay faces match.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "bay-upper",
+      "kind": "opening",
+      "title": "Front-bedroom bay",
+      "openingIds": [
+        "bay-upper",
+        "bay-upper-side-0",
+        "bay-upper-side-1"
+      ],
+      "imageId": "892cd7bd9167b815665c02cd81ed99bc",
+      "bbox": [
+        0.62,
+        0.2,
+        0.36,
+        0.5
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Broad white frames suggest replacement units, but shutters obscure the glass edges. Double glazing is plausible, not confirmed. Ask whether all three bay faces match.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "basement-window",
+      "kind": "opening",
+      "title": "Lower-ground front window",
+      "openingIds": [
+        "basement-window"
+      ],
+      "imageId": "4319b0211a370eba9015b36e035cc7a1",
+      "bbox": null,
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Frames are visible, but the pane edge / spacer is not resolved well enough to confirm glazing. Style alone cannot establish single or double glazing.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "rear-bedroom",
+      "kind": "opening",
+      "title": "Rear-wing bedroom window",
+      "openingIds": [
+        "rear-bedroom"
+      ],
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "bbox": null,
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Distant/partly occluded rear opening: visible frame establishes presence, not pane count. Opening position and full size also remain inferred.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "kitchen-side-window",
+      "kind": "opening",
+      "title": "Kitchen side window",
+      "openingIds": [
+        "kitchen-side-window"
+      ],
+      "imageId": "08968f54527a305a14c70973df11894c",
+      "bbox": [
+        0.51,
+        0.245,
+        0.125,
+        0.255
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Frames are visible, but the pane edge / spacer is not resolved well enough to confirm glazing. Style alone cannot establish single or double glazing.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "extension-side-window",
+      "kind": "opening",
+      "title": "Rear-living side window",
+      "openingIds": [
+        "extension-side-window"
+      ],
+      "imageId": "665a47dfe68e005497291515decd24d8",
+      "bbox": [
+        0.62,
+        0.45,
+        0.29,
+        0.3
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Frames are visible, but the pane edge / spacer is not resolved well enough to confirm glazing. Style alone cannot establish single or double glazing.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "bathroom-side-window",
+      "kind": "opening",
+      "title": "Bathroom window",
+      "openingIds": [
+        "bathroom-side-window"
+      ],
+      "imageId": "4632731e6e024a0324b73e5f606932e7",
+      "bbox": [
+        0.46,
+        0.25,
+        0.11,
+        0.4
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Frames are visible, but the pane edge / spacer is not resolved well enough to confirm glazing. Style alone cannot establish single or double glazing.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "extension-rooflight",
+      "kind": "opening",
+      "title": "Rear rooflight",
+      "openingIds": [
+        "extension-rooflight"
+      ],
+      "imageId": "665a47dfe68e005497291515decd24d8",
+      "bbox": [
+        0.27,
+        0,
+        0.23,
+        0.12
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Only part of the roof window is visible; a modern double-glazed unit is plausible but the pane count and product label cannot be read.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "rear-door",
+      "kind": "opening",
+      "title": "Rear glazed doors",
+      "openingIds": [
+        "rear-door"
+      ],
+      "imageId": "665a47dfe68e005497291515decd24d8",
+      "bbox": [
+        0.31,
+        0.31,
+        0.32,
+        0.51
+      ],
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Frames are visible, but the pane edge / spacer is not resolved well enough to confirm glazing. Style alone cannot establish single or double glazing.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "front-door",
+      "kind": "opening",
+      "title": "Front entrance door",
+      "openingIds": [
+        "front-door"
+      ],
+      "imageId": "4319b0211a370eba9015b36e035cc7a1",
+      "bbox": null,
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Entrance door is modelled as one opening; timber/insulation and glazed fraction are unverified. Do not classify an opaque door as a single-glazed window.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "solid": {
+          "label": "Solid timber door \u00b7 assume U 3.0",
+          "u": 3.0
+        }
+      }
+    },
+    {
+      "id": "main-rear-lower",
+      "kind": "opening",
+      "title": "Recessed rear ground-floor window",
+      "openingIds": [
+        "main-rear-lower"
+      ],
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "bbox": null,
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Distant/partly occluded rear opening: visible frame establishes presence, not pane count. Opening position and full size also remain inferred.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    },
+    {
+      "id": "main-rear-upper",
+      "kind": "opening",
+      "title": "Recessed rear upper window",
+      "openingIds": [
+        "main-rear-upper"
+      ],
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "bbox": null,
+      "default": "unknown",
+      "status": "unconfirmed",
+      "observation": "Distant/partly occluded rear opening: visible frame establishes presence, not pane count. Opening position and full size also remain inferred.",
+      "options": {
+        "unknown": {
+          "label": "Not sure \u00b7 keep working assumption"
+        },
+        "single": {
+          "label": "Single glazing \u00b7 assume U 4.8",
+          "u": 4.8
+        },
+        "double": {
+          "label": "Double glazing, age unknown \u00b7 assume U 2.8",
+          "u": 2.8
+        },
+        "efficient": {
+          "label": "Low-E double glazing \u00b7 assume U 1.8",
+          "u": 1.8
+        }
+      }
+    }
+  ],
+  "reviewedAt": "2026-09-10",
+  "sources": [
+    {
+      "title": "OS building attributes and geometry",
+      "path": "3broomroad-data/osdata.json",
+      "detail": "Mid-Terrace House; connectivity_count=2. Does not determine every adjoining room or height."
+    },
+    {
+      "title": "SAP 10.1 Table 6e: whole-opening U-value examples",
+      "url": "https://bregroup.com/documents/d/bre-group/sap-10-1-08-11-2019_1",
+      "detail": "Representative wood/PVC whole-opening assumptions: single 4.8; air-filled double with 12 mm gap 2.8; low-E argon example 1.8; solid wood door 3.0 W/m\u00b2K. Not a product rating or compliance calculation. Rooflight performance/installation inclination remains uncertain."
+    },
+    {
+      "title": "Energy Saving Trust: windows and doors",
+      "url": "https://energysavingtrust.org.uk/advice/windows-and-doors/",
+      "detail": "Double glazing has two panes separated by a spacer. Request an edge/spacer close-up or installation paperwork; sash style and reflections alone are insufficient."
+    }
+  ],
+  "limits": [
+    "The EPC says some double glazing; it does not locate the mix by room. No window is confirmed single glazed from these listing photos.",
+    "A shared boundary may cover only part of a wall height/length. Whole-run choices are exploratory; split partial contact in the geometry survey before design.",
+    "Homeowner reports are separate from site measurements and do not establish an exact U-value. Manufacturer whole-window ratings take priority.",
+    "Opening inventory, dimensions, draught rates and wall construction remain uncertain; changing U-values does not validate geometry or airtightness."
+  ]
+}

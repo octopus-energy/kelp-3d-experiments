@@ -107,3 +107,15 @@ from fitted 3D partitions. Run `tests/geometry-prep.test.js` and browser checks.
 - Lower-ground floor IDs must not renumber existing rooms. Test physical vertical
   adjacency and translated-frame quantity conservation, including degenerate
   triangle rejection (`plan-intake.test.js`, `terrain-cutout.test.js`).
+
+## Reconstruction changes must be replayable
+
+Every geometry correction must preserve its previous snapshot and ship with a
+replay stage linked to the source evidence, observations, assumptions and reason
+for the change. Keep rejected alternatives and failed checks visible. Record
+whether a feature is observed, inferred or measured; never imply a display-only
+depth/normal layer was used in fitting. Do not replace a candidate silently or
+release geometry changes with a stale replay. The complete reconstruction runner
+must regenerate the evidence and replay artifacts, and regression checks must
+verify the latest candidate is reachable in the replay. Preserve immutable source
+images (including user annotations) and snapshot hashes for reproducibility.

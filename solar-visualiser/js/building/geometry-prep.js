@@ -79,11 +79,31 @@ function review(geometry,state){
     if(!o.checked.includes('volume')&&(o.checked.includes('area')||o.checked.includes('height')))o.current.volume=o.current.area*o.current.height;
     rooms.push({...r,remote,...o,confidence:input.confidence||'low',uncertaintyPct:positive(input.uncertaintyPct)?input.uncertaintyPct:20,source:input.source||'Exterior shell and assumed floor spacing; net dimensions unverified',planRoomId:Object.hasOwn(input,'planRoomId')?input.planRoomId:r.sourceRoomId||null});
   }
-  for(const s of geometry.surfaces){const input=stale?{}:state.surfaces[s.id]||{},remote={boundary:s.roomB?'internal':input.boundary||'unknown',grossArea:positive(input.grossArea)?input.grossArea:s.grossArea,openingArea:Number.isFinite(input.openingArea)&&input.openingArea>=0?input.openingArea:s.openingArea},o=overlay('surface',s.id,remote);
-    surfaces.push({...s,remote,...o,netArea:o.current.grossArea-o.current.openingArea,confidence:input.confidence||'low',source:input.source||(s.roomB?'Derived room adjacency; occupancy not checked':'Unclassified')});
+  for(const s of geometry.surfaces){const input=stale?{}:state.surfaces[s.id]||{},remote={boundary:s.roomB?'internal':input.boundary||s.boundaryHypothesis||'unknown',grossArea:positive(input.grossArea)?input.grossArea:s.grossArea,openingArea:Number.isFinite(input.openingArea)&&input.openingArea>=0?input.openingArea:s.openingArea},o=overlay('surface',s.id,remote);
+    surfaces.push({...s,remote,...o,netArea:o.current.grossArea-o.current.openingArea,confidence:input.confidence||'low',source:input.source||s.boundaryBasis||(s.roomB?'Derived room adjacency; occupancy not checked':'Unclassified')});
   }
   return {rooms,surfaces,stale,activeRevision:activeRevision(state,geometry)?.id||null,stage:events.length?'site-refined':'remote',acceptedFields:events.length,
     issues:[...(geometry.coverageIssues||[]),...rooms.flatMap(r=>(r.geometryIssues||[]).map(m=>r.name+': '+m)),...surfaces.filter(s=>s.netArea<0).map(s=>s.id+': openings exceed surface area')]};
+}
+// Reviewed Broom Road adjacency, in property coordinates after H.derive removes origin.
+// Facing a neighbour across a courtyard is not evidence of a shared wall.
+function boundaryHypotheses(geometry,parameters,propertyId){
+ if(propertyId!=='3broomroad'||!parameters)return geometry;
+ const p=parameters,a=p.bearing*Math.PI/180,local=([x,z])=>[(x-p.anchor_x)*Math.sin(a)-(z-p.anchor_z)*Math.cos(a),-(x-p.anchor_x)*Math.cos(a)-(z-p.anchor_z)*Math.sin(a)];
+ for(const s of geometry.surfaces){
+  if(s.roomB||!s.edge||s.kind!=='wall')continue;
+  const e=s.edge.map(local),level=geometry.rooms.find(r=>r.id===s.roomA).levelIdx;
+  s.localEdge=e;
+  const left=e.every(([x])=>Math.abs(x)<.02),right=e.every(([x])=>Math.abs(x-p.width)<.02);
+  if((left||right)&&e.every(([,z])=>z>=-.02&&z<=p.length+.02)){
+   s.boundaryHypothesis='party';s.boundaryGroup=left?'main-left':'main-right';s.boundaryBasis='OS mid-terrace, connectivity_count=2, aerial and floorplan: main-house side shared with neighbour. Extent/temperature unverified.';
+  }else if(left&&e.every(([,z])=>z>=p.length-.02&&z<=p.extension_end+.02)&&[0,1].includes(level)){
+   s.boundaryHypothesis='unknown';s.boundaryGroup='rear-neighbour-'+(level===0?'ground':'upper');s.boundaryBasis='Blank rear neighbour-side wall. Aerial/rear photo show adjacent structures including glazing; contact and heated extent need confirmation. Facing a neighbour does not alone establish party adjacency.';
+  }
+ }
+ geometry.quantitySignature ||= geometry.signature;
+ geometry.signature=H.fingerprint({quantities:geometry.quantitySignature,adjacency:geometry.surfaces.filter(s=>s.boundaryHypothesis).map(s=>[s.id,s.boundaryHypothesis,s.boundaryGroup,s.boundaryBasis])});
+ return geometry;
 }
 function suggestions(geometry,state){
   if(state.draftSignature!==geometry.signature)throw Error('Start a current geometry draft first.');
@@ -172,5 +192,5 @@ function preserveHistory(current,incoming){
   return next;
 }
 
-return {empty,checkpoint,rebase,append,decide,review,suggestions,surfaceRuns,priorities,planEstimates,merge,preserveHistory,activeRevision,BOUNDARIES};
+return {boundaryHypotheses,empty,checkpoint,rebase,append,decide,review,suggestions,surfaceRuns,priorities,planEstimates,merge,preserveHistory,activeRevision,BOUNDARIES};
 });

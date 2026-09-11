@@ -382,24 +382,64 @@
       15.976709538067661
     ],
     "rear-bedroom_tl": [
-      1.118412789563446,
-      4.371360062559093,
+      1.318412789563446,
+      4.5,
       12.496705351236383
     ],
     "rear-bedroom_tr": [
-      2.218412789563446,
-      4.371360062559093,
+      2.018412789563446,
+      4.5,
       12.496705351236383
     ],
     "rear-bedroom_br": [
-      2.218412789563446,
-      3.2,
+      2.018412789563446,
+      2.9,
       12.496705351236383
     ],
     "rear-bedroom_bl": [
-      1.118412789563446,
-      3.2,
+      1.318412789563446,
+      2.9,
       12.496705351236383
+    ],
+    "main-rear-lower_tl": [
+      3.9087180948345455,
+      2.55,
+      7.488201374362006
+    ],
+    "main-rear-lower_tr": [
+      4.608718094834545,
+      2.55,
+      7.488201374362006
+    ],
+    "main-rear-lower_br": [
+      4.608718094834545,
+      0.86,
+      7.488201374362006
+    ],
+    "main-rear-lower_bl": [
+      3.9087180948345455,
+      0.86,
+      7.488201374362006
+    ],
+    "main-rear-upper_tl": [
+      3.9087180948345455,
+      5.04,
+      7.488201374362006
+    ],
+    "main-rear-upper_tr": [
+      4.608718094834545,
+      5.04,
+      7.488201374362006
+    ],
+    "main-rear-upper_br": [
+      4.608718094834545,
+      3.54,
+      7.488201374362006
+    ],
+    "main-rear-upper_bl": [
+      3.9087180948345455,
+      3.54,
+      7.488201374362006
     ]
   },
   "openings": [
@@ -650,29 +690,32 @@
     {
       "id": "rear-bedroom",
       "kind": "window",
-      "confidence": "plan-and-photo-unfitted",
+      "confidence": "photo-observed-dimensions-inferred",
       "ring": [
         [
-          1.118412789563446,
-          4.371360062559093,
+          1.318412789563446,
+          4.5,
           12.496705351236383
         ],
         [
-          2.218412789563446,
-          4.371360062559093,
+          2.018412789563446,
+          4.5,
           12.496705351236383
         ],
         [
-          2.218412789563446,
-          3.2,
+          2.018412789563446,
+          2.9,
           12.496705351236383
         ],
         [
-          1.118412789563446,
-          3.2,
+          1.318412789563446,
+          2.9,
           12.496705351236383
         ]
-      ]
+      ],
+      "note": "Visible tall sash frames in both rear photos constrain the narrow proportions. Width uses a 0.70 m scale assumption; height is 1.60 m. Existing end-wall centre is retained pending upper-wing alignment.",
+      "evidence": "opening-corrections.json",
+      "dimensionStatus": "assumed-not-measured"
     },
     {
       "id": "kitchen-side-window",
@@ -782,6 +825,66 @@
           14.276709538067662
         ]
       ]
+    },
+    {
+      "id": "main-rear-lower",
+      "kind": "window",
+      "confidence": "photo-observed-dimensions-inferred",
+      "ring": [
+        [
+          3.9087180948345455,
+          2.55,
+          7.488201374362006
+        ],
+        [
+          4.608718094834545,
+          2.55,
+          7.488201374362006
+        ],
+        [
+          4.608718094834545,
+          0.86,
+          7.488201374362006
+        ],
+        [
+          3.9087180948345455,
+          0.86,
+          7.488201374362006
+        ]
+      ],
+      "note": "Visible frame segments establish presence despite occlusion, corroborated by plan openings. Full width, horizontal position and sill/head use current storey/wall assumptions.",
+      "evidence": "opening-corrections.json",
+      "dimensionStatus": "assumed-not-measured"
+    },
+    {
+      "id": "main-rear-upper",
+      "kind": "window",
+      "confidence": "photo-observed-dimensions-inferred",
+      "ring": [
+        [
+          3.9087180948345455,
+          5.04,
+          7.488201374362006
+        ],
+        [
+          4.608718094834545,
+          5.04,
+          7.488201374362006
+        ],
+        [
+          4.608718094834545,
+          3.54,
+          7.488201374362006
+        ],
+        [
+          3.9087180948345455,
+          3.54,
+          7.488201374362006
+        ]
+      ],
+      "note": "Visible frame segments establish presence despite occlusion, corroborated by plan openings. Full width, horizontal position and sill/head use current storey/wall assumptions.",
+      "evidence": "opening-corrections.json",
+      "dimensionStatus": "assumed-not-measured"
     }
   ],
   "parameters": {

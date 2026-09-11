@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "propertyId": "3broomroad",
+  "stageId": "rear-openings",
+  "baseStageId": "exterior-refined",
+  "actor": "Assistant tracing of visible photo frames, prompted by user completeness review",
+  "method": "Photo-observed opening presence and tall frame proportions, cross-referenced with plan wall/room positions. Visible frame segments are recorded even when the remainder is occluded. Metric scale and hidden extents remain assumed; existing upper-wall camera alignment is not validated.",
+  "sources": [
+    {
+      "path": "reconstruction/evidence/rear-window-feedback.png",
+      "role": "User marks identify the two omitted openings and narrower rear-bedroom shape on the model"
+    },
+    {
+      "path": "photos/b3c87cfb9faa2d98b3231da431fae97b.jpeg",
+      "role": "Near rear context; partial occlusion and unvalidated upper-wall projection"
+    },
+    {
+      "path": "photos/d234ecc31aca67d6789df113f1b380c8.jpeg",
+      "role": "Far rear context; lower-extension camera checks do not validate these upper or recessed windows"
+    },
+    {
+      "path": "floorplan.png",
+      "role": "Floor and rear-room context; not measured opening dimensions"
+    }
+  ],
+  "openings": [
+    {
+      "id": "main-rear-lower",
+      "operation": "add",
+      "wall": "main-rear-exposed",
+      "width": 0.7,
+      "bottom": 0.86,
+      "top": 2.55,
+      "horizontalPlacement": "centre of exposed strip between upper wing and main side wall",
+      "confidence": "photo-observed-dimensions-inferred",
+      "reason": "Visible frame segments establish presence despite occlusion, corroborated by plan openings. Full width, horizontal position and sill/head use current storey/wall assumptions."
+    },
+    {
+      "id": "main-rear-upper",
+      "operation": "add",
+      "wall": "main-rear-exposed",
+      "width": 0.7,
+      "bottom": 3.54,
+      "top": 5.04,
+      "horizontalPlacement": "aligned vertically above main-rear-lower",
+      "confidence": "photo-observed-dimensions-inferred",
+      "reason": "Visible frame segments establish presence despite occlusion, corroborated by plan openings. Full width, horizontal position and sill/head use current storey/wall assumptions."
+    },
+    {
+      "id": "rear-bedroom",
+      "operation": "replace",
+      "wall": "wing-end",
+      "width": 0.7,
+      "bottom": 2.9,
+      "top": 4.5,
+      "horizontalPlacement": "retain existing centre on rear wing end wall",
+      "confidence": "photo-observed-dimensions-inferred",
+      "reason": "Visible tall sash frames in both rear photos constrain the narrow proportions. Width uses a 0.70 m scale assumption; height is 1.60 m. Existing end-wall centre is retained pending upper-wing alignment."
+    }
+  ],
+  "limitations": [
+    "Rear opening dimensions and positions are provisional; no site measurements were supplied.",
+    "Do not borrow the lower-extension photo residuals as accuracy claims for these windows.",
+    "Visible rear frame segments are traced in source pixels. Full extents of the two recessed windows remain partly occluded, and the existing upper-wall projections disagree with these observations.",
+    "No rear roof, front opening, camera, wall footprint or interior partition is changed."
+  ],
+  "photos": [
+    {
+      "imageId": "b3c87cfb9faa2d98b3231da431fae97b",
+      "regions": [
+        {
+          "openingId": "rear-bedroom",
+          "pixels": [
+            [
+              518,
+              128
+            ],
+            [
+              538,
+              126
+            ],
+            [
+              539,
+              173
+            ],
+            [
+              520,
+              176
+            ]
+          ],
+          "visibility": "visible-frame",
+          "observation": "Tall sash frame on the dark rear wing; do not use the large window on the neighbouring gable to the right."
+        },
+        {
+          "openingId": "main-rear-upper",
+          "pixels": [
+            [
+              576,
+              126
+            ],
+            [
+              585,
+              124
+            ],
+            [
+              585,
+              169
+            ],
+            [
+              576,
+              171
+            ]
+          ],
+          "visibility": "partly-occluded",
+          "observation": "Visible narrow portion of frame behind neighbouring volume; full width is hidden."
+        }
+      ]
+    },
+    {
+      "imageId": "d234ecc31aca67d6789df113f1b380c8",
+      "regions": [
+        {
+          "openingId": "rear-bedroom",
+          "pixels": [
+            [
+              424,
+              323
+            ],
+            [
+              437,
+              321
+            ],
+            [
+              438,
+              354
+            ],
+            [
+              425,
+              355
+            ]
+          ],
+          "visibility": "visible-frame",
+          "observation": "Tall frame in dark wing face, left of the recessed rear wall."
+        },
+        {
+          "openingId": "main-rear-upper",
+          "pixels": [
+            [
+              461,
+              321
+            ],
+            [
+              471,
+              319
+            ],
+            [
+              472,
+              354
+            ],
+            [
+              462,
+              355
+            ]
+          ],
+          "visibility": "partly-occluded",
+          "observation": "Frame visible immediately left of the neighbouring gable."
+        },
+        {
+          "openingId": "main-rear-lower",
+          "pixels": [
+            [
+              449,
+              385
+            ],
+            [
+              458,
+              382
+            ],
+            [
+              459,
+              408
+            ],
+            [
+              449,
+              410
+            ]
+          ],
+          "visibility": "partly-occluded",
+          "observation": "Visible frame and glazing to the left of the lower extension; the top and right extent are obscured."
+        }
+      ]
+    }
+  ]
+}

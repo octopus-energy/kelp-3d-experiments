@@ -19,6 +19,9 @@ def build(data):
   path=data/name
   if path.is_file():sources.append({'id':kind,'path':name,'kind':kind,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'status':'provided','captureDate':None})
  manifest=read('image-manifest.json') or {}
+ for name,kind in [('opening-corrections.json','opening-annotation'),('reconstruction/evidence/rear-window-feedback.png','user-geometry-feedback')]:
+  path=data/name
+  if path.is_file():sources.append({'id':kind,'path':name,'kind':kind,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'status':'provided','captureDate':None})
  for im in manifest.get('images',[]):
   path=(data/im['file']).resolve()
   if not path.is_relative_to(data):raise ValueError('Image path escapes dataset')
