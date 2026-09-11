@@ -18,7 +18,8 @@ For product direction and the working map, read
    uncertain photos first, in a screen-sized photo/room workspace. Saving advances;
    “not sure” defers it. All inferred and confirmed matches stay visible and editable.
    Matching must precede comfort questions so room cards become recognisable.
-2. **Tell you what living here is like.** Use those room cards for comfort, routines,
+2. **Understand each room, then tell you how it feels.** Check its plan, heat-loss
+   breakdown and visible assumptions first. Use the same room for comfort, routines,
    appearance and planned renovations. Don't ask whether obviously occupied rooms
    are heated. Explain what a response changes and what still needs a calculation.
 3. **Let me help, in small useful steps.** Offer room-specific photo missions: front
@@ -59,6 +60,15 @@ For product direction and the working map, read
   They are normalised image coordinates, not world coordinates. They don't move
   the 3D unit, invent a pipe run, establish ownership or mark a site as compliant.
   Current route options remain separate and explicitly indicative.
+
+- Existing equipment and radiators can be marked directly on the model plan, with
+  stable floor/room references shared by 2D and 3D. Proposed heat-pump/cylinder marks
+  update the indicative connection sketch and length allowance. Paths to keep clear
+  are saved separately and create a survey task. No homeowner explanation is required
+  to mark a position; optional photos and details remain attached evidence.
+- Rooms, equipment, survey and joint review reuse the plan. Review at an earlier
+  event renders that snapshot, including positions and paths. Source-photo marks
+  remain unregistered evidence. Heights, fit and feasibility stay unverified.
 
 ## Next engineering layer: model the site and shortlist products
 

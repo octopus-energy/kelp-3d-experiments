@@ -11,3 +11,15 @@ const markers=X.markers(D,p,route);assert.deepEqual(markers.find(m=>m.id==='prop
 const rad=A.seedInventory(D,p.choices,room).items[0];p=J.observe(p,D,{...stamp,id:'place-rad',kind:'placement',target:'radiator',roomId:room.id,radiatorId:rad.id,position:pos});assert.equal(X.markers(D,p).filter(m=>m.kind==='radiator').length,1);assert.throws(()=>J.observe(p,D,{...stamp,id:'wrong-floor',kind:'placement',target:'radiator',roomId:room.id,radiatorId:rad.id,position:lowerPos}));
 const replay=J.replay(p,D,p.events.length-1);assert.equal(X.markers(D,replay).filter(m=>m.kind==='radiator').length,0);assert.equal(P.change(p.choices,D,{cylinder:'utility'}).spatial.cylinder,undefined);
 console.log('Spatial plan: stable floors, 2D/3D parity, room containment, service correction, radiator identity, route consequences, preference conflicts and replay passed');
+const K=require('../js/building/installation-planning');
+const withCheck=J.observe(p,D,{...stamp,id:'siting-check',role:'surveyor',kind:'planning-check',target:'siting',status:'reviewed',reference:'Synthetic scoped check',scope:'Fixture only'});
+const path={id:'walk-1',label:'Keep this route usable',points:[pos,X.locate(D,room.levelIdx,c[0]+.2,c[1]+.2)]};
+const withPath=J.revise(withCheck,D,{household:{...withCheck.household,planning:{paths:[path]}}},'Keep walking route clear');
+assert.equal(K.checks(withPath).find(c=>c.id==='siting').stale,true);
+assert(J.tasks(D,withPath).some(t=>t.id==='walking-paths'));
+assert.equal(J.replay(withPath,D,withPath.events.length-1).household.planning,undefined);
+const restored=J.importProject(base,D,JSON.parse(JSON.stringify(withPath)));assert.deepEqual(restored.choices.spatial,withPath.choices.spatial);assert.deepEqual(restored.household.planning.paths,[path]);
+assert.throws(()=>J.revise(p,D,{household:{...p.household,planning:{paths:[{...path,points:[pos,lowerPos]}]}}},'Invalid multi-floor path'));
+assert.throws(()=>X.validateState({radiators:{wrong:{roomId:room.id,radiatorId:rad.id,position:pos}}},D));
+const unknown=J.observe(p,D,{...stamp,id:'boiler-unknown',kind:'service',target:'boiler',presence:'unknown',location:''});assert(!X.markers(D,unknown).some(m=>m.id==='service:boiler'));assert(X.markers(D,J.replay(unknown,D,unknown.events.length-1)).some(m=>m.id==='service:boiler'));
+console.log('Spatial import, scoped radiator keys, unknown equipment, path tasks and downstream review invalidation passed');

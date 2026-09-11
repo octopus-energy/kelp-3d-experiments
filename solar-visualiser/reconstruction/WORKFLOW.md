@@ -1035,3 +1035,17 @@ checks use actual projected plan clicks, assert plan/3D coordinate parity, move
 between floors, check changing route length, preserve replay and reload, and run
 under HTTP and network-disabled file URLs at desktop and phone sizes. Screenshot
 review remains necessary: tests do not establish legibility or a useful sequence.
+
+Visual follow-up: keep every thumbnail in the same rear-up orientation as the main
+plan. Provide a house-focus view and large labels on phones. Selected markers draw
+above nearby markers; use the equipment list to select collocated items. A 3D
+marker selects its matching plan item. The equipment list remains visible and phone
+selection moves to the editor. Never convert a supporting photo mark into a model
+position merely because its label mentions the same equipment.
+
+Final spatial checks also cover projected 3D selection, phone placement, unknown
+service corrections, room-scoped radiator keys, import, walking-path survey tasks
+and invalidation of a prior siting review. Broad proposal, installation, planning,
+room, survey, reconstruction and geometry-preparation checks passed; Python evidence
+and exterior checks run from the reconstruction directory (9 tests). The initial
+Python invocation from the repository root failed imports; use that working directory.

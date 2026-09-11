@@ -18,9 +18,10 @@ window.SolarViz.createProposalView=function(data){
  function render(){const b=host.getBoundingClientRect();if(!b.width||!b.height)return;renderer.setSize(b.width,b.height,false);camera.aspect=b.width/b.height;camera.updateProjectionMatrix();renderer.render(scene,camera);}
  controls.addEventListener('change',render);new ResizeObserver(render).observe(host);
  function view(side){if(side==='front')camera.position.set(17,11,17);else camera.position.set(18,14,-28);controls.target.set(2.7,2,-7);controls.update();render();}
- function label(text,position){const c=document.createElement('canvas');c.width=512;c.height=80;const ctx=c.getContext('2d');ctx.fillStyle='#fcfdf8';ctx.fillRect(0,0,512,80);ctx.fillStyle='#21493e';ctx.font='500 27px sans-serif';ctx.textAlign='center';ctx.fillText(text,256,49);const sprite=new T.Sprite(new T.SpriteMaterial({map:new T.CanvasTexture(c),depthTest:false}));sprite.renderOrder=30;sprite.material.depthWrite=false;sprite.scale.set(5,.78,1);sprite.position.set(...position);services.add(sprite);}
- function update(result,chapter,{showServices=chapter===2||chapter===3||chapter===4,spatialItems=[],paths=[]}={}){
-  services.traverse(o=>{o.geometry?.dispose();o.material?.map?.dispose();o.material?.dispose();});services.clear();services.name='installation-services';const show=showServices;
+ function label(text,position){const c=document.createElement('canvas');c.width=text.length<4?80:512;c.height=80;const ctx=c.getContext('2d');ctx.fillStyle='#fcfdf8';ctx.fillRect(0,0,c.width,80);ctx.fillStyle='#21493e';ctx.font='500 27px sans-serif';ctx.textAlign='center';ctx.fillText(text,c.width/2,49);const sprite=new T.Sprite(new T.SpriteMaterial({map:new T.CanvasTexture(c),depthTest:false}));sprite.renderOrder=30;sprite.material.depthWrite=false;sprite.scale.set(text.length<4?.7:5,.78,1);sprite.position.set(...position);services.add(sprite);}
+ let onMarkerSelect=null;
+ function update(result,chapter,{showServices=chapter===2||chapter===3||chapter===4,spatialItems=[],paths=[],onSelect=null}={}){
+  onMarkerSelect=onSelect;services.traverse(o=>{o.geometry?.dispose();o.material?.map?.dispose();o.material?.dispose();});services.clear();services.name='installation-services';const show=showServices;
   walls.transparent=show;walls.opacity=show?.38:1;roof.transparent=show;roof.opacity=show?.48:1;
   if(show){const r=result.routing,hp=new T.Mesh(new T.BoxGeometry(1.1,.95,.45),mat(0xf4f5ee));hp.userData.markerId="proposed:heatPump";hp.position.set(...r.hp);services.add(hp);const fan=new T.Mesh(new T.CylinderGeometry(.34,.34,.02,32),mat(0x52675e));fan.rotation.x=Math.PI/2;fan.position.set(r.hp[0],r.hp[1],r.hp[2]+.235);services.add(fan);label('Outdoor unit · option',[r.hp[0]+.8,r.hp[1]+1.45,r.hp[2]]);
    if(r.cylinder){const cy=new T.Mesh(new T.CylinderGeometry(.35,.35,1.5,32),mat(0x58a2b5));cy.userData.markerId="proposed:cylinder";cy.position.set(...r.cylinder);services.add(cy);label('Cylinder · proposed space',[r.cylinder[0],r.cylinder[1]+1.6,r.cylinder[2]]);
@@ -32,5 +33,6 @@ window.SolarViz.createProposalView=function(data){
   for(const path of paths){const g=new T.BufferGeometry().setFromPoints(path.points.map(p=>new T.Vector3(...SV.spatial.point(data,p,.06)))),line=new T.Line(g,new T.LineDashedMaterial({color:0xa25467,dashSize:.25,gapSize:.15,depthTest:false}));line.name='keep-clear-path';line.computeLineDistances();line.renderOrder=26;services.add(line);}
   render();
  }
+ let start=null;renderer.domElement.addEventListener('pointerdown',e=>start=[e.clientX,e.clientY]);renderer.domElement.addEventListener('pointerup',e=>{if(!onMarkerSelect||!start||Math.hypot(e.clientX-start[0],e.clientY-start[1])>5)return;const b=renderer.domElement.getBoundingClientRect(),ray=new T.Raycaster();ray.setFromCamera(new T.Vector2((e.clientX-b.left)/b.width*2-1,1-(e.clientY-b.top)/b.height*2),camera);const hit=ray.intersectObjects(services.children).find(h=>h.object.userData.markerId);if(hit)onMarkerSelect(hit.object.userData.markerId);});
  view('front');return {view,update,render,scene,renderer,camera,services};
 };

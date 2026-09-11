@@ -81,13 +81,13 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`__BROOM_INSTALLATION__.go(0)`);
   await evalJS(`document.getElementById('model-detail').scrollIntoView();__BROOM_INSTALLATION__.view.view('rear')`);
   fs.writeFileSync(path.join(testTmp,'installation-visible-route.png'),Buffer.from((await call('Page.captureScreenshot',{format:'png'})).data,'base64'));
-  await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-location="cylinder"][data-value="unresolved"]').click()`);
-  assert.equal(await evalJS(`!__BROOM_INSTALLATION__.view.services.getObjectByName('hydraulic-route')&&document.getElementById('route-caption').textContent.includes('Choose a cylinder location')&&__BROOM_INSTALLATION__.brief.selected.net===null`),true,'Unresolved endpoint gives no invented route or price');
-  await evalJS(`document.querySelector('[data-location="cylinder"][data-value="utility"]').click()`);
+  await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-spatial-target="proposed:cylinder"]').click();document.querySelector('[data-open-cylinder]').click()`);
+  assert.equal(await evalJS(`!__BROOM_INSTALLATION__.view.services.getObjectByName('hydraulic-route')&&document.getElementById('route-caption').textContent.includes('Choose a cylinder position')&&__BROOM_INSTALLATION__.brief.selected.net===null`),true,'Unresolved endpoint gives no invented route or price');
+  await evalJS(`document.querySelector('[data-return-suggested]').click()`);
   assert.equal(await evalJS(`!!__BROOM_INSTALLATION__.view.services.getObjectByName('hydraulic-route')`),true);
   await evalJS(`__BROOM_INSTALLATION__.go(0);document.querySelector('[data-priority="running"]').click();__BROOM_INSTALLATION__.go(3);document.getElementById('no-kitchen').click();__BROOM_INSTALLATION__.go(2);document.querySelector('[data-room="0:r11"]').click();document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-keep="yes"]').click()`);
   assert.equal(await evalJS('__BROOM_INSTALLATION__.brief.suggested.flow'),45);
-  await evalJS('__BROOM_INSTALLATION__.go(3)');assert.equal(await evalJS(`document.querySelector('[data-location="cylinder"][data-value="kitchen"]').disabled`),true);
+  await evalJS('__BROOM_INSTALLATION__.go(3)');assert.equal(await evalJS(`document.getElementById('no-kitchen').checked`),true);
   await evalJS(`document.querySelector('header [data-role="surveyor"]').click();__BROOM_INSTALLATION__.go(4);document.querySelector('[data-task="emitter-0:r11"]').click()`);
   await evalJS(`document.getElementById('observation-role').value='surveyor';document.getElementById('observation-observer').value='Browser test fixture';document.getElementById('observation-note').value='Synthetic complete inventory for regression, not actual survey';document.getElementById('observation-output').value=9000;document.getElementById('inventory-complete').checked=true;document.getElementById('observation-form').requestSubmit()`);
   for(let i=0;i<50;i++){if(await evalJS('!!document.getElementById("survey-receipt")'))break;await new Promise(r=>setTimeout(r,100));}

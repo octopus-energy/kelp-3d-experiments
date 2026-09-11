@@ -21,7 +21,9 @@ service or review item; they do not hide the active item's form.
 | Correct / add an individual radiator | Saves its identity, type and dimensions; supported catalogue analogues update output once the list is reported complete | Product identification, unsupported sizes/types and site verification |
 | Attach several radiator photos | One evidence record can reference a listed radiator; images never add inventory items | Interpretation and any resulting rating require assessment |
 | Compare wall/floor/roof insulation or replacement glazing | Shows room demand and capacity gaps at 45/50/55°C; saves element targets for discussion and a survey task | Existing-home record, baseline schedule and budget remain unchanged; construction, moisture, disruption and cost need review |
-| Describe boiler/cylinder/meter/consumer unit | Appends presence, location, observer, notes and optional embedded photographs | Does not establish equipment suitability or alter the indicative 3D route |
+| Mark boiler/cylinder/meter/consumer unit on the plan | Appends reported floor/room position and provenance; 2D and 3D reuse it; photos/details are optional | Height, fit, service connections and suitability need checking |
+| Place proposed heat pump or cylinder | Changes the shared 2D/3D endpoint and indicative connection length allowance | Sketch is not obstacle-aware or a surveyed pipe design |
+| Place a radiator or mark a walking path | Anchors the inventory item or keep-clear preference to the model; retains it in survey/review/replay | Mounting height, wall fit, path width and garden levels remain open |
 | Discuss leaving gas | Records remaining appliances, preference, bill source and annualised daily charge | Supplier arrangements, removal costs and actual cessation of charges |
 | Enter payment assumptions | Calculates extra-work total, borrowing, monthly payment, interest and total paid | Written scope, milestones and any lender offer; this is not APR underwriting |
 | Record an assessment/certificate reference | Separates received documents from named adviser/surveyor reviews and retains scope | Does not issue or independently authenticate certification |

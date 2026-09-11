@@ -18,13 +18,13 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   const fill=async (selector,values)=>evalJS(`(()=>{const f=document.querySelector(${JSON.stringify(selector)});for(const [key,value] of Object.entries(${JSON.stringify(values)}))f.elements[key].value=value;f.requestSubmit();})()`);
   assert.deepEqual(await evalJS(`[...document.querySelectorAll('#journey-nav button')].map(b=>Number(b.dataset.step))`),[0,2,3,1,4,5]);
   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:2,mobile:true});
-  await evalJS(`__BROOM_INSTALLATION__.go(3);document.getElementById('service-boiler').open=true`);
-  await evalJS(`(()=>{const canvas=document.createElement('canvas');canvas.width=32;canvas.height=32;const c=canvas.getContext('2d');c.fillStyle='#286e59';c.fillRect(0,0,32,32);const binary=atob(canvas.toDataURL('image/png').split(',')[1]),bytes=Uint8Array.from(binary,c=>c.charCodeAt(0)),dt=new DataTransfer();dt.items.add(new File([bytes],'synthetic-service.png',{type:'image/png'}));document.querySelector('[data-planning-form=service][data-target=boiler]').elements.files.files=dt.files;})()`);
-  await fill('[data-planning-form=service][data-target=boiler]',{presence:'present',location:'Kitchen cupboard',observer:'Homeowner fixture',note:'Existing boiler; synthetic test'});
-  for(let i=0;i<100;i++){if(await evalJS(`!!SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler')`))break;await new Promise(r=>setTimeout(r,50));}
-  assert.equal(await evalJS(`SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler').location`),'Kitchen cupboard');
+  await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-start-placement]').click();(()=>{const r=BROOM_PROPOSAL.geometry.geometry.rooms.find(r=>r.id==='0:r0'),c=SolarViz.spatial.centre(r),s=document.getElementById('equipment-plan'),p=new DOMPoint(c[0],-c[1]).matrixTransform(s.getScreenCTM());s.dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:p.x,clientY:p.y}));})()`);
+  await evalJS(`(()=>{const canvas=document.createElement('canvas');canvas.width=32;canvas.height=32;const c=canvas.getContext('2d');c.fillStyle='#286e59';c.fillRect(0,0,32,32);const binary=atob(canvas.toDataURL('image/png').split(',')[1]),bytes=Uint8Array.from(binary,c=>c.charCodeAt(0)),dt=new DataTransfer();dt.items.add(new File([bytes],'synthetic-service.png',{type:'image/png'}));document.querySelector('[data-spatial-service-form]').elements.files.files=dt.files;})()`);
+  await fill('[data-spatial-service-form]',{note:'Existing boiler in kitchen cupboard; synthetic test'});
+  for(let i=0;i<100;i++){if(await evalJS(`SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler')?.attachments?.length===1`))break;await new Promise(r=>setTimeout(r,50));}
+  assert.equal(await evalJS(`SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler').position.roomId`),'0:r0');
   assert.equal(await evalJS(`SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler').attachments.length`),1);
-  await snapshot('services-phone','#existing-services');
+  await snapshot('services-phone','[data-spatial-service-form]');
   await evalJS(`__BROOM_INSTALLATION__.go(1)`);
   await fill('[data-planning-form=gas]',{intent:'explore',appliances:'Gas hob remains',standingPence:'32',source:'Synthetic bill'});
   await fill('[data-planning-form=finance]',{method:'loan',extra:'2000',deposit:'1000',apr:'6',months:'60',source:'Synthetic comparison, not an offer'});
@@ -35,14 +35,14 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await fill('[data-planning-form=planning-check][data-target=siting]',{status:'reviewed',reference:'Fixture assessment only',scope:'Courtyard candidate',observer:'Adviser fixture',note:'Synthetic review for automated test'});
   assert.equal(await evalJS(`SolarViz.installationPlanning.checks(__BROOM_INSTALLATION__.project).find(c=>c.id==='siting').status`),'reviewed');
   await snapshot('checks-phone','#design-checklist');
-  await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-location=outdoor][data-value=garden]').click();__BROOM_INSTALLATION__.go(4)`);
+  await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-spatial-target="proposed:cylinder"]').click();document.querySelector('[data-open-cylinder]').click();__BROOM_INSTALLATION__.go(4)`);
   assert.equal(await evalJS(`SolarViz.installationPlanning.checks(__BROOM_INSTALLATION__.project).find(c=>c.id==='siting').stale`),true);
   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:2,mobile:false});await snapshot('checks-desktop','#design-checklist');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.summary().includes('Gas hob remains')&&__BROOM_INSTALLATION__.summary().includes('Fixture assessment only')`),true);
   await evalJS(`__BROOM_INSTALLATION__.go(5);document.getElementById('review-planning').open=true`);await snapshot('review-brief-desktop','#review-planning');
   const count=await evalJS('__BROOM_INSTALLATION__.project.events.length');await evalJS(`delete window.__BROOM_INSTALLATION__`);await call('Page.reload');for(let i=0;i<150;i++){if(await evalJS('!!window.__BROOM_INSTALLATION__'))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.events.length'),count,'Planning survives reload');
-  assert.equal(await evalJS(`SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler').location`),'Kitchen cupboard');
+  assert.equal(await evalJS(`SolarViz.installationPlanning.latestService(__BROOM_INSTALLATION__.project,'boiler').position.roomId`),'0:r0');
   assert.equal(await evalJS(`SolarViz.installation.replay(__BROOM_INSTALLATION__.project,BROOM_PROPOSAL,0).household.planning`),undefined);
   console.log(root+': room-led facts/ideas, services, gas, finance, check invalidation and reload passed');
  }
