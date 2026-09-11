@@ -20,11 +20,18 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
 
   assert.equal(await evalJS(`document.getElementById('heated-lower-ground').textContent.includes('normally heated living space')`),true);
   assert.equal(await evalJS(`document.body.textContent.includes('How will you heat the lower ground?')`),false);
+  await evalJS(`window.reviewPhotos=BROOM_PROPOSAL.interiorPhotos;BROOM_PROPOSAL.interiorPhotos=[];__BROOM_INSTALLATION__.go(0)`);
+  assert.equal(await evalJS(`document.getElementById('matching-start').textContent.includes('No listing photos')`),true,'A dataset without interior photos can open the journey');
+  await evalJS(`BROOM_PROPOSAL.interiorPhotos=window.reviewPhotos;delete window.reviewPhotos;__BROOM_INSTALLATION__.go(0)`);
   await evalJS(`document.getElementById('model-detail').open=true`);
   await new Promise(r=>setTimeout(r,150));
   assert.equal(await evalJS(`document.getElementById('matching-start').compareDocumentPosition(document.getElementById('comfort-choices'))&Node.DOCUMENT_POSITION_FOLLOWING`),4,'Match before comfort');
   await evalJS(`document.getElementById('start-matching').click()`);
   assert.equal(await evalJS(`document.querySelectorAll('#photo-matching [data-photo-index]').length<SolarViz.installation.photoMatches(BROOM_PROPOSAL,__BROOM_INSTALLATION__.project).length`),true,'Confident matches omitted from help queue');
+  const matchBeforeFailure=await evalJS(`document.querySelector('[data-photo-index][aria-pressed="true"]').dataset.photoIndex`);
+  await evalJS(`window.reviewSave=SolarViz.installationStore.save;SolarViz.installationStore.save=()=>{throw Error('Unable to save this evidence');};document.querySelector('[data-match-room="g-kitchen"]').click();document.getElementById('match-photo').click();SolarViz.installationStore.save=window.reviewSave;delete window.reviewSave;`);
+  assert.equal(await evalJS(`document.getElementById('matching-message').textContent`),'Unable to save this evidence','Save error remains visible inside the modal');
+  assert.equal(await evalJS(`document.querySelector('[data-photo-index][aria-pressed="true"]').dataset.photoIndex`),matchBeforeFailure,'Failed save never advances the photo queue');
   await evalJS(`document.getElementById('close-matching').click()`);
   for(let step=0;step<6;step++){
    await evalJS('__BROOM_INSTALLATION__.go('+step+')');await new Promise(r=>setTimeout(r,100));
@@ -42,6 +49,13 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   await evalJS(`document.getElementById('room-correct-photo').click()`);
   assert.equal(await evalJS(`document.querySelector('#matching-evidence img').src`),displayedPhoto,'Correct match opens the photo being discussed');
   await evalJS(`document.getElementById('close-matching').click()`);
+  await evalJS(`document.querySelector('details[id^="room-note-"]').open=true;document.querySelector('[data-room-note]').focus()`);
+  await call('Input.insertText',{text:'Cold near the window'});
+  const nextRect=await evalJS(`(()=>{const b=document.getElementById('room-guide-next');b.scrollIntoView({block:'center'});const r=b.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...nextRect});await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...nextRect});
+  assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'2. What we need','Typing a note then clicking Next saves and advances with one click');
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.household.roomFeedback['0:r0'].note`),'Cold near the window');
+  await evalJS(`document.querySelector('[data-room-stage="0"]').click();const note=document.querySelector('[data-room-note]');note.value='';note.dispatchEvent(new Event('change'));`);
   const eventsBeforeWalk=await evalJS('__BROOM_INSTALLATION__.project.events.length');
   await evalJS(`document.getElementById('room-guide-next').click()`);
   assert.equal(await evalJS(`document.querySelector('.room-stages [aria-current="step"]').textContent`),'2. What we need');
@@ -90,9 +104,16 @@ if(!process.env.REVIEW_CDP_URL)throw Error('Run via node tests/browser-review.cj
   assert.equal(await evalJS('__BROOM_INSTALLATION__.project.observations.length'),2,'Same observations not duplicated on import');
   await evalJS(`__BROOM_INSTALLATION__.go(2);document.getElementById('room-jump').value='0:r0';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-room-style="0:r0"][data-style="columns"]').click();document.querySelector('[data-room-stage="1"]').click();document.getElementById('homeowner-capture').open=true`);
   const evidenceDoc=await call('DOM.getDocument');const upload=await call('DOM.querySelector',{nodeId:evidenceDoc.root.nodeId,selector:'#radiator-evidence-files'});await call('DOM.setFileInputFiles',{nodeId:upload.nodeId,files:[path.join(appRoot,'3broomroad-data/photos/08968f54527a305a14c70973df11894c.jpeg')]});
-  await evalJS(`document.getElementById('radiator-width').value=900;document.getElementById('radiator-height').value=600;document.getElementById('radiator-evidence-form').requestSubmit()`);
+  await evalJS(`document.getElementById('radiator-width').value=900;document.getElementById('radiator-height').value=600;document.querySelector('[data-room-stage="2"]').click();document.querySelector('[data-room-stage="1"]').click()`);
+  assert.equal(await evalJS(`document.getElementById('radiator-evidence-files').files.length`),1,'Unsubmitted photo survives stage navigation');
+  assert.equal(await evalJS(`document.getElementById('radiator-width').value`),'900');
+  await evalJS(`document.getElementById('room-jump').value='1:r01';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="1"]').click()`);
+  assert.equal(await evalJS(`document.getElementById('radiator-evidence-files').files.length`),0,'Draft photo does not leak into another room');
+  await evalJS(`document.getElementById('room-jump').value='0:r0';document.getElementById('room-jump').dispatchEvent(new Event('change'));document.querySelector('[data-room-stage="1"]').click();document.getElementById('radiator-evidence-form').requestSubmit()`);
   for(let i=0;i<70;i++){if(await evalJS(`__BROOM_INSTALLATION__.project.observations.some(o=>o.kind==='radiator-evidence')`))break;await new Promise(r=>setTimeout(r,100));}
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.observations.find(o=>o.kind==='radiator-evidence').widthMm`),900);
+  assert.equal(await evalJS(`document.getElementById('radiator-evidence-files').files.length`),0,'Saved capture clears the draft');
+  assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.observations.find(o=>o.kind==='radiator-evidence').role`),'surveyor','Evidence retains the selected workspace role');
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.project.observations.find(o=>o.kind==='radiator-evidence').attachments[0].dataUrl.startsWith('data:image/jpeg;')`),true);
   assert.equal(await evalJS(`__BROOM_INSTALLATION__.brief.selected.designPending`),true);
   await evalJS(`__BROOM_INSTALLATION__.go(3);document.querySelector('[data-site-side="front"]').click();`);await evalJS(`new Promise(resolve=>{const im=document.querySelector('#site-preference-photo img');if(im.complete&&im.naturalWidth)resolve();else im.onload=resolve;})`);await evalJS(`const im=document.querySelector('#site-preference-photo img'),r=im.getBoundingClientRect();im.dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:r.left+r.width*.5,clientY:r.top+r.height*.8}));`);

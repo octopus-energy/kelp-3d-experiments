@@ -853,3 +853,19 @@ reopen the guidance. Unknown output must never imply an absent radiator or an
 automatic replacement. Keep cylinder/storage exclusions with equipment locations.
 Verify next-room/reset behaviour, photo changes, saved room preferences and uploads,
 as well as desktop and phone context, over HTTP and file URLs.
+
+### Inventory status and evidence capture
+
+A survey inventory remains current only while its rating matches the recorded
+survey and no subsequent radiator evidence or changed room attribution requires
+review. Confirming an unchanged room identity does not invalidate that inventory.
+A complete survey inventory recorded after submitted photos resolves their output
+assessment; preserve the original photos and earlier status in the evidence history.
+Use distinct wording for photo estimates, homeowner-reported ratings, recorded
+survey inventories and confirmed absence of emitters.
+
+Keep unsaved photo selections and measurements attached to their room while moving
+through the walkthrough. Save errors must appear beside the active capture or
+matching controls, and must not advance the queue. A successful photo save clears
+that draft. Radiator records group photos and optional dimensions for one physical
+radiator; a complete room rating still requires accounting for every emitter.

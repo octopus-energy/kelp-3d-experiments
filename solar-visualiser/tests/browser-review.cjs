@@ -8,10 +8,12 @@ function banner(child,pattern,stream){return new Promise((resolve,reject)=>{let 
 (async()=>{
  const server=start(process.env.PYTHON_BIN||'python3',['-u','-m','http.server','0','--bind','127.0.0.1'],{cwd:appRoot,stdio:['ignore','pipe','pipe']});
  const port=await banner(server,/port (\d+)/,'stdout');
- const browser=start(chrome,['--headless=new','--no-first-run','--no-default-browser-check','--allow-file-access-from-files','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
- const ws=await banner(browser,/DevTools listening on (ws:\/\/[^\s]+)/,'stderr');
  const scripts=['browser-reconstruction.cjs','browser-survey.cjs','browser-ashp-workflow.cjs','browser-replay.cjs','browser-proposal.cjs','browser-installation.cjs'],requested=process.argv.slice(2);
  if(requested.some(s=>!scripts.includes(s)))throw Error('Unknown browser check');
- for(const script of requested.length?requested:scripts)await new Promise((resolve,reject)=>{const child=start(process.execPath,[path.join(__dirname,script)],{stdio:'inherit',env:{...process.env,REVIEW_CDP_URL:ws,REVIEW_HTTP_URL:'http://127.0.0.1:'+port,REVIEW_TEST_OUTPUT:output}});child.on('error',reject);child.on('exit',code=>code===0?resolve():reject(Error(script+' failed: '+code)));});
+ for(const script of requested.length?requested:scripts){
+ const browser=start(chrome,['--headless=new','--no-first-run','--no-default-browser-check','--allow-file-access-from-files','--remote-debugging-port=0','--user-data-dir='+path.join(profile,script),'about:blank'],{stdio:['ignore','ignore','pipe']});
+ const ws=await banner(browser,/DevTools listening on (ws:\/\/[^\s]+)/,'stderr');
+  try{await new Promise((resolve,reject)=>{const child=start(process.execPath,[path.join(__dirname,script)],{stdio:'inherit',env:{...process.env,REVIEW_CDP_URL:ws,REVIEW_HTTP_URL:'http://127.0.0.1:'+port,REVIEW_TEST_OUTPUT:output}});child.on('error',reject);child.on('exit',code=>code===0?resolve():reject(Error(script+' failed: '+code)));});}finally{browser.kill();}
+ }
  console.log('Browser review passed. Screenshots and test exports: '+output);
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>{for(const child of children)if(child.exitCode===null)child.kill();});
